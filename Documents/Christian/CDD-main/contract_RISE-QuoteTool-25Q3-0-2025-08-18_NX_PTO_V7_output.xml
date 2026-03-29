@@ -1,0 +1,130 @@
+<pdf_data>
+    <metadata>
+        <contract_duration>72 months</contract_duration>
+        <contract_date>2025-08-18</contract_date>
+        <currency>JPY</currency>
+        <country>Japan</country>
+        <primary_dc>AWS: AS ap-northeast-1 (Tokyo)</primary_dc>
+        <secondary_dc>AWS: AS ap-northeast-1 (Tokyo)</secondary_dc>
+        <version>QT-25Q3-0</version>
+        <edition>HEC Advanced Edition</edition>
+        <workload>Standard Workloads</workload>
+        <confidentiality>SAP Confidential</confidentiality>
+        <client>Nippon Express</client>
+        <document_title>PTO V7 without BW/4HANA</document_title>
+    </metadata>
+    <pages>
+        <page>
+            <page_number>1</page_number>
+            <text>Customer Production Primary / Secondary DC Currency Country Delivery Options Contract 72 month Date 2025/08/18 New / Replacement AWS: AS ap-northeast-1 (Tokyo) JPY JAPAN Version: QT-25Q3-0 Default TLO rate AWS: AS ap-northeast-1 (Tokyo)HEC Advanced EditionStandard Workloads Final SAP Confidential Service Summary (base: 2025/8/18) Amount System Name Service Database Tier-Name Tier Type System ID RAM (GiB)No. of add. HANA nodesNo. of standby nodesStorage information (1) Backup Class OS SLA DR Add. Requirements Phase Domestic S/4HANA 1S/4HANA PRD System (DB server)SAP S/4HANA On Premise HANA as DB PRD PROD 4,096 6078. (St) Backup-1GB-Dly-1M Linux 99.70% DR_12h_0m 4 7S/4HANA PRD System (App server) App.-Server for SAP S/4HANA On PremisePRD PROD 64 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1S/4HANA PRD System (ASCS server) App.-Server for SAP S/4HANA On PremisePRD PROD 8 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1S/4HANA PRD System (WebDisp)SAP Webdispatcher PRD PROD 8 50. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1S/4HANA QAS System (DB server)SAP S/4HANA On Premise HANA as DB QAS nonPROD 2,048 3223. (St) Backup-1GB-Wly-2W Linux 95.00% 3 3S/4HANA QAS System (App server) App.-Server for SAP S/4HANA On PremiseQAS nonPROD 64 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 95.00% 3 1S/4HANA QAS System (WebDisp)SAP Webdispatcher QAS nonPROD 8 50. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 95.00% 3 1S/4HANA DEV System (DB server)SAP S/4HANA On Premise HANA as DB DEV nonPROD 512 1125. (St) Backup-1GB-Wly-2W Linux 95.00% 2 1S/4HANA DEV System (App server) App.-Server for SAP S/4HANA On PremiseDEV nonPROD 32 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 95.00% 2 1S/4HANA DEV System (WebDisp)SAP Webdispatcher DEV nonPROD 8 50. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 95.00% 2Nippon Express PTO V7 without BW/4HANA Page 1 of 6</text>
+        </page>
+        <page>
+            <page_number>2</page_number>
+            <text>Customer Production Primary / Secondary DC Currency Country Delivery Options Contract 72 month Date 2025/08/18 New / Replacement AWS: AS ap-northeast-1 (Tokyo) JPY JAPAN Version: QT-25Q3-0 Default TLO rate AWS: AS ap-northeast-1 (Tokyo)HEC Advanced EditionStandard Workloads Final SAP ConfidentialNippon Express PTO V7 without BW/4HANA SLT 1 SLT PRD System (DB server) SAP LT Replication Server ASE PRD PROD 32 100. (UD) Backup-1GB-Dly-1M Linux 99.70% DR_12h_0m 4 1SLT PRD System (App server) App.-Server for SAP LT Replication Server PRD PROD 32 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1SLT PRD System (ASCS server) App.-Server for SAP LT Replication Server PRD PROD 8 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1 SLT QAS System (DB server) SAP LT Replication Server ASE QAS nonPROD 32 100. (UD) Backup-1GB-Wly-2W Linux 95.00% 3 1SLT QAS System (App server) App.-Server for SAP LT Replication Server QAS nonPROD 32 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 95.00% 3 1 SLT DEV System (DB server) SAP LT Replication Server ASE DEV nonPROD 32 100. (UD) Backup-1GB-Wly-2W Linux 95.00% 2 1SLT DEV System (App server) App.-Server for SAP LT Replication Server DEV nonPROD 32 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 95.00% 2 DS 1 DS PRD System (DB server) SAP BusinessObjects Data Services ASE PRD PROD 32 100. (UD) Backup-1GB-Dly-1M Linux 99.70% DR_12h_0m 4 1 DS PRD System (App server) Additional BI node PRD PROD 32 200. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1 DS QAS System (DB server) SAP BusinessObjects Data Services ASE QAS nonPROD 32 100. (UD) Backup-1GB-Wly-2W Linux 95.00% 3 1 DS QAS System (App server) Additional BI node QAS nonPROD 32 200. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 95.00% 3 Page 2 of 6</text>
+        </page>
+        <page>
+            <page_number>3</page_number>
+            <text>Customer Production Primary / Secondary DC Currency Country Delivery Options Contract 72 month Date 2025/08/18 New / Replacement AWS: AS ap-northeast-1 (Tokyo) JPY JAPAN Version: QT-25Q3-0 Default TLO rate AWS: AS ap-northeast-1 (Tokyo)HEC Advanced EditionStandard Workloads Final SAP ConfidentialNippon Express PTO V7 without BW/4HANA 1 DS DEV System (DB server) SAP BusinessObjects Data Services ASE DEV nonPROD 32 100. (UD) Backup-1GB-Wly-2W Linux 95.00% 2 1 DS DEV System (App server) Additional BI node DEV nonPROD 32 200. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 95.00% 2 Cloud Connector PRD/DEV 1 SAP Cloud Connector PRD SAP Cloud Connector PRD PROD 8 20. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1 SAP Cloud Connector DEV SAP Cloud Connector DEV nonPROD 8 20. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 95.00% 2 Overseas S/4HANA 1S/4HANA PRD2 System (DB server)SAP S/4HANA On Premise HANA as DB PRD2 PROD 1,024 1996. (St) Backup-1GB-Dly-1M Linux 99.70% DR_12h_0m 4 3S/4HANA PRD2 System (App server) App.-Server for SAP S/4HANA On PremisePRD2 PROD 64 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1S/4HANA PRD2 System (ASCS server) App.-Server for SAP S/4HANA On PremisePRD2 PROD 8 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1S/4HANA PRD2 System (WebDisp)SAP Webdispatcher PRD2 PROD 8 50. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 Page 3 of 6</text>
+        </page>
+        <page>
+            <page_number>4</page_number>
+            <text>Customer Production Primary / Secondary DC Currency Country Delivery Options Contract 72 month Date 2025/08/18 New / Replacement AWS: AS ap-northeast-1 (Tokyo) JPY JAPAN Version: QT-25Q3-0 Default TLO rate AWS: AS ap-northeast-1 (Tokyo)HEC Advanced EditionStandard Workloads Final SAP ConfidentialNippon Express PTO V7 without BW/4HANA SLT 1SLT PRD2 System (DB server)SAP LT Replication Server ASE PRD2 PROD 32 100. (UD) Linux 99.70% DR_12h_0m 4 1SLT PRD2 System (App server) App.-Server for SAP LT Replication Server PRD2 PROD 32 100. (St) Linux 99.70% DR_12h_0m 4 1SLT PRD2 System (ASCS server) App.-Server for SAP LT Replication Server PRD2 PROD 8 100. (St) Linux 99.70% DR_12h_0m 4 GRC 1GRC PRD System (DB server)SAP Access Control HANA as DB PRD PROD 384 908. (St) Linux 99.70% DR_12h_0m 4 1GRC PRD System (App server) App.-Server for SAP Access Control PRD PROD 32 200. (St) Backup-1GB-Dly-1M Linux 99.70% DR_12h_0m 4 1GRC PRD System (ASCS server) App.-Server for SAP Access Control PRD PROD 8 100. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1 GRC PRD System (WebDisp) SAP Webdispatcher PRD PROD 8 50. (St)Backup-1GB-FS-Mly-full+Dly-incr-2MLinux 99.70% DR_12h_0m 4 1GRC QAS System (DB server)SAP Access Control HANA as DB QAS nonPROD 384 908. (St) Linux 95.00% 3 1GRC QAS System (App server) App.-Server for SAP Access Control QAS nonPROD 32 100. (St) Linux 95.00% 3 1 GRC QAS System (WebDisp) SAP Webdispatcher QAS nonPROD 8 50. (St) Linux 95.00% 3 1GRC DEV System (DB server)SAP Access Control HANA as DB DEV nonPROD 384 908. (St) Linux 95.00% 2 Page 4 of 6</text>
+        </page>
+        <page>
+            <page_number>5</page_number>
+            <text>Customer Production Primary / Secondary DC Currency Country Delivery Options Contract 72 month Date 2025/08/18 New / Replacement AWS: AS ap-northeast-1 (Tokyo) JPY JAPAN Version: QT-25Q3-0 Default TLO rate AWS: AS ap-northeast-1 (Tokyo)HEC Advanced EditionStandard Workloads Final SAP ConfidentialNippon Express PTO V7 without BW/4HANA 1GRC DEV System (App server) App.-Server for SAP Access Control DEV nonPROD 32 100. (St) Linux 95.00% 2 1 GRC DEV System (WebDisp) SAP Webdispatcher DEV nonPROD 8 50. (St) Linux 95.00% 2 Others IaaS 1 Migration Server 1 IaaS Basic SBX nonPROD 128 300. (St) Linux 95.00% 5 1Migration Server 1 Additional storageAdditional Storage - Filesystem SBX nonPROD128. (St)Linux 5 1 Migration Server 3 IaaS Basic SBX3 nonPROD 128 300. (St) Linux 95.00% 5 1Migration Server 3 Additional storageAdditional Storage - Filesystem SBX3 nonPROD128. (St)Linux 5 1Additional Storage for S/4 DEVAdditional Storage - Filesystem DEV nonPROD10880. (St)Linux 5 1Additional Storage for for GRC DEVAdditional Storage - Filesystem DEV nonPROD768. (St)Linux 5 (1) = (St) => Storage in GB; (UD) => User Data size in GB; Page 5 of 6</text>
+        </page>
+        <page>
+            <page_number>6</page_number>
+            <text>Customer Production Primary / Secondary DC Currency Country Delivery Options Contract 72 month Date 2025/08/18 New / Replacement AWS: AS ap-northeast-1 (Tokyo) JPY JAPAN Version: QT-25Q3-0 Default TLO rate AWS: AS ap-northeast-1 (Tokyo)HEC Advanced EditionStandard Workloads Final SAP ConfidentialNippon Express PTO V7 without BW/4HANA SAP Connectivity ServiceAmount Primary DCAmount Secondary DCPhase Connection 1: CPC AWS Transit Gateway package including 1TB traffic1 1 Connection 2: CPC AWS Transit Gateway 1TB additional traffic1 1 Supplementary Services ServiceAmount Primary DCAmount Secondary DCPhase Supplementary Service 1:AWS Loadbalancer package including 1TB traffic1 1 Supplementary Service 2:AWS Loadbalancer package including 1TB traffic1 1 Supplementary Service 3:AWS Loadbalancer package including 1TB traffic1 1 Supplementary Service 4:AWS Loadbalancer package including 1TB traffic1 1 Supplementary Service 5: AWS Short distance DR package per host 29 4 Page 6 of 6</text>
+        </page>
+    </pages>
+    <key_information>
+        <service_summary>
+            <base_date>2025-08-18</base_date>
+            <systems>
+                <system>
+                    <name>S/4HANA PRD System (DB server)</name>
+                    <service>SAP S/4HANA On Premise</service>
+                    <database>HANA as DB</database>
+                    <tier>PRD</tier>
+                    <type>PROD</type>
+                    <ram_gib>4096</ram_gib>
+                    <storage>6078 (St)</storage>
+                    <backup>Backup-1GB-Dly-1M</backup>
+                    <os>Linux</os>
+                    <sla>99.70%</sla>
+                    <dr>DR_12h_0m</dr>
+                    <phase>4</phase>
+                </system>
+                <system>
+                    <name>SLT PRD System (DB server)</name>
+                    <service>SAP LT Replication Server</service>
+                    <database>ASE</database>
+                    <tier>PRD</tier>
+                    <type>PROD</type>
+                    <ram_gib>32</ram_gib>
+                    <storage>100 (UD)</storage>
+                    <backup>Backup-1GB-Dly-1M</backup>
+                    <os>Linux</os>
+                    <sla>99.70%</sla>
+                    <dr>DR_12h_0m</dr>
+                    <phase>4</phase>
+                </system>
+                <system>
+                    <name>DS PRD System (DB server)</name>
+                    <service>SAP BusinessObjects Data Services</service>
+                    <database>ASE</database>
+                    <tier>PRD</tier>
+                    <type>PROD</type>
+                    <ram_gib>32</ram_gib>
+                    <storage>100 (UD)</storage>
+                    <backup>Backup-1GB-Dly-1M</backup>
+                    <os>Linux</os>
+                    <sla>99.70%</sla>
+                    <dr>DR_12h_0m</dr>
+                    <phase>4</phase>
+                </system>
+                <system>
+                    <name>GRC PRD System (DB server)</name>
+                    <service>SAP Access Control</service>
+                    <database>HANA as DB</database>
+                    <tier>PRD</tier>
+                    <type>PROD</type>
+                    <ram_gib>384</ram_gib>
+                    <storage>908 (St)</storage>
+                    <os>Linux</os>
+                    <sla>99.70%</sla>
+                    <dr>DR_12h_0m</dr>
+                    <phase>4</phase>
+                </system>
+            </systems>
+        </service_summary>
+        <sap_connectivity_service>
+            <connection>
+                <system_name>Customer Integration Server</system_name>
+                <name>CPC AWS Transit Gateway package including 1TB traffic</name>
+                <amount_primary_dc>1</amount_primary_dc>
+                <amount_secondary_dc>1</amount_secondary_dc>
+            </connection>
+            <connection>
+                <system_name>Customer Integration Server</system_name>
+                <name>CPC AWS Transit Gateway 1TB additional traffic</name>
+                <amount_primary_dc>1</amount_primary_dc>
+                <amount_secondary_dc>1</amount_secondary_dc>
+            </connection>
+        </sap_connectivity_service>
+        <supplementary_services>
+            <service>
+                <name>AWS Loadbalancer package including 1TB traffic</name>
+                <amount_primary_dc>1</amount_primary_dc>
+                <amount_secondary_dc>1</amount_secondary_dc>
+            </service>
+            <service>
+                <name>AWS Short distance DR package per host</name>
+                <amount_primary_dc>29</amount_primary_dc>
+                <amount_secondary_dc>4</amount_secondary_dc>
+            </service>
+        </supplementary_services>
+    </key_information>
+</pdf_data>
