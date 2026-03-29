@@ -1,1217 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vikram Studio — Professional Audio Chain Solutions</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --surface: #ffffff;
-  --border: #e2e8f0;
-  --border-light: #f1f5f9;
-  
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
-  --text-light: #94a3b8;
-  
-  --accent: #3b82f6;
-  --accent-light: #dbeafe;
-  --accent-dark: #1d4ed8;
-  
-  --success: #10b981;
-  --success-light: #d1fae5;
-  
-  --warning: #f59e0b;
-  --warning-light: #fef3c7;
-  
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* Navigation */
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.nav-logo {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--accent);
-  letter-spacing: -0.025em;
-}
-
-.nav-menu {
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-}
-
-.nav-link {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.875rem;
-  transition: color 0.2s;
-}
-
-.nav-link:hover {
-  color: var(--accent);
-}
-
-.nav-cta {
-  background: var(--accent);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.875rem;
-  transition: background 0.2s;
-}
-
-.nav-cta:hover {
-  background: var(--accent-dark);
-}
-
-/* Hero Section */
-.hero {
-  padding: 5rem 2rem 4rem;
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
-  border-radius: 50%;
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-.hero-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-}
-
-.hero-content h1 {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  margin-bottom: 1.5rem;
-  color: var(--text-primary);
-}
-
-.hero-content .accent {
-  color: var(--accent);
-}
-
-.hero-content p {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
-  line-height: 1.7;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition: all 0.2s;
-  display: inline-block;
-}
-
-.btn-primary:hover {
-  background: var(--accent-dark);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-lg);
-}
-
-.btn-secondary {
-  background: var(--surface);
-  color: var(--text-primary);
-  padding: 0.75rem 1.5rem;
-  border: 2px solid var(--border);
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition: all 0.2s;
-  display: inline-block;
-}
-
-.btn-secondary:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.hero-visual {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.chain-diagram {
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: var(--shadow-xl);
-  position: relative;
-}
-
-.chain-flow {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.chain-node {
-  background: var(--bg-secondary);
-  border: 2px solid var(--border);
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  text-align: center;
-  min-width: 100px;
-}
-
-.chain-node.primary {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-}
-
-.chain-arrow {
-  color: var(--text-muted);
-  font-size: 1.25rem;
-}
-
-/* Section Styles */
-.section {
-  padding: 5rem 2rem;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.section-title {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  margin-bottom: 1rem;
-  color: var(--text-primary);
-}
-
-.section-subtitle {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
-
-/* Equipment Grid */
-.equipment-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
-
-.equipment-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  overflow: hidden;
-  transition: all 0.3s;
-  position: relative;
-}
-
-.equipment-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
-  border-color: var(--accent);
-}
-
-.equipment-header {
-  padding: 2rem;
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border);
-}
-
-.equipment-category {
-  display: inline-block;
-  background: var(--accent);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 1rem;
-}
-
-.equipment-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.equipment-model {
-  color: var(--text-muted);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.875rem;
-}
-
-.equipment-body {
-  padding: 2rem;
-}
-
-.equipment-description {
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-}
-
-.equipment-specs {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.spec-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border-light);
-}
-
-.spec-label {
-  color: var(--text-muted);
-  font-size: 0.875rem;
-}
-
-.spec-value {
-  color: var(--text-primary);
-  font-weight: 600;
-  font-size: 0.875rem;
-}
-
-.equipment-price {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 1.5rem;
-  border-top: 2px solid var(--border);
-}
-
-.price-tag {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--accent);
-}
-
-.price-note {
-  color: var(--text-muted);
-  font-size: 0.875rem;
-}
-
-/* Projects Section */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.project-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-.project-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--accent);
-}
-
-.project-number {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-bottom: 0.5rem;
-}
-
-.project-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.project-description {
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-.project-tag {
-  display: inline-block;
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-top: 0.75rem;
-}
-
-.equipment-needed {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-light);
-}
-
-.equipment-needed h4 {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.equipment-needed ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 1rem;
-}
-
-.equipment-needed li {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border-light);
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.equipment-needed li:last-child {
-  border-bottom: none;
-}
-
-.project-price {
-  background: var(--accent-light);
-  color: var(--accent-dark);
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  font-weight: 600;
-  font-size: 0.875rem;
-  text-align: center;
-  margin-top: 0.75rem;
-}
-
-/* Chain Extensions */
-.chain-extensions {
-  background: var(--bg-secondary);
-  border-radius: 1rem;
-  padding: 3rem;
-  margin: 3rem 0;
-}
-
-.extension-flow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 2rem 0;
-  position: relative;
-  flex-wrap: wrap;
-  gap: 2rem;
-}
-
-.extension-node {
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  text-align: center;
-  min-width: 150px;
-  position: relative;
-  z-index: 2;
-}
-
-.extension-node.source {
-  border-color: var(--success);
-  background: var(--success-light);
-}
-
-.extension-node.core {
-  border-color: var(--accent);
-  background: var(--accent-light);
-}
-
-.extension-node.output {
-  border-color: var(--warning);
-  background: var(--warning-light);
-}
-
-.extension-title {
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.extension-subtitle {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.extension-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--border);
-  z-index: 1;
-}
-
-/* Footer */
-footer {
-  background: var(--text-primary);
-  color: white;
-  padding: 3rem 2rem 2rem;
-  text-align: center;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.footer-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--accent);
-}
-
-.footer-text {
-  color: var(--text-light);
-  margin-bottom: 2rem;
-}
-
-.footer-links {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-
-.footer-link {
-  color: var(--text-light);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.footer-link:hover {
-  color: var(--accent);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .hero-container {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  .nav-menu {
-    display: none;
-  }
-  
-  .equipment-specs {
-    grid-template-columns: 1fr;
-  }
-  
-  .extension-flow {
-    flex-direction: column;
-  }
-  
-  .extension-line {
-    display: none;
-  }
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-in {
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-/* Utility Classes */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-
-.mt-1 { margin-top: 0.25rem; }
-.mt-2 { margin-top: 0.5rem; }
-.mt-3 { margin-top: 0.75rem; }
-.mt-4 { margin-top: 1rem; }
-.mt-8 { margin-top: 2rem; }
-
-.mb-1 { margin-bottom: 0.25rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-3 { margin-bottom: 0.75rem; }
-.mb-4 { margin-bottom: 1rem; }
-.mb-8 { margin-bottom: 2rem; }
-
-.p-4 { padding: 1rem; }
-.p-6 { padding: 1.5rem; }
-.p-8 { padding: 2rem; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headphones - Audio Chain Extensions & Live Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --void: #050608;
+            --deep: #0d0f14;
+            --surface: #13161e;
+            --raised: #1a1e28;
+            --rim: #252a38;
+            --line: #2e3445;
+            
+            --neon: #7efff5;
+            --neon-dim: rgba(126,255,245,0.08);
+            --neon-border: rgba(126,255,245,0.2);
+            --violet: #b06aff;
+            --violet-dim: rgba(176,106,255,0.08);
+            --violet-border: rgba(176,106,255,0.2);
+            --accent: #ff6b9d;
+            --accent-dim: rgba(255,107,157,0.08);
+            --accent-border: rgba(255,107,157,0.2);
+            
+            --text-primary: #e4e6eb;
+            --text-secondary: #9ca3af;
+            --text-dim: #6b7280;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: var(--void);
+            color: var(--text-primary);
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .logo {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 800;
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--neon) 0%, var(--violet) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .nav-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon), var(--violet), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--neon-border);
+            box-shadow: 0 10px 30px rgba(126,255,245,0.1);
+        }
+        
+        .nav-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+        
+        .card-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .card-link {
+            display: inline-block;
+            background: var(--neon-dim);
+            color: var(--neon);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--neon-border);
+        }
+        
+        .card-link:hover {
+            background: var(--neon);
+            color: var(--void);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(126,255,245,0.3);
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+        
+        .footer a {
+            color: var(--neon);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: var(--violet);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+        
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px var(--neon), 0 0 20px var(--neon); }
+            to { text-shadow: 0 0 20px var(--violet), 0 0 30px var(--violet); }
+        }
+    </style>
 </head>
 <body>
-
-<!-- Navigation -->
-<nav>
-  <div class="nav-logo">VIKRAM STUDIO</div>
-  <div class="nav-menu">
-    <a href="#equipment" class="nav-link">Equipment</a>
-    <a href="#chain" class="nav-link">Chain Solutions</a>
-    <a href="#projects" class="nav-link">Live Projects</a>
-    <a href="#extensions" class="nav-link">Extensions</a>
-    <a href="#contact" class="nav-cta">Get Started</a>
-  </div>
-</nav>
-
-<!-- Hero Section -->
-<section class="hero">
-  <div class="hero-container">
-    <div class="hero-content">
-      <h1>Professional Audio <span class="accent">Chain Solutions</span></h1>
-      <p>Complete audio signal chain design with premium equipment selection, interactive tools, and expert guidance for audiophiles and professionals.</p>
-      <div class="hero-buttons">
-        <a href="#equipment" class="btn-primary">Explore Equipment</a>
-        <a href="#projects" class="btn-secondary">Try Live Tools</a>
-      </div>
+    <div class="container">
+        <h1 class="logo glow">HEADPHONES</h1>
+        <p class="subtitle">Professional Audio Chain Extensions & Interactive Projects</p>
+        
+        <div class="nav-grid">
+            <div class="nav-card">
+                <div class="card-icon">🔗</div>
+                <h2 class="card-title">Chain Extensions</h2>
+                <p class="card-description">Explore comprehensive audio signal chain innovations, backward and forward extensions, and professional equipment configurations for optimal audio performance.</p>
+                <a href="vikram-chain-extensions.html" class="card-link">Explore Extensions</a>
+            </div>
+            
+            <div class="nav-card">
+                <div class="card-icon">🎛️</div>
+                <h2 class="card-title">Live Projects</h2>
+                <p class="card-description">Discover 10 interactive audio projects including frequency generators, EQ calculators, ear training games, and professional audio analysis tools.</p>
+                <a href="vikram-live-projects.html" class="card-link">View Projects</a>
+            </div>
+            
+            <div class="nav-card">
+                <div class="card-icon">🛠️</div>
+                <h2 class="card-title">Studio Setup</h2>
+                <p class="card-description">Complete professional audio chain solutions with HD 490 PRO+ headphones, FiiO DAC/Amp configurations, and optimized signal paths.</p>
+                <a href="vikram-studio-website.html" class="card-link">View Setup</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Professional Audio Chain Solutions | Built with precision for audiophiles</p>
+            <p><a href="https://github.com/vikramsankhala/Headphones">View on GitHub</a></p>
+        </div>
     </div>
-    <div class="hero-visual">
-      <div class="chain-diagram">
-        <div class="chain-flow">
-          <div class="chain-node">Source</div>
-          <div class="chain-arrow">→</div>
-          <div class="chain-node primary">DAC</div>
-          <div class="chain-arrow">→</div>
-          <div class="chain-node">Amp</div>
-          <div class="chain-arrow">→</div>
-          <div class="chain-node">Headphones</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Equipment Section -->
-<section id="equipment" class="section">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Premium Audio Equipment</h2>
-      <p class="section-subtitle">Carefully selected components for the ultimate listening experience</p>
-    </div>
-
-    <div class="equipment-grid">
-      <!-- Sennheiser HD 490 PRO Plus -->
-      <div class="equipment-card animate-in">
-        <div class="equipment-header">
-          <div class="equipment-category">Reference Headphones</div>
-          <div class="equipment-name">Sennheiser HD 490 PRO+</div>
-          <div class="equipment-model">Open-Back Studio Monitor</div>
-        </div>
-        <div class="equipment-body">
-          <p class="equipment-description">
-            The HD 490 PRO+ delivers exceptional clarity and detail with its extended frequency response of 5Hz–36kHz. Designed for professional studio monitoring, these open-back headphones provide accurate sound reproduction and comfortable extended listening sessions.
-          </p>
-          <p class="equipment-description">
-            The innovative angled drivers and open-back design create a spacious soundstage with precise imaging, making them ideal for critical listening, mixing, and mastering applications. The detachable cables and robust construction ensure longevity in professional environments.
-          </p>
-          <p class="equipment-description">
-            With 130Ω impedance and 110dB SPL sensitivity, these headphones pair perfectly with both dedicated amplifiers and portable devices, offering versatility across various listening scenarios from studio work to mobile enjoyment.
-          </p>
-          <div class="equipment-specs">
-            <div class="spec-item">
-              <span class="spec-label">Frequency Range</span>
-              <span class="spec-value">5Hz–36kHz</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Impedance</span>
-              <span class="spec-value">130Ω</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Sensitivity</span>
-              <span class="spec-value">110dB SPL</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Driver Size</span>
-              <span class="spec-value">40mm</span>
-            </div>
-          </div>
-          <div class="equipment-price">
-            <div class="price-tag">₹24,990</div>
-            <div class="price-note">Official India Price</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FiiO K5 Pro ESS -->
-      <div class="equipment-card animate-in">
-        <div class="equipment-header">
-          <div class="equipment-category">DAC/Amp Desktop</div>
-          <div class="equipment-name">FiiO K5 Pro ESS</div>
-          <div class="equipment-model">Desktop DAC/Amp</div>
-        </div>
-        <div class="equipment-body">
-          <p class="equipment-description">
-            The K5 Pro ESS represents the pinnacle of desktop audio conversion, featuring the flagship ES9038Q2M DAC chip. This desktop solution delivers exceptional audio quality with multiple input options including USB, optical, and coaxial connections for maximum versatility.
-          </p>
-          <p class="equipment-description">
-            With 550mW+550mW output power at 32Ω, the K5 Pro ESS easily drives demanding headphones while maintaining pristine audio quality. The hardware volume control and dual gain settings provide precise level adjustment for any headphone impedance.
-          </p>
-          <p class="equipment-description">
-            The comprehensive I/O includes RCA line outputs for connecting to powered monitors, making it a complete desktop audio hub. The ESS Sabre DAC implementation ensures low distortion and high resolution playback up to 32-bit/768kHz.
-          </p>
-          <div class="equipment-specs">
-            <div class="spec-item">
-              <span class="spec-label">DAC Chip</span>
-              <span class="spec-value">ES9038Q2M</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Output Power</span>
-              <span class="spec-value">550mW+550mW</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">THD+N</span>
-              <span class="spec-value"><0.0006%</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Max Resolution</span>
-              <span class="spec-value">32-bit/768kHz</span>
-            </div>
-          </div>
-          <div class="equipment-price">
-            <div class="price-tag">₹18,990</div>
-            <div class="price-note">Official India Price</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FiiO KA13 -->
-      <div class="equipment-card animate-in">
-        <div class="equipment-header">
-          <div class="equipment-category">DAC Dongle</div>
-          <div class="equipment-name">FiiO KA13</div>
-          <div class="equipment-model">Portable DAC/Amp</div>
-        </div>
-        <div class="equipment-body">
-          <p class="equipment-description">
-            The KA13 revolutionizes portable audio with desktop-grade performance in a compact USB-C dongle format. Featuring the dual Cirrus Logic CS43131 DAC chips, it delivers exceptional sound quality from smartphones, tablets, and laptops.
-          </p>
-          <p class="equipment-description">
-            With 220mW+220mW output power, the KA13 can drive most headphones with authority while maintaining battery efficiency. The built-in hardware volume control and UAC1.0 compatibility ensure broad device support including gaming consoles.
-          </p>
-          <p class="equipment-description">
-            The all-metal construction provides excellent durability and heat dissipation, while the multiple output options (3.5mm single-ended and 4.4mm balanced) offer flexibility for various headphone types and cable configurations.
-          </p>
-          <div class="equipment-specs">
-            <div class="spec-item">
-              <span class="spec-label">DAC Chips</span>
-              <span class="spec-value">Dual CS43131</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Output Power</span>
-              <span class="spec-value">220mW+220mW</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">SNR</span>
-              <span class="spec-value">121dB</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Outputs</span>
-              <span class="spec-value">3.5mm + 4.4mm</span>
-            </div>
-          </div>
-          <div class="equipment-price">
-            <div class="price-tag">₹7,990</div>
-            <div class="price-note">Official India Price</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- UGREEN Adapter -->
-      <div class="equipment-card animate-in">
-        <div class="equipment-header">
-          <div class="equipment-category">Audio Adapter</div>
-          <div class="equipment-name">UGREEN 3.5mm to 6.35mm</div>
-          <div class="equipment-model">Professional Adapter</div>
-        </div>
-        <div class="equipment-body">
-          <p class="equipment-description">
-            Professional-grade audio adapter for connecting headphones with 6.35mm plugs to devices with 3.5mm outputs. Constructed with oxygen-free copper conductors and gold-plated connectors for optimal signal transfer and corrosion resistance.
-          </p>
-          <p class="equipment-description">
-            The robust construction features strain relief and shielding to minimize interference and ensure durability in professional use. The compact design maintains portability while providing reliable connectivity for studio monitoring and critical listening applications.
-          </p>
-          <p class="equipment-description">
-            Compatible with a wide range of devices including smartphones, laptops, audio interfaces, and portable players. The adapter maintains signal integrity and supports both stereo audio and microphone functions where applicable.
-          </p>
-          <div class="equipment-specs">
-            <div class="spec-item">
-              <span class="spec-label">Connector Type</span>
-              <span class="spec-value">3.5mm Female → 6.35mm Male</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Material</span>
-              <span class="spec-value">OFC Copper + Gold Plating</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Length</span>
-              <span class="spec-value">20cm</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Shielding</span>
-              <span class="spec-value">Double Shielded</span>
-            </div>
-          </div>
-          <div class="equipment-price">
-            <div class="price-tag">₹299</div>
-            <div class="price-note">Official India Price</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Chain Solutions Section -->
-<section id="chain" class="section">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Complete Chain Solutions</h2>
-      <p class="section-subtitle">Optimized signal paths for different use cases</p>
-    </div>
-
-    <div class="chain-extensions">
-      <h3 style="text-align: center; margin-bottom: 2rem; color: var(--text-primary);">Desktop Studio Chain</h3>
-      <div class="extension-flow">
-        <div class="extension-node source">
-          <div class="extension-title">PC/Laptop</div>
-          <div class="extension-subtitle">USB-B Output</div>
-        </div>
-        <div class="extension-node core">
-          <div class="extension-title">FiiO K5 Pro ESS</div>
-          <div class="extension-subtitle">DAC/Amp</div>
-        </div>
-        <div class="extension-node">
-          <div class="extension-title">UGREEN Adapter</div>
-          <div class="extension-subtitle">3.5→6.35mm</div>
-        </div>
-        <div class="extension-node output">
-          <div class="extension-title">HD 490 PRO+</div>
-          <div class="extension-subtitle">Studio Monitor</div>
-        </div>
-      </div>
-
-      <h3 style="text-align: center; margin-bottom: 2rem; color: var(--text-primary);">Mobile High-Quality Chain</h3>
-      <div class="extension-flow">
-        <div class="extension-node source">
-          <div class="extension-title">Smartphone</div>
-          <div class="extension-subtitle">USB-C Output</div>
-        </div>
-        <div class="extension-node core">
-          <div class="extension-title">FiiO KA13</div>
-          <div class="extension-subtitle">Portable DAC/Amp</div>
-        </div>
-        <div class="extension-node output">
-          <div class="extension-title">HD 490 PRO+</div>
-          <div class="extension-subtitle">4.4mm Balanced</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Live Projects Section -->
-<section id="projects" class="section">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">10 Interactive Audio Projects</h2>
-      <p class="section-subtitle">Professional tools for audio analysis and training</p>
-    </div>
-
-    <div class="projects-grid">
-      <div class="project-card">
-        <div class="project-number">PROJECT 01</div>
-        <div class="project-title">Frequency Tone Generator</div>
-        <div class="project-description">Generate pure sine tones from 5Hz–20kHz using Web Audio API. Features preset buttons for sub-bass (60Hz), reference (1kHz), and presence (10kHz). Real-time wavelength calculation and frequency range display optimized for HD 490 PRO's 5Hz–36kHz response.</div>
-        <div class="project-tag">Live Audio</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>HD 490 PRO+ (₹24,990) - For accurate frequency reproduction</li>
-            <li>K5 Pro ESS (₹18,990) - Desktop amplification</li>
-            <li>OR KA13 (₹7,990) - Portable option</li>
-          </ul>
-          <div class="project-price">Total from ₹7,990 - ₹43,980</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-number">PROJECT 02</div>
-        <div class="project-title">Parametric EQ Filter Designer</div>
-        <div class="project-description">Design professional EQ filters with real-time EqualizerAPO filter string generation. Supports Peak (Bell), Low Shelf, High Shelf, Low Pass, and High Pass filters. Copy-paste ready output for EqualizerAPO config.txt integration with HD 490 PRO calibration.</div>
-        <div class="project-tag">Calculator</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>HD 490 PRO+ (₹24,990) - Reference monitoring</li>
-            <li>K5 Pro ESS (₹18,990) - Stable desktop output</li>
-            <li>EqualizerAPO (Free) - Software EQ</li>
-          </ul>
-          <div class="project-price">Total from ₹43,980</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-number">PROJECT 03</div>
-        <div class="project-title">Gain Staging Calculator</div>
-        <div class="project-description">Input headphone impedance (16-600Ω) and sensitivity (80-120dB/mW) with target SPL level (60-110dB). Calculates exact power needed in milliwatts, K5 Pro ESS headroom in dB, and provides safety advice to prevent hearing damage and equipment strain.</div>
-        <div class="project-tag">Engineering</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>HD 490 PRO+ (₹24,990) - 130Ω impedance, 110dB sensitivity</li>
-            <li>K5 Pro ESS (₹18,990) - 550mW output power</li>
-            <li>Optional KA13 (₹7,990) - 220mW portable testing</li>
-          </ul>
-          <div class="project-price">Total from ₹32,980 - ₹51,970</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-number">PROJECT 04</div>
-        <div class="project-title">Frequency Ear Training Game</div>
-        <div class="project-description">Interactive training game that plays mystery boosted frequencies. Choose from 4 frequency options with instant feedback. Tracks score progression to 10/10. Uses HD 490 PRO's accurate reproduction to develop professional critical listening skills.</div>
-        <div class="project-tag">Training</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>HD 490 PRO+ (₹24,990) - Essential for frequency accuracy</li>
-            <li>K5 Pro ESS (₹18,990) - Reference quality audio</li>
-            <li>OR KA13 (₹7,990) - For mobile training</li>
-          </ul>
-          <div class="project-price">Total from ₹32,980 - ₹43,980</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-number">PROJECT 05</div>
-        <div class="project-title">Signal Chain Builder</div>
-        <div class="project-description">Visual drag-and-drop chain designer with component library including DACs, amps, cables, adapters. Builds complete signal paths and calculates estimated signal loss per connection. Validates chain completeness and suggests optimal configurations.</div>
-        <div class="project-tag">Design Tool</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>HD 490 PRO+ (₹24,990) - Final output testing</li>
-            <li>K5 Pro ESS (₹18,990) - Desktop chain component</li>
-            <li>KA13 (₹7,990) - Mobile chain component</li>
-            <li>UGREEN Adapter (₹299) - Connection testing</li>
-          </ul>
-          <div class="project-price">Total from ₹51,269</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-number">PROJECT 06</div>
-        <div class="project-title">Vinyl Digitisation Log</div>
-        <div class="project-description">Comprehensive session logger for vinyl to digital conversion. Tracks album/artist, format (LP/EP/Single), capture quality (16-32bit, 44.1-192kHz), condition grading (M-G), and detailed notes. Includes session counter and export capability.</div>
-        <div class="project-tag">Logger</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>HD 490 PRO+ (₹24,990) - Critical monitoring</li>
-            <li>K5 Pro ESS (₹18,990) - RCA input for turntable</li>
-            <li>Turntable with phono preamp (₹12,000-45,000)</li>
-            <li>Recording software (Audacity - Free)</li>
-          </ul>
-          <div class="project-price">Total from ₹54,990 - ₹87,980</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-number">PROJECT 07</div>
-        <div class="project-title">Critical Listening Journal</div>
-        <div class="project-description">Professional listening session logger with bass/mid/high ratings (1-10 scale), chain configuration tracking, and detailed observation fields. Builds reference library for mix translation and equipment comparison. Supports multiple source types and export functionality.</div>
-        <div class="project-tag">Journal</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>HD 490 PRO+ (₹24,990) - Primary monitoring tool</li>
-            <li>K5 Pro ESS (₹18,990) - Desktop reference chain</li>
-            <li>KA13 (₹7,990) - Mobile listening sessions</li>
-          </ul>
-          <div class="project-price">Total from ₹32,980 - ₹51,970</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-number">PROJECT 08</div>
-        <div class="project-title">Frequency Range Explorer</div>
-        <div class="project-description">Interactive logarithmic canvas map covering 5Hz–36kHz (HD 490 PRO range). Hover exploration with frequency descriptions, dropdown highlighting for specific ranges (sub-bass to air). Real-time visual feedback with scientific frequency band information.</div>
-        <div class="project-tag">Visual Tool</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>HD 490 PRO+ (₹24,990) - Full range reproduction</li>
-            <li>Any DAC/Amp - For audio playback</li>
-            <li>Web browser - Canvas visualization</li>
-          </ul>
-          <div class="project-price">Total from ₹24,990+</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-number">PROJECT 09</div>
-        <div class="project-title">Blind A/B Test Timer</div>
-        <div class="project-description">Scientific comparison tool with configurable listening duration (10-120s). Automatic source alternation with timestamp logging. Supports 5+ round testing for statistical significance. Eliminates expectation bias in equipment testing.</div>
-        <div class="project-tag">Testing</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>HD 490 PRO+ (₹24,990) - Consistent monitoring</li>
-            <li>K5 Pro ESS (₹18,990) - Source A (Desktop)</li>
-            <li>KA13 (₹7,990) - Source B (Mobile)</li>
-            <li>UGREEN Adapter (₹299) - Quick switching</li>
-          </ul>
-          <div class="project-price">Total from ₹51,269</div>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-number">PROJECT 10</div>
-        <div class="project-title">Upgrade Budget Planner</div>
-        <div class="project-description">Financial planning tool with real Indian pricing database. Build wishlist from curated equipment list, priority scoring system, budget gap analysis, and ROI calculations. Includes cables, accessories, and software options.</div>
-        <div class="project-tag">Finance</div>
-        <div class="equipment-needed">
-          <h4>Equipment Required:</h4>
-          <ul>
-            <li>No equipment needed - Planning tool only</li>
-            <li>Access to current Indian market prices</li>
-            <li>Current equipment inventory for upgrade path</li>
-          </ul>
-          <div class="project-price">Free to use</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Extensions Section -->
-<section id="extensions" class="section">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Chain Extensions & Innovations</h2>
-      <p class="section-subtitle">Expand your audio capabilities with backward and forward extensions</p>
-    </div>
-
-    <div class="chain-extensions">
-      <h3 style="text-align: center; margin-bottom: 2rem; color: var(--text-primary);">Complete Extended Chain Map</h3>
-      <div class="extension-flow">
-        <div class="extension-node source">
-          <div class="extension-title">Vinyl/Turntable</div>
-          <div class="extension-subtitle">RCA Input</div>
-        </div>
-        <div class="extension-node source">
-          <div class="extension-title">CD Transport</div>
-          <div class="extension-subtitle">Optical/Coax</div>
-        </div>
-        <div class="extension-node source">
-          <div class="extension-title">Network Streamer</div>
-          <div class="extension-subtitle">USB Output</div>
-        </div>
-        <div class="extension-node core">
-          <div class="extension-title">K5 Pro ESS</div>
-          <div class="extension-subtitle">Central Hub</div>
-        </div>
-        <div class="extension-node output">
-          <div class="extension-title">HD 490 PRO+</div>
-          <div class="extension-subtitle">Primary Output</div>
-        </div>
-        <div class="extension-node output">
-          <div class="extension-title">Studio Monitors</div>
-          <div class="extension-subtitle">RCA Parallel</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer id="contact">
-  <div class="footer-content">
-    <div class="footer-logo">VIKRAM STUDIO</div>
-    <p class="footer-text">Professional audio chain solutions for audiophiles and professionals</p>
-    <div class="footer-links">
-      <a href="#equipment" class="footer-link">Equipment</a>
-      <a href="#chain" class="footer-link">Chain Solutions</a>
-      <a href="#projects" class="footer-link">Live Projects</a>
-      <a href="#extensions" class="footer-link">Extensions</a>
-    </div>
-    <p class="footer-text">© 2024 Vikram Studio. All rights reserved.</p>
-  </div>
-</footer>
-
-<script>
-// Smooth scroll for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  });
-});
-
-// Intersection Observer for animations
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('animate-in');
-    }
-  });
-}, observerOptions);
-
-document.querySelectorAll('.equipment-card, .project-card').forEach(el => {
-  observer.observe(el);
-});
-
-// Active navigation highlighting
-window.addEventListener('scroll', () => {
-  const sections = document.querySelectorAll('section[id]');
-  const scrollY = window.pageYOffset;
-
-  sections.forEach(section => {
-    const sectionHeight = section.offsetHeight;
-    const sectionTop = section.offsetTop - 100;
-    const sectionId = section.getAttribute('id');
-    
-    if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${sectionId}`) {
-          link.classList.add('active');
-        }
-      });
-    }
-  });
-});
-</script>
-
 </body>
 </html>
