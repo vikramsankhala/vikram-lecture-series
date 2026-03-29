@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikram Studio — 10 Live Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0c0f;
+  --surface: #111318;
+  --card: #161820;
+  --raised: #1c1f28;
+  --border: #252932;
+  --border2: #2e3340;
+
+  --electric: #00d4ff;
+  --electric-dim: rgba(0,212,255,0.07);
+  --electric-border: rgba(0,212,255,0.18);
+  --lime: #b8ff00;
+  --lime-dim: rgba(184,255,0,0.07);
+  --orange: #ff6b35;
+  --orange-dim: rgba(255,107,53,0.07);
+  --pink: #ff3d9a;
+  --pink-dim: rgba(255,61,154,0.07);
+  --gold: #ffd60a;
+  --gold-dim: rgba(255,214,10,0.07);
+  --sage: #3dffa0;
+  --sage-dim: rgba(61,255,160,0.07);
+  --violet: #a855f7;
+  --violet-dim: rgba(168,85,247,0.07);
+
+  --text: #e8ecf0;
+  --muted: #5a6070;
+  --mid: #8892a0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 999;
+  background: rgba(11,12,15,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 54px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 700; font-size: 1rem;
+  color: var(--electric); letter-spacing: 0.05em;
+}
+.nav-right {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.6rem; color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+/* HERO */
+.hero {
+  min-height: 92vh;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem 2.5rem 4rem;
+  position: relative; overflow: hidden;
+  background: var(--bg);
+}
+.hero-dots {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(0,212,255,0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 70% 70% at 30% 40%, black, transparent);
+}
+.hero-num {
+  position: absolute;
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 700;
+  font-size: 32vw;
+  color: rgba(255,255,255,0.015);
+  right: -2vw; bottom: -4vw;
+  line-height: 1; pointer-events: none;
+  user-select: none;
+}
+.hero-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem; letter-spacing: 0.25em;
+  color: var(--electric); text-transform: uppercase;
+  margin-bottom: 1.2rem; position: relative; z-index: 1;
+  opacity: 0; animation: up 0.8s 0.15s forwards;
+}
+.hero-h1 {
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 9vw, 9rem);
+  line-height: 0.95; letter-spacing: -0.02em;
+  position: relative; z-index: 1;
+  opacity: 0; animation: up 0.9s 0.3s forwards;
+}
+.hero-h1 .e { color: var(--electric); }
+.hero-h1 .l { color: var(--lime); }
+.hero-desc {
+  font-size: 1rem; color: var(--mid);
+  max-width: 560px; line-height: 1.8;
+  margin-top: 1.5rem; position: relative; z-index: 1;
+  opacity: 0; animation: up 0.9s 0.45s forwards;
+}
+.hero-grid-chips {
+  display: flex; gap: 0.6rem; flex-wrap: wrap;
+  margin-top: 2rem; position: relative; z-index: 1;
+  opacity: 0; animation: up 0.9s 0.6s forwards;
+}
+.chip {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.6rem; letter-spacing: 0.1em;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border2);
+  color: var(--muted); text-transform: uppercase;
+}
+@keyframes up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PROJECTS GRID */
+.projects-wrap {
+  max-width: 1300px; margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+@media (max-width: 500px) {
+  .projects-wrap { grid-template-columns: 1fr; }
+}
+
+/* PROJECT CARD */
+.proj {
+  background: var(--card);
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+  transition: background 0.25s;
+}
+.proj:hover { background: var(--raised); }
+
+.proj-header {
+  padding: 1.8rem 2rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+}
+.proj-meta {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.proj-num {
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 700; font-size: 0.7rem;
+  color: var(--muted); letter-spacing: 0.1em;
+}
+.proj-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.55rem; letter-spacing: 0.15em;
+  padding: 0.2rem 0.6rem; border: 1px solid;
+  text-transform: uppercase;
+}
+.proj-title {
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 600; font-size: 1.15rem;
+  line-height: 1.25; margin-bottom: 0.4rem;
+}
+.proj-sub {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.62rem; color: var(--muted);
+  letter-spacing: 0.05em; line-height: 1.6;
+}
+
+/* INTERACTIVE AREA */
+.proj-body {
+  padding: 1.5rem 2rem;
+  flex: 1;
+}
+.proj-footer {
+  padding: 1rem 2rem;
+  border-top: 1px solid var(--border);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.58rem; color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+/* ── SHARED UI ELEMENTS ── */
+label {
+  display: block;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.6rem; letter-spacing: 0.12em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+input[type=range] {
+  -webkit-appearance: none; width: 100%; height: 3px;
+  background: var(--border2); border-radius: 2px; cursor: pointer;
+  margin-bottom: 1rem;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px;
+  border-radius: 50%; cursor: pointer; margin-top: -5.5px;
+}
+input[type=text], input[type=number], select, textarea {
+  width: 100%;
+  background: var(--surface); border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: 'Fira Code', monospace; font-size: 0.75rem;
+  padding: 0.6rem 0.85rem; outline: none;
+  transition: border-color 0.2s; margin-bottom: 0.75rem;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--electric); }
+select option { background: var(--surface); }
+textarea { resize: vertical; min-height: 70px; }
+
+.btn {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem; letter-spacing: 0.1em;
+  padding: 0.6rem 1.4rem;
+  border: 1px solid; cursor: pointer;
+  text-transform: uppercase; transition: all 0.2s;
+  display: inline-block; margin-top: 0.25rem;
+}
+.btn:hover { opacity: 0.8; }
+
+.result-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1rem; margin-top: 1rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem; line-height: 1.8;
+  color: var(--mid);
+  min-height: 60px;
+}
+.result-box .val { font-weight: 500; }
+
+/* colour helpers */
+.c-el { color: var(--electric); }
+.c-li { color: var(--lime); }
+.c-or { color: var(--orange); }
+.c-pk { color: var(--pink); }
+.c-go { color: var(--gold); }
+.c-sa { color: var(--sage); }
+.c-vi { color: var(--violet); }
+
+/* small grid */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+
+/* meter bars */
+.meter-row { margin-bottom: 0.6rem; }
+.meter-label {
+  font-family: 'Fira Code', monospace; font-size: 0.58rem;
+  color: var(--muted); display: flex; justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+.meter-track {
+  height: 6px; background: var(--border2); border-radius: 3px; overflow: hidden;
+}
+.meter-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
+
+/* tag pills */
+.pill-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.mini-pill {
+  font-family: 'Fira Code', monospace; font-size: 0.55rem;
+  padding: 0.15rem 0.5rem; border: 1px solid var(--border2);
+  color: var(--muted); letter-spacing: 0.05em;
+}
+
+/* canvas */
+canvas { display: block; width: 100%; border: 1px solid var(--border2); }
+
+/* reveal */
+.rv { opacity: 0; transform: translateY(14px); transition: opacity 0.6s, transform 0.6s; }
+.rv.on { opacity: 1; transform: none; }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem; text-align: center;
+}
+.foot-logo {
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 700; font-size: 1.5rem; color: var(--electric);
+}
+.foot-sub {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.58rem; color: var(--muted);
+  letter-spacing: 0.18em; text-transform: uppercase;
+  margin-top: 0.3rem;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">VIKRAM STUDIO</div>
+  <div class="nav-right">10 LIVE PROJECTS · INTERACTIVE TOOLS</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-num">10</div>
+  <div class="hero-tag">Vikram Studio · Live Projects</div>
+  <h1 class="hero-h1">
+    Build.<br>
+    <span class="e">Measure.</span><br>
+    <span class="l">Master.</span>
+  </h1>
+  <p class="hero-desc">Ten fully interactive projects you can run right now with your HD 490 PRO Plus, FiiO K5 Pro ESS, and KA13 chain. No installs. No downloads. Just open and use.</p>
+  <div class="hero-grid-chips">
+    <span class="chip">Tone Generator</span>
+    <span class="chip">EQ Calculator</span>
+    <span class="chip">Gain Staging</span>
+    <span class="chip">Ear Training</span>
+    <span class="chip">Chain Builder</span>
+    <span class="chip">Vinyl Digitiser Log</span>
+    <span class="chip">Listening Journal</span>
+    <span class="chip">Frequency Map</span>
+    <span class="chip">A/B Test Timer</span>
+    <span class="chip">Budget Planner</span>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="projects-wrap">
+
+<!-- ══════════════════════════════════════════
+     PROJECT 1 — TONE GENERATOR & EAR TRAINER
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 01</span>
+      <span class="proj-tag" style="color:var(--electric);border-color:var(--electric-border);">Live Audio</span>
+    </div>
+    <div class="proj-title">Frequency Tone Generator</div>
+    <div class="proj-sub">Generate pure sine tones to train your ears on the HD 490 PRO's 5Hz–36kHz range</div>
+  </div>
+  <div class="proj-body">
+    <label>Frequency: <span id="f1val" class="c-el">440</span> Hz</label>
+    <input type="range" id="f1freq" min="20" max="20000" value="440"
+      style="accent-color:var(--electric);"
+      oninput="updateF1()">
+    <label>Volume: <span id="f1vol" class="c-el">40</span>%</label>
+    <input type="range" id="f1volume" min="0" max="100" value="40"
+      style="accent-color:var(--electric);"
+      oninput="updateF1Vol()">
+    <div class="three-col" style="margin-bottom:0.75rem;">
+      <button class="btn" style="color:var(--electric);border-color:var(--electric-border);" onclick="setF1(60)">60Hz<br><span style="font-size:0.5rem;color:var(--muted)">Sub bass</span></button>
+      <button class="btn" style="color:var(--electric);border-color:var(--electric-border);" onclick="setF1(1000)">1kHz<br><span style="font-size:0.5rem;color:var(--muted)">Reference</span></button>
+      <button class="btn" style="color:var(--electric);border-color:var(--electric-border);" onclick="setF1(10000)">10kHz<br><span style="font-size:0.5rem;color:var(--muted)">Presence</span></button>
+    </div>
+    <div class="two-col">
+      <button class="btn" id="f1btn" style="color:var(--electric);border-color:var(--electric-border);background:var(--electric-dim);" onclick="toggleF1()">▶ PLAY</button>
+      <button class="btn" style="color:var(--muted);border-color:var(--border2);" onclick="setF1(Math.round(parseFloat(document.getElementById('f1freq').value)*Math.pow(2,1/12)))">+1 Semitone</button>
+    </div>
+    <div class="result-box" id="f1info">
+      Frequency range of HD 490 PRO: <span class="val c-el">5Hz–36kHz</span><br>
+      Current: — Hz · Wavelength: — m
+    </div>
+  </div>
+  <div class="proj-footer">Uses Web Audio API · Works best through K5 Pro ESS at reference level</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROJECT 2 — PARAMETRIC EQ CALCULATOR
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 02</span>
+      <span class="proj-tag" style="color:var(--lime);border-color:rgba(184,255,0,0.25);">Calculator</span>
+    </div>
+    <div class="proj-title">Parametric EQ Filter Designer</div>
+    <div class="proj-sub">Design EQ bands and export settings for EqualizerAPO / Peace</div>
+  </div>
+  <div class="proj-body">
+    <div class="two-col">
+      <div>
+        <label>Filter Type</label>
+        <select id="eqtype" onchange="calcEQ()">
+          <option value="PK">Peak (Bell)</option>
+          <option value="LS">Low Shelf</option>
+          <option value="HS">High Shelf</option>
+          <option value="LP">Low Pass</option>
+          <option value="HP">High Pass</option>
+        </select>
+      </div>
+      <div>
+        <label>Frequency (Hz)</label>
+        <input type="number" id="eqfreq" value="1000" min="20" max="20000" oninput="calcEQ()">
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <label>Gain (dB)</label>
+        <input type="number" id="eqgain" value="-3" min="-24" max="24" step="0.5" oninput="calcEQ()">
+      </div>
+      <div>
+        <label>Q Factor / Bandwidth</label>
+        <input type="number" id="eqq" value="1.4" min="0.1" max="20" step="0.1" oninput="calcEQ()">
+      </div>
+    </div>
+    <button class="btn" style="color:var(--lime);border-color:rgba(184,255,0,0.3);background:var(--lime-dim);" onclick="addEQBand()">+ ADD BAND</button>
+    <div class="result-box" id="eqout">
+      <span class="c-li"># EqualizerAPO filter string</span><br>
+      Filter: ON PK Fc <span id="eqfc">1000</span> Hz Gain <span id="eqgd">-3.0</span> dB Q <span id="eqqd">1.40</span>
+    </div>
+    <div id="eqbands" style="margin-top:0.5rem;font-family:'Fira Code',monospace;font-size:0.65rem;color:var(--muted);line-height:2;"></div>
+  </div>
+  <div class="proj-footer">Copy output directly into EqualizerAPO config.txt for HD 490 PRO</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROJECT 3 — GAIN STAGING CALCULATOR
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 03</span>
+      <span class="proj-tag" style="color:var(--orange);border-color:rgba(255,107,53,0.3);">Engineering</span>
+    </div>
+    <div class="proj-title">Gain Staging & Headroom Planner</div>
+    <div class="proj-sub">Calculate safe gain levels for the K5 Pro ESS → HD 490 PRO chain</div>
+  </div>
+  <div class="proj-body">
+    <label>Headphone Impedance: <span id="g3imp" class="c-or">130</span> Ω</label>
+    <input type="range" id="g3impedance" min="16" max="600" value="130"
+      style="accent-color:var(--orange);" oninput="calcGain()">
+    <label>Headphone Sensitivity: <span id="g3sens" class="c-or">100</span> dB/mW</label>
+    <input type="range" id="g3sensitivity" min="80" max="120" value="100"
+      style="accent-color:var(--orange);" oninput="calcGain()">
+    <label>Target Listening Level: <span id="g3lev" class="c-or">80</span> dB SPL</label>
+    <input type="range" id="g3level" min="60" max="110" value="80"
+      style="accent-color:var(--orange);" oninput="calcGain()">
+    <div class="result-box" id="g3result">
+      <div class="meter-row">
+        <div class="meter-label"><span>Power needed</span><span id="g3pow" class="c-or">—</span></div>
+        <div class="meter-track"><div class="meter-fill" id="g3powbar" style="background:var(--orange);width:0%"></div></div>
+      </div>
+      <div class="meter-row">
+        <div class="meter-label"><span>K5 Pro headroom</span><span id="g3head" class="c-or">—</span></div>
+        <div class="meter-track"><div class="meter-fill" id="g3headbar" style="background:var(--sage);width:0%"></div></div>
+      </div>
+      <div id="g3advice" style="margin-top:0.5rem;font-size:0.65rem;"></div>
+    </div>
+  </div>
+  <div class="proj-footer">K5 Pro ESS output: ~200mW @ 130Ω · Safe for HD 490 PRO at all volumes</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROJECT 4 — EAR TRAINING GAME
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 04</span>
+      <span class="proj-tag" style="color:var(--pink);border-color:rgba(255,61,154,0.3);">Game</span>
+    </div>
+    <div class="proj-title">Frequency Ear Training Game</div>
+    <div class="proj-sub">Identify boosted frequencies by ear. Score 10/10 to graduate this module</div>
+  </div>
+  <div class="proj-body">
+    <div style="text-align:center;margin-bottom:1rem;">
+      <div style="font-family:'Clash Display',sans-serif;font-size:2.5rem;font-weight:700;color:var(--pink)" id="et4score">0 / 10</div>
+      <div style="font-family:'Fira Code',monospace;font-size:0.6rem;color:var(--muted);margin-top:0.2rem;" id="et4status">Press PLAY to hear the tone</div>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem;">
+      <button class="btn" style="color:var(--pink);border-color:rgba(255,61,154,0.35);background:var(--pink-dim);font-size:0.75rem;" onclick="et4Play()">▶ PLAY MYSTERY TONE</button>
+    </div>
+    <div class="three-col" id="et4choices"></div>
+    <div class="result-box" id="et4feedback" style="text-align:center;min-height:50px;display:flex;align-items:center;justify-content:center;">
+      Use your HD 490 PRO to identify the frequency
+    </div>
+  </div>
+  <div class="proj-footer">Train 15 min/day · Builds critical listening skills used by professional engineers</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROJECT 5 — SIGNAL CHAIN BUILDER
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 05</span>
+      <span class="proj-tag" style="color:var(--gold);border-color:rgba(255,214,10,0.3);">Design Tool</span>
+    </div>
+    <div class="proj-title">Custom Signal Chain Builder</div>
+    <div class="proj-sub">Drag-and-drop your signal chain and calculate total signal loss</div>
+  </div>
+  <div class="proj-body">
+    <label>Add component to chain</label>
+    <div class="two-col" style="margin-bottom:0.75rem;">
+      <select id="cb5comp">
+        <option value="laptop,0">Laptop / PC</option>
+        <option value="phone,0">Smartphone</option>
+        <option value="k5pro,0">FiiO K5 Pro ESS</option>
+        <option value="ka13,0">FiiO KA13 dongle</option>
+        <option value="ugreen,-0.2">UGREEN Adapter</option>
+        <option value="4.4mm cable,-0.1">4.4mm Balanced Cable</option>
+        <option value="6.35mm cable,-0.1">6.35mm TRS Cable</option>
+        <option value="hd490,0">HD 490 PRO Plus</option>
+        <option value="monitors,0">Studio Monitors</option>
+        <option value="interface,0">Audio Interface</option>
+        <option value="switch box,-0.3">Speaker Switch Box</option>
+        <option value="rca cable,-0.15">RCA Cable</option>
+        <option value="optical cable,0">Optical TOSLINK</option>
+        <option value="amp,-0">Dedicated Headphone Amp</option>
+      </select>
+      <button class="btn" style="color:var(--gold);border-color:rgba(255,214,10,0.3);background:var(--gold-dim);" onclick="cb5Add()">+ ADD</button>
+    </div>
+    <div id="cb5chain" style="display:flex;flex-wrap:wrap;gap:0.3rem;min-height:44px;background:var(--surface);border:1px solid var(--border);padding:0.75rem;margin-bottom:0.75rem;align-items:center;"></div>
+    <button class="btn" style="color:var(--muted);border-color:var(--border2);font-size:0.6rem;" onclick="cb5Clear()">CLEAR CHAIN</button>
+    <div class="result-box" id="cb5result" style="margin-top:0.75rem;">
+      Build your chain above to see analysis
+    </div>
+  </div>
+  <div class="proj-footer">Signal loss per connection is estimated · Real-world values depend on cable quality</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROJECT 6 — VINYL DIGITISATION LOG
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 06</span>
+      <span class="proj-tag" style="color:var(--sage);border-color:rgba(61,255,160,0.3);">Logger</span>
+    </div>
+    <div class="proj-title">Vinyl Digitisation Session Log</div>
+    <div class="proj-sub">Track every record you digitise through the K5 Pro ESS RCA chain</div>
+  </div>
+  <div class="proj-body">
+    <div class="two-col">
+      <div>
+        <label>Artist / Album</label>
+        <input type="text" id="vl6album" placeholder="e.g. Miles Davis – Kind of Blue">
+      </div>
+      <div>
+        <label>Format</label>
+        <select id="vl6format">
+          <option>LP (33⅓ rpm)</option>
+          <option>EP (45 rpm)</option>
+          <option>Single (45 rpm)</option>
+          <option>78 rpm</option>
+        </select>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <label>Capture Quality</label>
+        <select id="vl6quality">
+          <option>24-bit / 96kHz</option>
+          <option>24-bit / 192kHz</option>
+          <option>16-bit / 44.1kHz</option>
+          <option>32-bit float / 96kHz</option>
+        </select>
+      </div>
+      <div>
+        <label>Condition</label>
+        <select id="vl6cond">
+          <option>Mint (M)</option>
+          <option>Near Mint (NM)</option>
+          <option>Very Good+ (VG+)</option>
+          <option>Very Good (VG)</option>
+          <option>Good (G)</option>
+        </select>
+      </div>
+    </div>
+    <label>Notes</label>
+    <input type="text" id="vl6notes" placeholder="e.g. Light crackle side B, cleaned before capture">
+    <button class="btn" style="color:var(--sage);border-color:rgba(61,255,160,0.3);background:var(--sage-dim);" onclick="vl6Add()">LOG SESSION</button>
+    <div id="vl6list" style="margin-top:0.75rem;max-height:140px;overflow-y:auto;font-family:'Fira Code',monospace;font-size:0.62rem;line-height:1.9;"></div>
+    <div id="vl6count" style="font-family:'Fira Code',monospace;font-size:0.58rem;color:var(--muted);margin-top:0.4rem;"></div>
+  </div>
+  <div class="proj-footer">Data stored in session memory · Export by copying from the log above</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROJECT 7 — LISTENING JOURNAL
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 07</span>
+      <span class="proj-tag" style="color:var(--violet);border-color:rgba(168,85,247,0.3);">Journal</span>
+    </div>
+    <div class="proj-title">Critical Listening Journal</div>
+    <div class="proj-sub">Log your listening sessions with technical observations for ear development</div>
+  </div>
+  <div class="proj-body">
+    <div class="two-col">
+      <div>
+        <label>Track / Artist</label>
+        <input type="text" id="lj7track" placeholder="Track – Artist">
+      </div>
+      <div>
+        <label>Source / Chain</label>
+        <select id="lj7chain">
+          <option>Desk: K5 Pro ESS</option>
+          <option>Mobile: KA13 (3.5mm)</option>
+          <option>Mobile: KA13 (4.4mm bal.)</option>
+          <option>TV: Optical → K5 Pro</option>
+          <option>Vinyl: RCA → K5 Pro</option>
+        </select>
+      </div>
+    </div>
+    <label>Observations (bass / mids / highs / stage / dynamics)</label>
+    <textarea id="lj7notes" placeholder="e.g. Excellent sub-bass extension on intro. Mid-range slightly forward. Wide soundstage, instruments well-separated. Dynamic peaks clean at 70% volume..."></textarea>
+    <div class="three-col" style="margin-bottom:0.75rem;">
+      <div><label style="margin-bottom:0.3rem">Bass</label>
+        <input type="range" id="lj7bass" min="1" max="10" value="5" style="accent-color:var(--violet);"></div>
+      <div><label style="margin-bottom:0.3rem">Mids</label>
+        <input type="range" id="lj7mids" min="1" max="10" value="5" style="accent-color:var(--violet);"></div>
+      <div><label style="margin-bottom:0.3rem">Highs</label>
+        <input type="range" id="lj7highs" min="1" max="10" value="5" style="accent-color:var(--violet);"></div>
+    </div>
+    <button class="btn" style="color:var(--violet);border-color:rgba(168,85,247,0.35);background:var(--violet-dim);" onclick="lj7Save()">SAVE ENTRY</button>
+    <div id="lj7entries" style="margin-top:0.75rem;max-height:130px;overflow-y:auto;font-family:'Fira Code',monospace;font-size:0.6rem;line-height:1.8;color:var(--muted);"></div>
+  </div>
+  <div class="proj-footer">Build a reference library of how tracks sound on this chain · Use for mix translation</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROJECT 8 — FREQUENCY MAP EXPLORER
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 08</span>
+      <span class="proj-tag" style="color:var(--electric);border-color:var(--electric-border);">Visual Map</span>
+    </div>
+    <div class="proj-title">Frequency Range Explorer</div>
+    <div class="proj-sub">Interactive map of the audio spectrum — what lives where and why it matters</div>
+  </div>
+  <div class="proj-body">
+    <canvas id="fmap8" height="140"></canvas>
+    <div id="fmap8info" style="margin-top:0.75rem;font-family:'Fira Code',monospace;font-size:0.68rem;color:var(--mid);line-height:1.7;min-height:60px;">
+      Hover over the frequency map to explore ranges
+    </div>
+    <div style="margin-top:0.75rem;">
+      <label>Highlight range</label>
+      <select id="fmap8sel" onchange="fmap8Highlight()">
+        <option value="">— Select a range —</option>
+        <option value="20,60">Sub-bass (20–60Hz)</option>
+        <option value="60,250">Bass (60–250Hz)</option>
+        <option value="250,500">Low-mid (250–500Hz)</option>
+        <option value="500,2000">Midrange (500Hz–2kHz)</option>
+        <option value="2000,4000">Upper-mid (2–4kHz)</option>
+        <option value="4000,8000">Presence (4–8kHz)</option>
+        <option value="8000,16000">Brilliance (8–16kHz)</option>
+        <option value="16000,36000">Air / HD490 ext. (16–36kHz)</option>
+      </select>
+    </div>
+  </div>
+  <div class="proj-footer">HD 490 PRO reproduces 5Hz–36kHz · Human hearing: ~20Hz–20kHz</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROJECT 9 — A/B TEST TIMER
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 09</span>
+      <span class="proj-tag" style="color:var(--orange);border-color:rgba(255,107,53,0.3);">Testing</span>
+    </div>
+    <div class="proj-title">Blind A/B Test Timer</div>
+    <div class="proj-sub">Scientific protocol for comparing two sources, EQ settings, or cables</div>
+  </div>
+  <div class="proj-body">
+    <div class="two-col" style="margin-bottom:0.75rem;">
+      <div>
+        <label>Source A Label</label>
+        <input type="text" id="ab9a" value="K5 Pro ESS (USB)" placeholder="Source A">
+      </div>
+      <div>
+        <label>Source B Label</label>
+        <input type="text" id="ab9b" value="KA13 Dongle (4.4mm)" placeholder="Source B">
+      </div>
+    </div>
+    <label>Listening duration per side: <span id="ab9durval" class="c-or">30</span> sec</label>
+    <input type="range" id="ab9dur" min="10" max="120" value="30" step="5"
+      style="accent-color:var(--orange);" oninput="document.getElementById('ab9durval').textContent=this.value">
+    <div style="text-align:center;margin:1rem 0;">
+      <div style="font-family:'Clash Display',sans-serif;font-size:3.5rem;font-weight:700;color:var(--orange);line-height:1;" id="ab9timer">00:30</div>
+      <div style="font-family:'Fira Code',monospace;font-size:0.65rem;color:var(--muted);margin-top:0.25rem;" id="ab9cue">Press START — switch sources when timer hits zero</div>
+    </div>
+    <div class="two-col">
+      <button class="btn" id="ab9startbtn" style="color:var(--orange);border-color:rgba(255,107,53,0.35);background:var(--orange-dim);" onclick="ab9Toggle()">▶ START</button>
+      <button class="btn" style="color:var(--muted);border-color:var(--border2);" onclick="ab9Reset()">RESET</button>
+    </div>
+    <div id="ab9log" style="margin-top:0.75rem;font-family:'Fira Code',monospace;font-size:0.6rem;color:var(--muted);line-height:1.8;"></div>
+  </div>
+  <div class="proj-footer">Blind testing eliminates expectation bias · Always complete 5+ rounds before judging</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PROJECT 10 — CHAIN BUDGET PLANNER
+══════════════════════════════════════════ -->
+<div class="proj rv" style="grid-column: span 1;">
+  <div class="proj-header">
+    <div class="proj-meta">
+      <span class="proj-num">PROJECT 10</span>
+      <span class="proj-tag" style="color:var(--lime);border-color:rgba(184,255,0,0.25);">Finance</span>
+    </div>
+    <div class="proj-title">Upgrade Budget Planner</div>
+    <div class="proj-sub">Plan your next audio purchase — ROI analysis and priority scoring</div>
+  </div>
+  <div class="proj-body">
+    <div class="two-col">
+      <div>
+        <label>Upgrade Item</label>
+        <select id="bp10item">
+          <option value="Balanced 4.4mm Cable,1800,9">4.4mm Balanced Cable</option>
+          <option value="Sonarworks SoundID,7500,8">Sonarworks SoundID Ref.</option>
+          <option value="EqualizerAPO + Peace,0,8">EqualizerAPO + Peace</option>
+          <option value="Yamaha HS5 Monitors,42000,7">Yamaha HS5 Monitors (pair)</option>
+          <option value="Focusrite Scarlett 2i2,13000,7">Focusrite Scarlett 2i2</option>
+          <option value="Schiit Magnius Amp,25000,6">Schiit Magnius Amp</option>
+          <option value="Turntable AT-LP120X,22000,6">Turntable AT-LP120X</option>
+          <option value="Raspberry Pi 4 + Volumio,7500,7">Raspberry Pi + Volumio</option>
+          <option value="Topping A90 Discrete,55000,5">Topping A90 Discrete</option>
+          <option value="Nobsound Switch Box,3500,8">Nobsound Speaker Switch</option>
+          <option value="Dolby Atmos for HP,470,9">Dolby Atmos for Headphones</option>
+          <option value="Waves NX,5000,7">Waves NX (spatial audio)</option>
+          <option value="USB Audio Player PRO,700,8">USB Audio Player PRO</option>
+          <option value="Custom upgrade,0,5">Custom (type below)</option>
+        </select>
+      </div>
+      <div>
+        <label>Budget (₹)</label>
+        <input type="number" id="bp10budget" value="50000" min="0" step="500" oninput="bp10Calc()">
+      </div>
+    </div>
+    <button class="btn" style="color:var(--lime);border-color:rgba(184,255,0,0.3);background:var(--lime-dim);" onclick="bp10AddToList()">+ ADD TO WISHLIST</button>
+    <div id="bp10wishlist" style="margin-top:0.75rem;max-height:100px;overflow-y:auto;font-family:'Fira Code',monospace;font-size:0.62rem;line-height:1.9;"></div>
+    <div class="result-box" id="bp10result" style="margin-top:0.5rem;">
+      Select items above to build your upgrade wishlist
+    </div>
+  </div>
+  <div class="proj-footer">Prices are approximate India market rates · Check Amazon.in / Headphonestore.in for current prices</div>
+</div>
+
+</div><!-- /projects-wrap -->
+
+<footer>
+  <div class="foot-logo">VIKRAM STUDIO</div>
+  <div class="foot-sub">10 Live Projects · Interactive Audio Tools · Run in Browser</div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════
+     ALL JAVASCRIPT
+══════════════════════════════════════════════════════ -->
+<script>
+// ─── SHARED AUDIO CONTEXT ───────────────────────────────
+let audioCtx = null;
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+// ══════════════════════════════════════════════════════
+// PROJECT 1 — TONE GENERATOR
+// ══════════════════════════════════════════════════════
+let f1osc = null, f1gain = null, f1playing = false;
+
+function setF1(freq) {
+  document.getElementById('f1freq').value = freq;
+  updateF1();
+}
+
+function updateF1() {
+  const freq = parseInt(document.getElementById('f1freq').value);
+  document.getElementById('f1val').textContent = freq.toLocaleString();
+  const wl = (343 / freq).toFixed(3);
+  document.getElementById('f1info').innerHTML =
+    `Frequency range of HD 490 PRO: <span class="val c-el">5Hz–36kHz</span><br>` +
+    `Current: <span class="c-el">${freq.toLocaleString()} Hz</span> · Wavelength: <span class="c-el">${wl} m</span><br>` +
+    `Range: <span class="c-el">${getRange(freq)}</span>`;
+  if (f1osc) f1osc.frequency.setTargetAtTime(freq, getCtx().currentTime, 0.01);
+}
+
+function getRange(hz) {
+  if (hz < 60) return 'Sub-bass';
+  if (hz < 250) return 'Bass';
+  if (hz < 500) return 'Low-midrange';
+  if (hz < 2000) return 'Midrange';
+  if (hz < 4000) return 'Upper-midrange';
+  if (hz < 8000) return 'Presence';
+  if (hz < 16000) return 'Brilliance';
+  return 'Air / Extended (HD 490 PRO exclusive)';
+}
+
+function updateF1Vol() {
+  const vol = parseInt(document.getElementById('f1volume').value);
+  document.getElementById('f1vol').textContent = vol;
+  if (f1gain) f1gain.gain.setTargetAtTime(vol / 300, getCtx().currentTime, 0.01);
+}
+
+function toggleF1() {
+  const ctx = getCtx();
+  if (!f1playing) {
+    f1osc = ctx.createOscillator();
+    f1gain = ctx.createGain();
+    const vol = parseInt(document.getElementById('f1volume').value);
+    f1gain.gain.value = vol / 300;
+    f1osc.type = 'sine';
+    f1osc.frequency.value = parseInt(document.getElementById('f1freq').value);
+    f1osc.connect(f1gain);
+    f1gain.connect(ctx.destination);
+    f1osc.start();
+    f1playing = true;
+    document.getElementById('f1btn').textContent = '■ STOP';
+    document.getElementById('f1btn').style.background = 'rgba(0,212,255,0.15)';
+  } else {
+    f1gain.gain.setTargetAtTime(0, ctx.currentTime, 0.05);
+    setTimeout(() => { try { f1osc.stop(); } catch(e){} }, 200);
+    f1playing = false;
+    document.getElementById('f1btn').textContent = '▶ PLAY';
+    document.getElementById('f1btn').style.background = 'var(--electric-dim)';
+  }
+  updateF1();
+}
+
+// ══════════════════════════════════════════════════════
+// PROJECT 2 — EQ CALCULATOR
+// ══════════════════════════════════════════════════════
+let eqBands = [];
+
+function calcEQ() {
+  const type = document.getElementById('eqtype').value;
+  const freq = document.getElementById('eqfreq').value;
+  const gain = parseFloat(document.getElementById('eqgain').value).toFixed(1);
+  const q = parseFloat(document.getElementById('eqq').value).toFixed(2);
+  document.getElementById('eqfc').textContent = freq;
+  document.getElementById('eqgd').textContent = gain;
+  document.getElementById('eqqd').textContent = q;
+  document.getElementById('eqout').innerHTML =
+    `<span class="c-li"># EqualizerAPO filter string</span><br>` +
+    `Filter: ON ${type} Fc <span id="eqfc">${freq}</span> Hz Gain <span id="eqgd">${gain}</span> dB Q <span id="eqqd">${q}</span>`;
+}
+
+function addEQBand() {
+  const type = document.getElementById('eqtype').value;
+  const freq = document.getElementById('eqfreq').value;
+  const gain = parseFloat(document.getElementById('eqgain').value).toFixed(1);
+  const q = parseFloat(document.getElementById('eqq').value).toFixed(2);
+  eqBands.push({type, freq, gain, q});
+  const el = document.getElementById('eqbands');
+  el.innerHTML = `<span class="c-li"># Saved bands (${eqBands.length})</span><br>` +
+    `<span style="color:var(--muted)">Preamp: -6.0 dB</span><br>` +
+    eqBands.map((b,i) =>
+      `<span class="c-el">Filter ${i+1}: ON ${b.type} Fc ${b.freq} Hz Gain ${b.gain} dB Q ${b.q}</span>`
+    ).join('<br>');
+}
+
+calcEQ();
+
+// ══════════════════════════════════════════════════════
+// PROJECT 3 — GAIN STAGING
+// ══════════════════════════════════════════════════════
+function calcGain() {
+  const imp = parseInt(document.getElementById('g3impedance').value);
+  const sens = parseInt(document.getElementById('g3sensitivity').value);
+  const target = parseInt(document.getElementById('g3level').value);
+
+  document.getElementById('g3imp').textContent = imp;
+  document.getElementById('g3sens').textContent = sens;
+  document.getElementById('g3lev').textContent = target;
+
+  // Power needed: P(mW) = 10^((SPL - sens) / 10)
+  const powerNeeded = Math.pow(10, (target - sens) / 10);
+  const k5MaxPower = 1500 / (imp / 32); // approximate
+  const actualMax = Math.min(k5MaxPower, 1500);
+  const headroom = actualMax / powerNeeded;
+  const headroomDb = Math.max(0, 20 * Math.log10(Math.sqrt(headroom)));
+
+  document.getElementById('g3pow').textContent = powerNeeded < 1 ?
+    (powerNeeded * 1000).toFixed(2) + ' µW' : powerNeeded.toFixed(3) + ' mW';
+  document.getElementById('g3head').textContent = headroomDb.toFixed(1) + ' dB';
+
+  const usedPct = Math.min(100, (powerNeeded / actualMax) * 100);
+  document.getElementById('g3powbar').style.width = usedPct + '%';
+  document.getElementById('g3headbar').style.width = Math.min(100, headroomDb * 3) + '%';
+
+  let advice = '';
+  if (headroomDb > 20) advice = `<span class="c-sa">✓ Excellent headroom. K5 Pro ESS is loafing.</span>`;
+  else if (headroomDb > 10) advice = `<span class="c-el">✓ Good headroom. Clean listening guaranteed.</span>`;
+  else if (headroomDb > 3) advice = `<span class="c-go">⚠ Limited headroom. Avoid peaks above ${target}dB SPL.</span>`;
+  else advice = `<span style="color:var(--orange)">⚠ Very low headroom. Reduce target SPL or use higher sensitivity headphones.</span>`;
+
+  document.getElementById('g3advice').innerHTML = advice;
+}
+calcGain();
+
+// ══════════════════════════════════════════════════════
+// PROJECT 4 — EAR TRAINING GAME
+// ══════════════════════════════════════════════════════
+const ET_FREQS = [
+  { hz: 60, label: '60Hz', desc: 'Sub-bass — floor rumble, kick drum body' },
+  { hz: 120, label: '120Hz', desc: 'Bass — warmth, bass guitar fundamental' },
+  { hz: 250, label: '250Hz', desc: 'Low-mid — muddiness zone, male vocal body' },
+  { hz: 500, label: '500Hz', desc: 'Midrange — instruments, vocal presence' },
+  { hz: 1000, label: '1kHz', desc: 'Reference — the calibration standard' },
+  { hz: 2000, label: '2kHz', desc: 'Upper-mid — attack, definition, harshness' },
+  { hz: 4000, label: '4kHz', desc: 'Presence — ear canal resonance zone' },
+  { hz: 8000, label: '8kHz', desc: 'Brilliance — sibilance, string shimmer' },
+  { hz: 12000, label: '12kHz', desc: 'Air — top-end openness, Hi-Res territory' },
+  { hz: 16000, label: '16kHz', desc: 'Extended air — few headphones reach here' },
+];
+
+let et4State = { score: 0, total: 0, current: null, played: false };
+let et4Osc = null, et4GainNode = null;
+
+function et4Play() {
+  const ctx = getCtx();
+  if (et4Osc) { try { et4Osc.stop(); } catch(e){} }
+
+  // Pick random target + 3 distractors
+  const idx = Math.floor(Math.random() * ET_FREQS.length);
+  const target = ET_FREQS[idx];
+  let choices = [target];
+  while (choices.length < 4) {
+    const r = ET_FREQS[Math.floor(Math.random() * ET_FREQS.length)];
+    if (!choices.find(c => c.hz === r.hz)) choices.push(r);
+  }
+  choices = choices.sort(() => Math.random() - 0.5);
+  et4State.current = target;
+  et4State.played = true;
+
+  // Play pure tone for 2 seconds
+  et4Osc = ctx.createOscillator();
+  et4GainNode = ctx.createGain();
+  et4GainNode.gain.value = 0.15;
+  et4Osc.type = 'sine';
+  et4Osc.frequency.value = target.hz;
+  et4Osc.connect(et4GainNode);
+  et4GainNode.connect(ctx.destination);
+  et4Osc.start();
+  et4GainNode.gain.setTargetAtTime(0, ctx.currentTime + 2, 0.3);
+  setTimeout(() => { try { et4Osc.stop(); } catch(e){} }, 2500);
+
+  // Render buttons
+  const wrap = document.getElementById('et4choices');
+  wrap.innerHTML = '';
+  choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.style.cssText = `color:var(--pink);border-color:rgba(255,61,154,0.3);background:var(--pink-dim);font-size:0.65rem;text-align:center;padding:0.5rem;`;
+    btn.textContent = c.label;
+    btn.onclick = () => et4Answer(c, btn, choices);
+    wrap.appendChild(btn);
+  });
+
+  document.getElementById('et4status').textContent = '♫ Playing… listen carefully through HD 490 PRO';
+  document.getElementById('et4feedback').textContent = 'Which frequency did you just hear?';
+}
+
+function et4Answer(choice, btn, choices) {
+  et4State.total++;
+  const correct = choice.hz === et4State.current.hz;
+  if (correct) {
+    et4State.score++;
+    btn.style.background = 'rgba(61,255,160,0.15)';
+    btn.style.color = 'var(--sage)';
+    btn.style.borderColor = 'rgba(61,255,160,0.4)';
+    document.getElementById('et4feedback').innerHTML =
+      `<span class="c-sa">✓ Correct! ${choice.label} — ${et4State.current.desc}</span>`;
+  } else {
+    btn.style.background = 'rgba(255,77,109,0.15)';
+    btn.style.color = 'var(--rose, #ff4d6d)';
+    document.getElementById('et4feedback').innerHTML =
+      `<span style="color:var(--orange)">✗ That was ${et4State.current.label} — ${et4State.current.desc}</span>`;
+    // Highlight correct
+    document.getElementById('et4choices').querySelectorAll('button').forEach(b => {
+      if (b.textContent === et4State.current.label) {
+        b.style.background = 'rgba(61,255,160,0.15)';
+        b.style.color = 'var(--sage)';
+        b.style.borderColor = 'rgba(61,255,160,0.4)';
+      }
+    });
+  }
+  // Disable all buttons
+  document.getElementById('et4choices').querySelectorAll('button').forEach(b => b.disabled = true);
+  document.getElementById('et4score').textContent = `${et4State.score} / ${et4State.total}`;
+  document.getElementById('et4status').textContent =
+    et4State.score === 10 ? '🎓 PERFECT SCORE — Master level reached!' :
+    et4State.total >= 10 ? `Session complete: ${et4State.score}/10 correct` :
+    'Press PLAY to continue training';
+}
+
+// ══════════════════════════════════════════════════════
+// PROJECT 5 — CHAIN BUILDER
+// ══════════════════════════════════════════════════════
+let cb5chain = [];
+
+function cb5Add() {
+  const sel = document.getElementById('cb5comp').value.split(',');
+  const name = sel[0], loss = parseFloat(sel[1]);
+  cb5chain.push({ name, loss });
+  cb5Render();
+}
+
+function cb5Clear() { cb5chain = []; cb5Render(); }
+
+function cb5Render() {
+  const wrap = document.getElementById('cb5chain');
+  if (cb5chain.length === 0) {
+    wrap.innerHTML = '<span style="font-family:\'Fira Code\',monospace;font-size:0.6rem;color:var(--muted)">Chain is empty — add components above</span>';
+  } else {
+    wrap.innerHTML = cb5chain.map((c,i) =>
+      `<span style="font-family:'Fira Code',monospace;font-size:0.6rem;padding:0.25rem 0.6rem;border:1px solid var(--border2);color:var(--gold);background:var(--gold-dim);cursor:pointer;" onclick="cb5Remove(${i})" title="Click to remove">${c.name} ✕</span>` +
+      (i < cb5chain.length-1 ? '<span style="color:var(--muted);font-size:0.7rem;">→</span>' : '')
+    ).join('');
+  }
+  cb5Analyse();
+}
+
+function cb5Remove(i) { cb5chain.splice(i,1); cb5Render(); }
+
+function cb5Analyse() {
+  const el = document.getElementById('cb5result');
+  if (cb5chain.length === 0) { el.textContent = 'Build your chain above to see analysis'; return; }
+  const totalLoss = cb5chain.reduce((s,c) => s + c.loss, 0);
+  const hasSource = cb5chain.some(c => ['laptop','phone','Raspberry Pi'].some(s => c.name.toLowerCase().includes(s.toLowerCase())));
+  const hasDac = cb5chain.some(c => ['k5pro','ka13','interface'].some(s => c.name.toLowerCase().includes(s)));
+  const hasHP = cb5chain.some(c => c.name.toLowerCase().includes('hd') || c.name.toLowerCase().includes('headphone'));
+  const issues = [];
+  if (!hasSource) issues.push('⚠ No signal source in chain');
+  if (!hasDac) issues.push('⚠ No DAC/amp detected');
+  if (!hasHP) issues.push('⚠ No output device in chain');
+
+  el.innerHTML =
+    `<span class="c-go">Chain: ${cb5chain.length} components</span><br>` +
+    `Signal loss: <span class="c-go">${totalLoss.toFixed(2)} dB</span><br>` +
+    `Connections: <span class="c-go">${Math.max(0, cb5chain.length - 1)}</span><br>` +
+    (issues.length ? `<br>${issues.join('<br>')}` :
+    `<span class="c-sa">✓ Complete signal path detected</span>`);
+}
+
+cb5Render();
+
+// ══════════════════════════════════════════════════════
+// PROJECT 6 — VINYL LOG
+// ══════════════════════════════════════════════════════
+let vl6sessions = [];
+
+function vl6Add() {
+  const album = document.getElementById('vl6album').value.trim();
+  if (!album) { alert('Please enter an album name'); return; }
+  const session = {
+    album,
+    format: document.getElementById('vl6format').value,
+    quality: document.getElementById('vl6quality').value,
+    cond: document.getElementById('vl6cond').value,
+    notes: document.getElementById('vl6notes').value.trim(),
+    date: new Date().toLocaleDateString('en-IN')
+  };
+  vl6sessions.push(session);
+  vl6Render();
+  document.getElementById('vl6album').value = '';
+  document.getElementById('vl6notes').value = '';
+}
+
+function vl6Render() {
+  const el = document.getElementById('vl6list');
+  if (vl6sessions.length === 0) { el.textContent = ''; return; }
+  el.innerHTML = vl6sessions.map((s,i) =>
+    `<span class="c-sa">[${i+1}]</span> <span style="color:var(--text)">${s.album}</span> · <span style="color:var(--muted)">${s.format} · ${s.quality} · ${s.cond}</span>` +
+    (s.notes ? `<br>&nbsp;&nbsp;&nbsp;<span style="color:var(--muted);font-size:0.57rem;">${s.notes}</span>` : '') +
+    `<br>&nbsp;&nbsp;&nbsp;<span style="color:var(--border2);font-size:0.55rem;">${s.date}</span>`
+  ).join('<br>');
+  document.getElementById('vl6count').textContent =
+    `${vl6sessions.length} session${vl6sessions.length !== 1 ? 's' : ''} logged · ${vl6sessions.filter(s=>s.quality.includes('192')).length} at 192kHz`;
+}
+
+// ══════════════════════════════════════════════════════
+// PROJECT 7 — LISTENING JOURNAL
+// ══════════════════════════════════════════════════════
+let lj7entries = [];
+
+function lj7Save() {
+  const track = document.getElementById('lj7track').value.trim();
+  if (!track) { alert('Please enter a track name'); return; }
+  const entry = {
+    track,
+    chain: document.getElementById('lj7chain').value,
+    notes: document.getElementById('lj7notes').value.trim(),
+    bass: document.getElementById('lj7bass').value,
+    mids: document.getElementById('lj7mids').value,
+    highs: document.getElementById('lj7highs').value,
+    date: new Date().toLocaleString('en-IN', {dateStyle:'short',timeStyle:'short'})
+  };
+  lj7entries.unshift(entry);
+  const el = document.getElementById('lj7entries');
+  el.innerHTML = lj7entries.map((e,i) =>
+    `<span class="c-vi">${e.date}</span> — <span style="color:var(--text)">${e.track}</span> · <span style="color:var(--muted)">${e.chain}</span><br>` +
+    `<span style="color:var(--muted);font-size:0.57rem;">B:${e.bass}/10 M:${e.mids}/10 H:${e.highs}/10` +
+    (e.notes ? ` · ${e.notes.substring(0,60)}${e.notes.length>60?'…':''}` : '') +
+    `</span>`
+  ).join('<br>');
+  document.getElementById('lj7track').value = '';
+  document.getElementById('lj7notes').value = '';
+}
+
+// ══════════════════════════════════════════════════════
+// PROJECT 8 — FREQUENCY MAP
+// ══════════════════════════════════════════════════════
+const FMAP_RANGES = [
+  { lo: 5, hi: 60, label: 'Sub', color: '#a855f7', desc: 'Sub-bass (5–60Hz): Felt more than heard. Kick drum, pipe organ, seismic rumble. HD 490 PRO reaches down to 5Hz — you will feel this.' },
+  { lo: 60, hi: 250, label: 'Bass', color: '#ff6b35', desc: 'Bass (60–250Hz): Bass guitar, kick punch, warmth. Most music energy lives here. The K5 Pro ESS has excellent bass resolution at this range.' },
+  { lo: 250, hi: 500, label: 'Lo-Mid', color: '#ffb340', desc: 'Low-midrange (250–500Hz): Male vocals, guitar body. Too much creates "mud." The HD 490 PRO is accurate here — great for mix decisions.' },
+  { lo: 500, hi: 2000, label: 'Mid', color: '#ffd60a', desc: 'Midrange (500Hz–2kHz): Most important range for intelligibility. Vocals, piano, strings. The HD 490 PRO excels at midrange resolution.' },
+  { lo: 2000, hi: 4000, label: 'Hi-Mid', color: '#b8ff00', desc: 'Upper-midrange (2–4kHz): Ear sensitivity peak. Harshness zone. Critical for mix clarity. The HD 490 PRO reveals problems here that cheaper headphones mask.' },
+  { lo: 4000, hi: 8000, label: 'Pres.', color: '#00d4ff', desc: 'Presence (4–8kHz): Definition, attack, edge. Sibilance lives here. The K5 Pro\'s low noise floor lets you hear every nuance.' },
+  { lo: 8000, hi: 16000, label: 'Air', color: '#3dffa0', desc: 'Brilliance (8–16kHz): Shimmer, air, HF extension. Cymbals, string harmonics. Most consumer headphones roll off here — the HD 490 PRO does not.' },
+  { lo: 16000, hi: 36000, label: 'Ultra', color: '#ff3d9a', desc: 'Extended air (16–36kHz): Beyond normal hearing for most adults. HD 490 PRO reproduces up to 36kHz — the K5 Pro ESS decodes it faithfully.' },
+];
+
+function drawFmap(highlight) {
+  const canvas = document.getElementById('fmap8');
+  const W = canvas.offsetWidth;
+  canvas.width = W * window.devicePixelRatio;
+  canvas.height = 140 * window.devicePixelRatio;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  const cw = W, ch = 140;
+
+  const logMin = Math.log10(5), logMax = Math.log10(36000);
+  const toX = hz => ((Math.log10(hz) - logMin) / (logMax - logMin)) * cw;
+
+  FMAP_RANGES.forEach(r => {
+    const x1 = toX(r.lo), x2 = toX(r.hi);
+    const isHL = highlight && r.lo === highlight[0] && r.hi === highlight[1];
+    ctx.globalAlpha = isHL ? 0.9 : (highlight ? 0.25 : 0.55);
+    ctx.fillStyle = r.color;
+    ctx.fillRect(x1, 20, x2 - x1, 80);
+
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = isHL ? '#fff' : (highlight ? r.color + '88' : r.color);
+    ctx.font = `bold ${Math.max(8, (x2-x1)/5)}px 'Fira Code', monospace`;
+    ctx.textAlign = 'center';
+    const mid = (x1+x2)/2;
+    if (x2 - x1 > 20) ctx.fillText(r.label, mid, 65);
+
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = r.color;
+    ctx.font = '9px Fira Code, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(r.lo >= 1000 ? (r.lo/1000)+'k' : r.lo, x1, 15);
+  });
+
+  // axis marks
+  ctx.globalAlpha = 0.3;
+  ctx.fillStyle = '#8892a0';
+  ctx.font = '9px Fira Code, monospace';
+  ctx.textAlign = 'center';
+  [20,100,500,1000,5000,10000,20000].forEach(hz => {
+    const x = toX(hz);
+    const lbl = hz >= 1000 ? (hz/1000)+'kHz' : hz+'Hz';
+    ctx.fillText(lbl, x, 115);
+    ctx.fillRect(x, 102, 1, 6);
+  });
+
+  ctx.globalAlpha = 0.15;
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(toX(20000), 18); ctx.lineTo(toX(20000), 104); ctx.stroke();
+  ctx.globalAlpha = 0.4;
+  ctx.fillStyle = '#8892a0';
+  ctx.font = '8px Fira Code,monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('← Human hearing', toX(20000)+3, 36);
+  ctx.fillText('HD 490 PRO →', toX(20000)+3, 50);
+}
+
+function fmap8Highlight() {
+  const val = document.getElementById('fmap8sel').value;
+  if (!val) { drawFmap(null); document.getElementById('fmap8info').textContent = 'Hover over the frequency map to explore ranges'; return; }
+  const [lo, hi] = val.split(',').map(Number);
+  drawFmap([lo, hi]);
+  const r = FMAP_RANGES.find(r => r.lo === lo && r.hi === hi);
+  if (r) document.getElementById('fmap8info').innerHTML =
+    `<span style="color:${r.color}">${r.desc}</span>`;
+}
+
+document.getElementById('fmap8').addEventListener('mousemove', e => {
+  const canvas = document.getElementById('fmap8');
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const pct = x / rect.width;
+  const logMin = Math.log10(5), logMax = Math.log10(36000);
+  const hz = Math.round(Math.pow(10, logMin + pct * (logMax - logMin)));
+  const r = FMAP_RANGES.find(r => hz >= r.lo && hz < r.hi);
+  if (r) document.getElementById('fmap8info').innerHTML =
+    `<span style="color:${r.color}">~${hz >= 1000 ? (hz/1000).toFixed(1)+'kHz' : hz+'Hz'} — ${r.desc}</span>`;
+});
+
+setTimeout(() => drawFmap(null), 100);
+window.addEventListener('resize', () => drawFmap(null));
+
+// ══════════════════════════════════════════════════════
+// PROJECT 9 — A/B TEST TIMER
+// ══════════════════════════════════════════════════════
+let ab9interval = null, ab9running = false, ab9timeLeft = 30, ab9round = 0, ab9side = 'A';
+
+function ab9Toggle() {
+  if (!ab9running) {
+    ab9timeLeft = parseInt(document.getElementById('ab9dur').value);
+    ab9side = 'A';
+    ab9running = true;
+    document.getElementById('ab9startbtn').textContent = '■ STOP';
+    ab9interval = setInterval(ab9Tick, 1000);
+  } else {
+    ab9Reset();
+  }
+}
+
+function ab9Tick() {
+  ab9timeLeft--;
+  const mm = String(Math.floor(ab9timeLeft/60)).padStart(2,'0');
+  const ss = String(ab9timeLeft%60).padStart(2,'0');
+  document.getElementById('ab9timer').textContent = `${mm}:${ss}`;
+
+  if (ab9timeLeft <= 0) {
+    ab9round++;
+    const aLabel = document.getElementById('ab9a').value || 'Source A';
+    const bLabel = document.getElementById('ab9b').value || 'Source B';
+    const nextSide = ab9side === 'A' ? 'B' : 'A';
+    const nextLabel = nextSide === 'A' ? aLabel : bLabel;
+
+    const log = document.getElementById('ab9log');
+    const now = new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    log.innerHTML = `<span class="c-or">[${now}] Round ${ab9round} complete — Switch to ${nextLabel}</span><br>` + log.innerHTML;
+
+    ab9side = nextSide;
+    ab9timeLeft = parseInt(document.getElementById('ab9dur').value);
+    const label = ab9side === 'A' ? aLabel : bLabel;
+    document.getElementById('ab9cue').textContent = `NOW PLAYING: ${label}`;
+    document.getElementById('ab9timer').style.color = ab9side === 'A' ? 'var(--orange)' : 'var(--electric)';
+  }
+}
+
+function ab9Reset() {
+  clearInterval(ab9interval);
+  ab9running = false; ab9round = 0;
+  ab9timeLeft = parseInt(document.getElementById('ab9dur').value);
+  const mm = String(Math.floor(ab9timeLeft/60)).padStart(2,'0');
+  const ss = String(ab9timeLeft%60).padStart(2,'0');
+  document.getElementById('ab9timer').textContent = `${mm}:${ss}`;
+  document.getElementById('ab9timer').style.color = 'var(--orange)';
+  document.getElementById('ab9cue').textContent = 'Press START — switch sources when timer hits zero';
+  document.getElementById('ab9startbtn').textContent = '▶ START';
+  document.getElementById('ab9log').innerHTML = '';
+}
+
+document.getElementById('ab9dur').addEventListener('input', () => {
+  if (!ab9running) {
+    ab9timeLeft = parseInt(document.getElementById('ab9dur').value);
+    const mm = String(Math.floor(ab9timeLeft/60)).padStart(2,'0');
+    const ss = String(ab9timeLeft%60).padStart(2,'0');
+    document.getElementById('ab9timer').textContent = `${mm}:${ss}`;
+  }
+});
+
+// ══════════════════════════════════════════════════════
+// PROJECT 10 — BUDGET PLANNER
+// ══════════════════════════════════════════════════════
+let bp10wishlist = [];
+
+function bp10AddToList() {
+  const sel = document.getElementById('bp10item').value.split(',');
+  const name = sel[0];
+  const price = parseFloat(sel[1]);
+  const priority = parseInt(sel[2]);
+  bp10wishlist.push({ name, price, priority });
+  bp10Calc();
+}
+
+function bp10Calc() {
+  const budget = parseFloat(document.getElementById('bp10budget').value) || 0;
+  const el = document.getElementById('bp10wishlist');
+  const res = document.getElementById('bp10result');
+
+  if (bp10wishlist.length === 0) {
+    el.innerHTML = '';
+    res.textContent = 'Select items above to build your upgrade wishlist';
+    return;
+  }
+
+  const sorted = [...bp10wishlist].sort((a,b) => b.priority - a.priority);
+  let total = bp10wishlist.reduce((s,i) => s + i.price, 0);
+  let runningTotal = 0;
+
+  el.innerHTML = sorted.map((item, i) => {
+    runningTotal += item.price;
+    const within = runningTotal <= budget;
+    return `<span style="color:${within ? 'var(--sage)' : 'var(--muted)'}">` +
+      `[P${item.priority}] ${item.name} — ₹${item.price.toLocaleString('en-IN')}` +
+      `${within ? ' ✓' : ''}</span>`;
+  }).join('<br>');
+
+  const affordable = sorted.filter(i => {
+    let r = 0;
+    for (const it of sorted) {
+      r += it.price;
+      if (it === i) break;
+    }
+    return r <= budget;
+  });
+
+  res.innerHTML =
+    `Wishlist total: <span class="c-li">₹${total.toLocaleString('en-IN')}</span><br>` +
+    `Your budget: <span class="c-li">₹${budget.toLocaleString('en-IN')}</span><br>` +
+    `Affordable now: <span class="c-li">${affordable.length} of ${bp10wishlist.length} items</span><br>` +
+    `Gap: <span style="color:${total > budget ? 'var(--orange)' : 'var(--sage)'}">` +
+    `${total > budget ? '₹' + (total-budget).toLocaleString('en-IN') + ' over budget' : '₹' + (budget-total).toLocaleString('en-IN') + ' remaining'}</span><br>` +
+    `<span style="font-size:0.6rem;color:var(--muted)">Top recommendation: ${sorted[0]?.name || '—'} (Priority ${sorted[0]?.priority || '—'}/10)</span>` +
+    `<br><span style="color:var(--muted);font-size:0.58rem;cursor:pointer;" onclick="bp10wishlist=[];bp10Calc()">[ clear wishlist ]</span>`;
+}
+
+// ══════════════════════════════════════════════════════
+// SCROLL REVEAL
+// ══════════════════════════════════════════════════════
+const rvObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('on'), i * 80);
+      rvObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+
+// Init ET4 choices placeholder
+document.getElementById('et4choices').innerHTML =
+  '<div style="grid-column:span 3;font-family:\'Fira Code\',monospace;font-size:0.6rem;color:var(--muted);text-align:center;padding:0.5rem;">Press PLAY MYSTERY TONE to begin</div>';
+</script>
+</body>
+</html>

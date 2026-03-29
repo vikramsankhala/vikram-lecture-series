@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikram Studio — Chain Extensions & Innovations</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #050608;
+  --deep: #0d0f14;
+  --surface: #13161e;
+  --raised: #1a1e28;
+  --rim: #252a38;
+  --line: #2e3445;
+
+  --neon: #7efff5;
+  --neon-dim: rgba(126,255,245,0.08);
+  --neon-border: rgba(126,255,245,0.2);
+  --violet: #b06aff;
+  --violet-dim: rgba(176,106,255,0.08);
+  --amber: #ffb340;
+  --amber-dim: rgba(255,179,64,0.08);
+  --rose: #ff4d6d;
+  --rose-dim: rgba(255,77,109,0.08);
+  --sage: #52c97a;
+  --sage-dim: rgba(82,201,122,0.08);
+
+  --text: #dde3f0;
+  --muted: #6b7494;
+  --dim: #3a4055;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── SCANLINE OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: rgba(5,6,8,0.96);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--line);
+  padding: 0 2rem;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-id {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--neon);
+  text-transform: uppercase;
+}
+
+.nav-crumb {
+  font-size: 0.6rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.nav-crumb span { color: var(--dim); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 3rem 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(126,255,245,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(126,255,245,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+}
+
+.hero-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}
+.glow-a {
+  background: rgba(126,255,245,0.06);
+  top: -100px; left: -100px;
+}
+.glow-b {
+  background: rgba(176,106,255,0.05);
+  bottom: -100px; right: -50px;
+}
+
+.hero-tag {
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: var(--neon);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: appear 0.8s 0.2s forwards;
+}
+
+.hero-title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.8rem, 7vw, 7.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: appear 0.9s 0.35s forwards;
+}
+
+.hero-title .accent { color: var(--neon); }
+.hero-title .accent2 { color: var(--violet); }
+
+.hero-sub {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  color: var(--muted);
+  margin-top: 1.5rem;
+  max-width: 640px;
+  line-height: 1.9;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: appear 0.9s 0.5s forwards;
+}
+
+.hero-pills {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: appear 0.9s 0.65s forwards;
+}
+
+.pill {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  transition: all 0.2s;
+  cursor: default;
+}
+
+.pill.neon { border-color: var(--neon-border); color: var(--neon); background: var(--neon-dim); }
+.pill.violet { border-color: rgba(176,106,255,0.3); color: var(--violet); background: var(--violet-dim); }
+.pill.amber { border-color: rgba(255,179,64,0.3); color: var(--amber); background: var(--amber-dim); }
+.pill.rose { border-color: rgba(255,77,109,0.3); color: var(--rose); background: var(--rose-dim); }
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION WRAPPER ── */
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+/* ── SECTION HEADER ── */
+.sec-head {
+  padding: 6rem 0 3rem;
+}
+
+.sec-tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.sec-title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.sec-desc {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-top: 1rem;
+  max-width: 580px;
+  line-height: 1.85;
+}
+
+/* ── CHAIN DIAGRAM ── */
+.chain-diagram {
+  background: var(--deep);
+  border: 1px solid var(--line);
+  padding: 2.5rem 2rem;
+  margin: 2rem 0 4rem;
+  overflow-x: auto;
+}
+
+.chain-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-width: 900px;
+}
+
+.chain-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.chain-node-box {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  line-height: 1.6;
+  min-width: 110px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.chain-node-box.core {
+  border-color: var(--neon-border);
+  background: var(--neon-dim);
+  color: var(--neon);
+}
+
+.chain-node-box.ext-back {
+  border-color: rgba(255,179,64,0.3);
+  background: var(--amber-dim);
+  color: var(--amber);
+}
+
+.chain-node-box.ext-forward {
+  border-color: rgba(176,106,255,0.3);
+  background: var(--violet-dim);
+  color: var(--violet);
+}
+
+.chain-node-label {
+  font-size: 0.52rem;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.chain-arrow {
+  flex: 1;
+  min-width: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.chain-arrow-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), var(--dim));
+  position: relative;
+}
+
+.chain-arrow-line::after {
+  content: '▶';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.55rem;
+  color: var(--dim);
+}
+
+.chain-arrow-label {
+  font-size: 0.5rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.chain-legend {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.58rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+/* ── EXTENSION CARDS ── */
+.ext-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 5rem;
+}
+
+.ext-card {
+  background: var(--surface);
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.25s;
+}
+
+.ext-card:hover { background: var(--raised); }
+
+.ext-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.ext-card:hover::before { opacity: 1; }
+
+.ext-card.amber::before { background: linear-gradient(90deg, var(--amber), transparent); }
+.ext-card.violet::before { background: linear-gradient(90deg, var(--violet), transparent); }
+.ext-card.neon::before { background: linear-gradient(90deg, var(--neon), transparent); }
+.ext-card.rose::before { background: linear-gradient(90deg, var(--rose), transparent); }
+.ext-card.sage::before { background: linear-gradient(90deg, var(--sage), transparent); }
+
+.ext-card-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--dim);
+  line-height: 1;
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  pointer-events: none;
+}
+
+.ext-type {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid;
+}
+
+.ext-type.amber { color: var(--amber); border-color: rgba(255,179,64,0.3); background: var(--amber-dim); }
+.ext-type.violet { color: var(--violet); border-color: rgba(176,106,255,0.3); background: var(--violet-dim); }
+.ext-type.neon { color: var(--neon); border-color: var(--neon-border); background: var(--neon-dim); }
+.ext-type.rose { color: var(--rose); border-color: rgba(255,77,109,0.3); background: var(--rose-dim); }
+.ext-type.sage { color: var(--sage); border-color: rgba(82,201,122,0.3); background: var(--sage-dim); }
+
+.ext-card-title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+  padding-right: 4rem;
+}
+
+.ext-card-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
+}
+
+.ext-steps {
+  list-style: none;
+  counter-reset: ext;
+}
+
+.ext-step {
+  counter-increment: ext;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.ext-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.ext-step-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 600;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.ext-step-text {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.ext-step-text strong { color: var(--text); font-weight: 500; }
+
+.ext-cost {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--text);
+}
+
+.ext-cost small {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--muted);
+  display: block;
+  margin-top: 0.2rem;
+  letter-spacing: 0.08em;
+}
+
+/* ── VARIANTS SECTION ── */
+.variants-section {
+  background: var(--deep);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 6rem 0;
+}
+
+.variants-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 3rem;
+}
+
+@media (max-width: 700px) {
+  .variants-grid { grid-template-columns: 1fr; }
+  .chain-flow { min-width: 600px; }
+}
+
+.variant-card {
+  background: var(--surface);
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.variant-badge {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid;
+  display: inline-block;
+  margin-bottom: 1.25rem;
+}
+
+.variant-title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+.variant-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
+}
+
+.variant-chain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.vc-node {
+  font-size: 0.58rem;
+  padding: 0.3rem 0.6rem;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  letter-spacing: 0.06em;
+  color: var(--text);
+}
+
+.vc-node.highlight-neon { border-color: var(--neon-border); color: var(--neon); background: var(--neon-dim); }
+.vc-node.highlight-violet { border-color: rgba(176,106,255,0.3); color: var(--violet); background: var(--violet-dim); }
+.vc-node.highlight-amber { border-color: rgba(255,179,64,0.3); color: var(--amber); background: var(--amber-dim); }
+.vc-node.highlight-rose { border-color: rgba(255,77,109,0.3); color: var(--rose); background: var(--rose-dim); }
+.vc-node.highlight-sage { border-color: rgba(82,201,122,0.3); color: var(--sage); background: var(--sage-dim); }
+
+.vc-arrow {
+  font-size: 0.55rem;
+  color: var(--dim);
+}
+
+.variant-pros, .variant-cons {
+  list-style: none;
+  font-size: 0.73rem;
+}
+
+.variant-pros li, .variant-cons li {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  line-height: 1.55;
+}
+
+.variant-pros li:last-child, .variant-cons li:last-child { border-bottom: none; }
+
+.variant-pros li::before { content: '+'; color: var(--sage); flex-shrink: 0; font-weight: 700; }
+.variant-cons li::before { content: '–'; color: var(--rose); flex-shrink: 0; font-weight: 700; }
+
+/* ── INNOVATIONS SECTION ── */
+.innov-section {
+  padding: 6rem 0;
+}
+
+.innov-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--line);
+  margin-top: 3rem;
+}
+
+.innov-item {
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.innov-item:last-child { border-bottom: none; }
+
+.innov-header {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: center;
+  padding: 1.75rem 2rem;
+  cursor: pointer;
+  gap: 1.5rem;
+  transition: background 0.2s;
+}
+
+.innov-header:hover { background: var(--raised); }
+
+.innov-index {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+}
+
+.innov-head-info {}
+
+.innov-head-title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+
+.innov-head-sub {
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.innov-toggle {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 1rem;
+  transition: all 0.25s;
+  flex-shrink: 0;
+}
+
+.innov-item.open .innov-toggle {
+  transform: rotate(45deg);
+  background: var(--neon);
+  color: var(--void);
+  border-color: var(--neon);
+}
+
+.innov-body {
+  display: none;
+  padding: 0 2rem 2.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.innov-item.open .innov-body { display: block; }
+
+.innov-body-inner {
+  padding-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 640px) {
+  .innov-body-inner { grid-template-columns: 1fr; }
+  .innov-header { grid-template-columns: 48px 1fr auto; padding: 1.25rem; }
+}
+
+.innov-col-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.innov-para {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.9;
+  margin-bottom: 1rem;
+}
+
+.innov-para strong { color: var(--text); font-weight: 500; }
+
+.gear-line {
+  font-size: 0.7rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.gear-line:last-child { border-bottom: none; }
+.gear-name { color: var(--text); }
+.gear-price { color: var(--neon); font-weight: 500; flex-shrink: 0; }
+
+/* ── CODE BLOCK ── */
+.mono-block {
+  background: var(--void);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--neon);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.mono-block code {
+  font-size: 0.7rem;
+  color: var(--neon);
+  line-height: 1.9;
+  white-space: pre;
+  display: block;
+  opacity: 0.85;
+}
+
+.mono-label {
+  font-size: 0.56rem;
+  color: rgba(126,255,245,0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+/* ── NOTE BOX ── */
+.note {
+  border: 1px solid var(--line);
+  border-left: 2px solid;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  font-size: 0.75rem;
+  line-height: 1.75;
+}
+
+.note.cyan { border-left-color: var(--neon); }
+.note.cyan strong { color: var(--neon); }
+.note.violet { border-left-color: var(--violet); }
+.note.violet strong { color: var(--violet); }
+.note.amber { border-left-color: var(--amber); }
+.note.amber strong { color: var(--amber); }
+.note.rose { border-left-color: var(--rose); }
+.note.rose strong { color: var(--rose); }
+
+/* ── MASTER CHAIN VISUAL ── */
+.master-visual {
+  background: var(--deep);
+  border: 1px solid var(--line);
+  padding: 3rem;
+  margin: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.master-visual::before {
+  content: 'COMPLETE CHAIN MAP';
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-size: 0.52rem;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+}
+
+.chain-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.chain-row:last-child { margin-bottom: 0; }
+
+.chain-row-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  width: 80px;
+  flex-shrink: 0;
+  line-height: 1.5;
+}
+
+.cnode {
+  font-size: 0.6rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.cnode small {
+  display: block;
+  font-size: 0.5rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+.cnode.c-core { border-color: var(--neon-border); color: var(--neon); background: var(--neon-dim); }
+.cnode.c-back { border-color: rgba(255,179,64,0.35); color: var(--amber); background: var(--amber-dim); }
+.cnode.c-fwd { border-color: rgba(176,106,255,0.35); color: var(--violet); background: var(--violet-dim); }
+.cnode.c-opt { border-color: var(--line); color: var(--dim); border-style: dashed; }
+
+.carr {
+  font-size: 0.6rem;
+  color: var(--dim);
+  flex-shrink: 0;
+  padding: 0 0.2rem;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 3rem 2.5rem;
+  text-align: center;
+}
+
+.footer-mark {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--neon);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+
+.footer-sub {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+/* ── REVEAL ── */
+.rv {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.65s, transform 0.65s;
+}
+.rv.on { opacity: 1; transform: none; }
+
+/* ── SECTION DIVIDER ── */
+.sdiv {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line) 30%, var(--line) 70%, transparent);
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-id">Vikram Studio</div>
+  <div class="nav-crumb">Chain Extensions <span>/</span> Variants <span>/</span> Innovations</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="glow-a hero-glow"></div>
+  <div class="glow-b hero-glow"></div>
+
+  <div class="hero-tag">Advanced Module · Signal Architecture</div>
+  <h1 class="hero-title">
+    Extend.<br>
+    <span class="accent">Rewire.</span><br>
+    <span class="accent2">Innovate.</span>
+  </h1>
+  <p class="hero-sub">
+    Your Vikram Studio chain doesn't have a fixed start or end. This module maps every direction it can grow — backwards into your sources, forwards into your output world, and sideways into variants you haven't imagined yet.
+  </p>
+  <div class="hero-pills">
+    <span class="pill neon">Backward Extensions</span>
+    <span class="pill amber">Forward Extensions</span>
+    <span class="pill violet">Chain Variants</span>
+    <span class="pill rose">Innovations</span>
+  </div>
+</div>
+
+<!-- MASTER CHAIN MAP -->
+<div class="wrap">
+  <div class="sec-head rv">
+    <div class="sec-tag" style="color: var(--neon);">The Complete Picture</div>
+    <h2 class="sec-title">Your Chain,<br>Fully Mapped</h2>
+    <p class="sec-desc">The current chain sits in the middle. Everything to the left is a backward extension (new sources). Everything to the right is a forward extension (new outputs). Dashed nodes are optional.</p>
+  </div>
+
+  <div class="master-visual rv">
+    <!-- Row 1: Full Extended Desk Chain -->
+    <div class="chain-row">
+      <div class="chain-row-label" style="color: var(--amber);">DESK<br>EXTENDED</div>
+      <div class="cnode c-back">Vinyl<br><small>Turntable</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-back">Phono<br><small>Preamp</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-back">DAW /<br><small>Mixer</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">Laptop / PC<br><small>USB-B out</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">FiiO K5 Pro ESS<br><small>DAC/Amp · Desktop</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">HD 490 PRO+<br><small>6.35mm direct</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-fwd c-opt">DSP/<br><small>EQ Plugin</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-fwd c-opt">Monitors<br><small>via RCA out</small></div>
+    </div>
+
+    <!-- Row 2: Mobile Chain -->
+    <div class="chain-row">
+      <div class="chain-row-label" style="color: var(--neon);">MOBILE<br>CORE</div>
+      <div class="cnode c-back">Streaming<br><small>Tidal/Qobuz</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-back">Local FLAC/<br><small>DSD files</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">Android/iPhone<br><small>USB-C out</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">FiiO KA13<br><small>DAC Dongle</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">UGREEN Adapter<br><small>3.5→6.35mm</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">HD 490 PRO+<br><small>via 6.35mm</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-fwd c-opt">4.4mm Bal.<br><small>cable (upgrade)</small></div>
+    </div>
+
+    <!-- Row 3: TV / Home -->
+    <div class="chain-row">
+      <div class="chain-row-label" style="color: var(--violet);">HOME /<br>TV</div>
+      <div class="cnode c-back">Smart TV<br><small>Optical out</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-back">Blu-ray /<br><small>Console</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-back c-opt">Coaxial<br><small>converter</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">FiiO K5 Pro ESS<br><small>Optical / Coax in</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">HD 490 PRO+<br><small>Cinema mode</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-fwd c-opt">Spatial Audio<br><small>Dolby Atmos</small></div>
+    </div>
+
+    <!-- Row 4: Studio Production -->
+    <div class="chain-row">
+      <div class="chain-row-label" style="color: var(--rose);">STUDIO<br>PRO</div>
+      <div class="cnode c-back">XLR Mic<br><small>Condenser</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-back">Audio Interface<br><small>Scarlett / SSL</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-back">DAW<br><small>Ableton/Logic</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">K5 Pro ESS<br><small>Monitor amp</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-core">HD 490 PRO+<br><small>Mix reference</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-fwd">Monitors<br><small>RCA parallel</small></div>
+      <div class="carr">→</div>
+      <div class="cnode c-fwd c-opt">Mastered<br><small>File export</small></div>
+    </div>
+
+    <div class="chain-legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="border-color: var(--neon); background: var(--neon-dim);"></div>
+        Current core chain
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="border-color: rgba(255,179,64,0.4); background: var(--amber-dim);"></div>
+        Backward extensions (sources)
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="border-color: rgba(176,106,255,0.4); background: var(--violet-dim);"></div>
+        Forward extensions (outputs)
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="border-color: var(--dim); border-style: dashed;"></div>
+        Optional / future nodes
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- BACKWARD EXTENSIONS -->
+<!-- ═══════════════════════════════ -->
+<div class="sdiv"></div>
+<div class="wrap">
+  <div class="sec-head rv">
+    <div class="sec-tag" style="color: var(--amber);">← Backward Extensions</div>
+    <h2 class="sec-title">Extend<br>the Source</h2>
+    <p class="sec-desc">Every signal starts somewhere. These extensions give your chain richer, higher-quality inputs — physical media, instruments, broadcast feeds, and analogue sources.</p>
+  </div>
+
+  <div class="ext-grid rv">
+
+    <!-- B1: Vinyl -->
+    <div class="ext-card amber">
+      <div class="ext-card-num">B1</div>
+      <div class="ext-type amber">← Source · Analogue</div>
+      <div class="ext-card-title">Vinyl Turntable via RCA</div>
+      <div class="ext-card-desc">The K5 Pro ESS has stereo RCA inputs. A turntable with built-in phono preamp plugs directly into it — giving you an analogue vinyl source feeding a reference digital monitoring chain.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Choose a turntable with a built-in phono preamp</strong> (look for "built-in phono stage" in specs). The AT-LP120XUSB has one and a USB output too.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Run RCA (L/R) cables</strong> from the turntable's line-level output (not phono) to the K5 Pro ESS rear RCA inputs.</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Press INPUT on K5 Pro ESS</strong> to cycle to the RCA input. Volume is now controlled by the K5 Pro knob.</div></li>
+        <li class="ext-step"><div class="ext-step-num">4</div><div class="ext-step-text"><strong>Optional:</strong> Run the turntable's USB output into your PC simultaneously — digitise vinyl records in real-time using Audacity while listening through the HD 490 PRO.</div></li>
+      </ol>
+      <div class="ext-cost">₹12,000 – ₹45,000 <small>Audio-Technica AT-LP120XUSB · Pro-Ject Debut Carbon EVO</small></div>
+    </div>
+
+    <!-- B2: CD Transport -->
+    <div class="ext-card amber">
+      <div class="ext-card-num">B2</div>
+      <div class="ext-type amber">← Source · Digital</div>
+      <div class="ext-card-title">CD Transport via Coaxial/Optical</div>
+      <div class="ext-card-desc">CDs are 16-bit/44.1kHz — bit-perfect lossless. A CD player with coaxial or optical output feeds the K5 Pro ESS directly, bypassing any internal cheap DAC in the CD player entirely.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Get a CD player with coaxial S/PDIF output</strong> (preferred over optical — less jitter). Even budget CD players have this.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Run a 75Ω coaxial RCA cable</strong> from the CD player's "Digital Out (Coax)" to the K5 Pro ESS's coaxial input on the rear.</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Switch K5 Pro ESS to Coaxial input.</strong> The K5 Pro's ESS DAC now handles all digital-to-analogue conversion — massively upgrading the CD player's sound.</div></li>
+      </ol>
+      <div class="ext-cost">₹3,000 – ₹8,000 <small>Sony CD-P players · Marantz CD5005 · Yamaha CD-S300</small></div>
+    </div>
+
+    <!-- B3: Network Streamer -->
+    <div class="ext-card amber">
+      <div class="ext-card-num">B3</div>
+      <div class="ext-type amber">← Source · Network</div>
+      <div class="ext-card-title">Network Streamer / Raspberry Pi</div>
+      <div class="ext-card-desc">Replace your laptop as the computer source with a dedicated streaming device. A Raspberry Pi running Volumio or Moode Audio streams Tidal, Qobuz, Spotify, and local files, outputting USB audio directly to the K5 Pro ESS.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Flash Volumio OS</strong> onto a microSD card using Raspberry Pi Imager. Insert into a Raspberry Pi 4.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Connect Raspberry Pi's USB port → K5 Pro ESS USB-B input.</strong> Volumio auto-detects it as the audio output device.</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Configure Volumio via browser</strong> (access at volumio.local). Add Tidal Connect, Qobuz, or point to your NAS-stored FLAC library. Now your chain runs 24/7 without a laptop open.</div></li>
+        <li class="ext-step"><div class="ext-step-num">4</div><div class="ext-step-text"><strong>Enable bit-perfect output</strong> in Volumio: Settings → Playback Options → "Volume Normalisation" OFF → "Enable Audio Resampling" OFF. Pure signal to the K5 Pro.</div></li>
+      </ol>
+      <div class="ext-cost">₹4,500 – ₹8,000 <small>Raspberry Pi 4 (2GB) + case + microSD + power supply</small></div>
+    </div>
+
+    <!-- B4: DAW/Mixer Insert -->
+    <div class="ext-card amber">
+      <div class="ext-card-num">B4</div>
+      <div class="ext-type amber">← Source · Professional</div>
+      <div class="ext-card-title">Audio Interface + DAW as Source</div>
+      <div class="ext-card-desc">Add a Focusrite Scarlett or SSL 2 before your K5 Pro chain. The interface handles microphone inputs, instrument recording, and routes all audio through your DAW — the K5 Pro ESS then serves as the monitoring amp.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Connect interface to PC via USB.</strong> In your DAW, set the audio interface as Input and Output device.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Route DAW output</strong> to the interface's line outputs. Connect a TRS cable from the interface's line out to K5 Pro ESS RCA input (use a TRS-to-RCA cable).</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Set K5 Pro to RCA input.</strong> Now your DAW's master bus feeds the K5 Pro → HD 490 PRO directly. This separates your recording interface (low latency, mic preamps) from your monitoring amp (high quality, K5 Pro).</div></li>
+      </ol>
+      <div class="ext-cost">₹8,500 – ₹20,000 <small>Focusrite Scarlett Solo · Scarlett 2i2 · SSL 2+</small></div>
+    </div>
+
+    <!-- B5: Bluetooth Receiver -->
+    <div class="ext-card amber">
+      <div class="ext-card-num">B5</div>
+      <div class="ext-type amber">← Source · Wireless</div>
+      <div class="ext-card-title">Bluetooth Receiver → K5 Pro (RCA)</div>
+      <div class="ext-card-desc">Add a high-quality Bluetooth receiver between any wireless device and your K5 Pro ESS. Stream wirelessly from multiple devices — tablet in bed, phone across the room — while the K5 Pro handles the DA conversion and amplification.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Get a BT receiver with aptX HD or LDAC output</strong> — FiiO BTA30 Pro (₹8,500) is ideal: it has coaxial output that feeds the K5 Pro ESS coax input, maintaining a digital path.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Connect BTA30 Pro coaxial out → K5 Pro coaxial in.</strong> Pair your phone to the BTA30 via LDAC. The signal goes: Phone (LDAC Bluetooth) → BTA30 (digital decode) → K5 Pro (DA conversion) → HD 490 PRO.</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>For pure analogue BT receiver:</strong> Use RCA out from receiver → K5 Pro RCA in. Switch K5 Pro to RCA input. Less ideal (double DA conversion) but functional for casual use.</div></li>
+      </ol>
+      <div class="ext-cost">₹3,500 – ₹9,000 <small>FiiO BTA30 Pro · EarStudio ES100 Mk2 · Qudelix-5K</small></div>
+    </div>
+
+    <!-- B6: Tape Deck -->
+    <div class="ext-card amber">
+      <div class="ext-card-num">B6</div>
+      <div class="ext-type amber">← Source · Retro</div>
+      <div class="ext-card-title">Cassette Deck / Reel-to-Reel via RCA</div>
+      <div class="ext-card-desc">Any analogue tape source with RCA line outputs plugs directly into the K5 Pro ESS's RCA inputs. Hear your cassette or reel-to-reel tapes through a reference chain — the HD 490 PRO will reveal every tape hiss artefact and warm analogue saturation in stunning detail.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Connect tape deck LINE OUT (not headphone out)</strong> via RCA cable to K5 Pro ESS RCA inputs. Headphone outputs have the wrong impedance and level.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Digitise simultaneously:</strong> Run a Y-splitter from the tape deck's RCA output — one path to K5 Pro (for monitoring), one path to a USB audio interface → PC (for recording). Archive your tapes in 24-bit/96kHz FLAC.</div></li>
+      </ol>
+      <div class="ext-cost">₹0 (if you own one) – ₹5,000 <small>Vintage cassette decks from local electronics stores</small></div>
+    </div>
+
+  </div><!-- /ext-grid backward -->
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- FORWARD EXTENSIONS -->
+<!-- ═══════════════════════════════ -->
+<div class="sdiv"></div>
+<div class="wrap">
+  <div class="sec-head rv">
+    <div class="sec-tag" style="color: var(--violet);">Forward Extensions →</div>
+    <h2 class="sec-title">Extend<br>the Output</h2>
+    <p class="sec-desc">The signal doesn't have to stop at your ears. These forward extensions branch your chain into rooms, recording devices, second listeners, and the physical world.</p>
+  </div>
+
+  <div class="ext-grid rv">
+
+    <!-- F1: Studio Monitors -->
+    <div class="ext-card violet">
+      <div class="ext-card-num">F1</div>
+      <div class="ext-type violet">Forward → Room</div>
+      <div class="ext-card-title">Nearfield Monitors via RCA Line Out</div>
+      <div class="ext-card-desc">The K5 Pro ESS has a fixed RCA line output on the rear. Connect powered studio monitors here — now you have simultaneous headphone AND speaker monitoring from one chain. Switch by unplugging headphones or using a speaker switch box.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Run RCA cables</strong> from K5 Pro ESS rear LINE OUT to your monitors' RCA or TRS inputs. Most monitors need a TRS-to-RCA cable.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Set monitor volume</strong> on the speakers themselves — K5 Pro ESS's volume knob only controls the headphone output, not the line out level. Keep monitors at a fixed level and use the monitor's own volume for room listening.</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Add a speaker/headphone switch box</strong> (Nobsound Little Bear MC100, ₹3,500) between the K5 Pro line out and your monitors — lets you instantly toggle between headphone and speaker monitoring without replugging anything.</div></li>
+      </ol>
+      <div class="ext-cost">₹25,000 – ₹55,000 <small>Adam T5V pair · Yamaha HS5 pair · KRK Rokit 5 G4 pair</small></div>
+    </div>
+
+    <!-- F2: Headphone Amp -->
+    <div class="ext-card violet">
+      <div class="ext-card-num">F2</div>
+      <div class="ext-type violet">Forward → Amplification</div>
+      <div class="ext-card-title">Dedicated Headphone Amp (Separates)</div>
+      <div class="ext-card-desc">Use the K5 Pro ESS purely as a DAC — run its line out into a separate, dedicated headphone amplifier. Separating the DAC and amp stages is a major upgrade path. The HD 490 PRO will reward a high-quality amp with better dynamics and blacker backgrounds.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Set K5 Pro ESS to "fixed line out" mode</strong> — check the firmware / switch on rear. This bypasses the volume control, outputting a clean line-level signal to the amp.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Connect RCA → dedicated amp input.</strong> Plug HD 490 PRO into the amp's 6.35mm output. Volume is now controlled by the dedicated amp.</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Choose a balanced amp</strong> for maximum benefit — Schiit Magnius, Topping A90 Discrete, or Burson Soloist 3X GT. Balanced output via 4-pin XLR gives double the power and significantly lower crosstalk than single-ended.</div></li>
+      </ol>
+      <div class="ext-cost">₹22,000 – ₹1,80,000 <small>Schiit Magnius · Topping A90D · Burson Soloist 3X GT</small></div>
+    </div>
+
+    <!-- F3: Recording Output -->
+    <div class="ext-card violet">
+      <div class="ext-card-num">F3</div>
+      <div class="ext-type violet">Forward → Archive</div>
+      <div class="ext-card-title">Line Out → Recording / Archiving</div>
+      <div class="ext-card-desc">Tap the K5 Pro ESS's RCA line output to simultaneously record anything you're listening to — vinyl digitisation, tape archiving, live radio capture, or creating reference recordings of your mixes.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Run a Y-splitter or RCA to dual RCA</strong> from K5 Pro line out — one path to your monitors/headphones (via amp), one path to an audio interface's line input for recording.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>In Audacity or your DAW,</strong> set the recording input to your audio interface's line in. Hit record. You now have a real-time capture of the analogue output — perfect for vinyl digitisation at 24-bit/96kHz.</div></li>
+      </ol>
+      <div class="ext-cost">₹0 (software) + ₹8,500 <small>Focusrite Scarlett Solo for the interface input</small></div>
+    </div>
+
+    <!-- F4: Second Headphone -->
+    <div class="ext-card violet">
+      <div class="ext-card-num">F4</div>
+      <div class="ext-type violet">Forward → Second Listener</div>
+      <div class="ext-card-title">Headphone Splitter / Second Listener</div>
+      <div class="ext-card-desc">Add a headphone amplifier/splitter after the K5 Pro ESS to drive two headphones simultaneously. Useful for collaborative listening sessions, teaching, or comparing two different headphones on the same source.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Connect a headphone distribution amp</strong> (Behringer HA400, ₹3,000) to the K5 Pro ESS line out via RCA → 3.5mm cable. The HA400 has 4 headphone outputs, each with independent volume.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Plug HD 490 PRO</strong> into output 1 (via UGREEN adapter). A second headphone into output 2. Both listeners hear the same source independently controlled.</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Note:</strong> The HA400 adds its own amplifier stage — quality is decent but not reference-grade. For critical dual-monitoring, use the K5 Pro headphone out for the HD 490 PRO, and a separate amp for the second pair.</div></li>
+      </ol>
+      <div class="ext-cost">₹3,000 – ₹12,000 <small>Behringer HA400 · Mackie HM-4 · ART Headamp4</small></div>
+    </div>
+
+    <!-- F5: Room Correction -->
+    <div class="ext-card violet">
+      <div class="ext-card-num">F5</div>
+      <div class="ext-type violet">Forward → DSP</div>
+      <div class="ext-card-title">Hardware DSP / Room Correction Processor</div>
+      <div class="ext-card-desc">Insert a hardware DSP unit between the K5 Pro line out and your monitors. Units like the miniDSP DDRC-22D apply Dirac Live room correction in real time — turning a mediocre listening room into an acoustically corrected space.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Connect K5 Pro line out → miniDSP DDRC-22D input</strong> via RCA. Connect miniDSP output → powered monitors.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Run the Dirac Live measurement:</strong> place a calibrated microphone (included) at your listening position. Dirac maps your room's acoustic fingerprint and generates a correction filter.</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Apply the filter.</strong> Your monitors now sound as if they're in a treated room — corrected for reflections, standing waves, and room modes. Toggle on/off to hear the difference.</div></li>
+      </ol>
+      <div class="ext-cost">₹25,000 – ₹55,000 <small>miniDSP DDRC-22D with Dirac Live licence</small></div>
+    </div>
+
+    <!-- F6: Headphone Measurements -->
+    <div class="ext-card violet">
+      <div class="ext-card-num">F6</div>
+      <div class="ext-type violet">Forward → Analysis</div>
+      <div class="ext-card-title">Measurement Rig — Know Your Sound</div>
+      <div class="ext-card-desc">Build a headphone measurement rig using the K5 Pro ESS as the signal generator. With a GRAS or DIY coupler and REW software, you can measure the exact frequency response of your HD 490 PRO — validating your EQ and identifying channel imbalances.</div>
+      <ol class="ext-steps">
+        <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Download REW (Room EQ Wizard)</strong> — free. Set K5 Pro ESS as output. Use K5 Pro ESS's own line input (via a loopback) or a USB microphone as the measurement input.</div></li>
+        <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Run a sweep:</strong> REW generates a sine sweep through the K5 Pro → headphones → microphone captures the output. The resulting graph shows your headphone's actual response on your head in your room.</div></li>
+        <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Compare against the Sennheiser reference curve</strong> available from their website. Apply compensating EQ in EqualizerAPO. You are now your own acoustic engineer.</div></li>
+      </ol>
+      <div class="ext-cost">₹0 (REW is free) + ₹2,000–₹8,000 <small>Calibrated mic (MiniDSP UMIK-1 · Dayton EMM-6)</small></div>
+    </div>
+
+  </div><!-- /ext-grid forward -->
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- CHAIN VARIANTS -->
+<!-- ═══════════════════════════════ -->
+<div class="sdiv"></div>
+<div class="variants-section">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-tag" style="color: var(--rose);">Chain Variants</div>
+      <h2 class="sec-title">Six Ways to<br>Rewire Everything</h2>
+      <p class="sec-desc">Rearrange the same components into radically different configurations for radically different use cases. One setup, six personalities.</p>
+    </div>
+
+    <div class="variants-grid rv">
+
+      <!-- V1: Balanced Endgame -->
+      <div class="variant-card">
+        <div class="variant-badge" style="color: var(--neon); border-color: var(--neon-border);">Variant 01 · Best Quality</div>
+        <div class="variant-title">The Balanced Endgame Desktop</div>
+        <div class="variant-desc">Replace the K5 Pro ESS with a separate DAC + balanced amp. K5 Pro becomes the TV/source DAC. Everything runs balanced XLR or 4.4mm.</div>
+        <div class="variant-chain">
+          <div class="vc-node">PC USB</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-neon">Topping D90 DAC</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-violet">XLR balanced</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-neon">Topping A90D</div><div class="vc-arrow">→</div>
+          <div class="vc-node">HD 490 PRO</div>
+        </div>
+        <ul class="variant-pros">
+          <li>Maximum channel separation and power</li>
+          <li>Lowest possible noise floor</li>
+          <li>Dedicated stages — no compromise</li>
+        </ul>
+        <ul class="variant-cons">
+          <li>₹1,20,000+ investment</li>
+          <li>More cables and desk space</li>
+        </ul>
+      </div>
+
+      <!-- V2: Pure Mobile -->
+      <div class="variant-card">
+        <div class="variant-badge" style="color: var(--amber); border-color: rgba(255,179,64,0.3);">Variant 02 · Mobile Only</div>
+        <div class="variant-title">The Minimalist Mobile Chain</div>
+        <div class="variant-desc">Skip the K5 Pro entirely. KA13 balanced out → 4.4mm HD 490 PRO cable. One dongle, one cable, reference-grade mobile listening at ₹45,000.</div>
+        <div class="variant-chain">
+          <div class="vc-node highlight-amber">Phone USB-C</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-neon">KA13 dongle</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-amber">4.4mm balanced</div><div class="vc-arrow">→</div>
+          <div class="vc-node">HD 490 PRO</div>
+        </div>
+        <ul class="variant-pros">
+          <li>Lowest cost complete setup</li>
+          <li>Zero desk footprint</li>
+          <li>550mW balanced — more than enough</li>
+        </ul>
+        <ul class="variant-cons">
+          <li>Phone battery drains faster</li>
+          <li>No RCA/Optical inputs</li>
+        </ul>
+      </div>
+
+      <!-- V3: Home Theatre -->
+      <div class="variant-card">
+        <div class="variant-badge" style="color: var(--violet); border-color: rgba(176,106,255,0.3);">Variant 03 · Home Theatre</div>
+        <div class="variant-title">The Late-Night Cinema Rig</div>
+        <div class="variant-desc">TV optical out → K5 Pro ESS → HD 490 PRO. Dolby Atmos headphone processing via Windows Spatial Audio. Reference cinema without waking anyone.</div>
+        <div class="variant-chain">
+          <div class="vc-node highlight-violet">Smart TV</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-amber">TOSLINK optical</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-neon">K5 Pro ESS</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-violet">Atmos DSP</div><div class="vc-arrow">→</div>
+          <div class="vc-node">HD 490 PRO</div>
+        </div>
+        <ul class="variant-pros">
+          <li>TV sound radically transformed</li>
+          <li>Late-night watching without volume limits</li>
+          <li>Spatial audio processing</li>
+        </ul>
+        <ul class="variant-cons">
+          <li>TV must output PCM stereo over optical</li>
+          <li>Dolby Atmos for Headphones costs ₹470</li>
+        </ul>
+      </div>
+
+      <!-- V4: Full Studio -->
+      <div class="variant-card">
+        <div class="variant-badge" style="color: var(--rose); border-color: rgba(255,77,109,0.3);">Variant 04 · Studio Production</div>
+        <div class="variant-title">The Home Studio Monitor Chain</div>
+        <div class="variant-desc">Audio interface handles inputs (mics, instruments). K5 Pro ESS receives its line output and drives the HD 490 PRO as the reference monitoring device — separating I/O from monitoring.</div>
+        <div class="variant-chain">
+          <div class="vc-node highlight-rose">XLR Mic</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-rose">Scarlett 2i2</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-rose">DAW</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-neon">K5 Pro ESS</div><div class="vc-arrow">→</div>
+          <div class="vc-node">HD 490 PRO+</div>
+        </div>
+        <ul class="variant-pros">
+          <li>Professional I/O with reference monitoring</li>
+          <li>K5 Pro's superior DAC outperforms interface headphone out</li>
+          <li>Monitors via RCA in parallel</li>
+        </ul>
+        <ul class="variant-cons">
+          <li>Adds ₹8,500–₹20,000 for the interface</li>
+          <li>More cables to manage</li>
+        </ul>
+      </div>
+
+      <!-- V5: Vinyl + Digital Hybrid -->
+      <div class="variant-card">
+        <div class="variant-badge" style="color: var(--sage); border-color: rgba(82,201,122,0.3);">Variant 05 · Hybrid Source</div>
+        <div class="variant-title">The Vinyl-Digital Hybrid</div>
+        <div class="variant-desc">Turntable via RCA + PC via USB both connected to K5 Pro ESS simultaneously. Toggle between analogue and digital sources with one button. Best of both worlds.</div>
+        <div class="variant-chain">
+          <div class="vc-node highlight-amber">Turntable RCA</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-neon">K5 Pro ESS</div>
+          <div class="vc-node highlight-neon">←USB→</div>
+          <div class="vc-node highlight-amber">PC/Laptop</div>
+        </div>
+        <ul class="variant-pros">
+          <li>One headphone amp for all your sources</li>
+          <li>Instant source switching</li>
+          <li>RCA and USB inputs are independent</li>
+        </ul>
+        <ul class="variant-cons">
+          <li>Turntable needs built-in phono preamp</li>
+          <li>Or add a separate phono preamp (₹3,000–₹8,000)</li>
+        </ul>
+      </div>
+
+      <!-- V6: Raspberry Pi Server -->
+      <div class="variant-card">
+        <div class="variant-badge" style="color: var(--neon); border-color: var(--neon-border);">Variant 06 · Audiophile Server</div>
+        <div class="variant-title">The Laptop-Free Streaming Server</div>
+        <div class="variant-desc">Replace your laptop with a Raspberry Pi running Volumio. The Pi streams Tidal/Qobuz/FLAC 24/7 and outputs USB audio directly to the K5 Pro. No laptop needed, no OS noise, no browser tabs.</div>
+        <div class="variant-chain">
+          <div class="vc-node highlight-sage">Network / NAS</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-sage">Raspberry Pi 4</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-amber">USB-B</div><div class="vc-arrow">→</div>
+          <div class="vc-node highlight-neon">K5 Pro ESS</div><div class="vc-arrow">→</div>
+          <div class="vc-node">HD 490 PRO</div>
+        </div>
+        <ul class="variant-pros">
+          <li>Always-on, zero laptop needed</li>
+          <li>Bit-perfect output without OS audio interference</li>
+          <li>Control via phone browser (Volumio app)</li>
+        </ul>
+        <ul class="variant-cons">
+          <li>Initial setup time (~2–3 hours)</li>
+          <li>Pi 4 costs ₹5,000–₹8,000</li>
+        </ul>
+      </div>
+
+    </div><!-- /variants-grid -->
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- INNOVATIONS -->
+<!-- ═══════════════════════════════ -->
+<div class="sdiv"></div>
+<div class="wrap">
+  <div class="innov-section">
+    <div class="sec-head rv">
+      <div class="sec-tag" style="color: var(--rose);">Innovations & Improvisations</div>
+      <h2 class="sec-title">Unexpected<br>Things to Try</h2>
+      <p class="sec-desc">These aren't standard use cases. They're creative improvisations — ways to use this chain that its designers probably didn't envision, but that work brilliantly.</p>
+    </div>
+
+    <div class="innov-list rv">
+
+      <!-- I1 -->
+      <div class="innov-item">
+        <div class="innov-header" onclick="toggleInnov(this)">
+          <div class="innov-index">I — 01</div>
+          <div class="innov-head-info">
+            <div class="innov-head-title">Binaural Recording Playback Rig</div>
+            <div class="innov-head-sub">KA13 · 4.4mm balanced · head-tracked HRTF · Waves NX</div>
+          </div>
+          <div class="innov-toggle">+</div>
+        </div>
+        <div class="innov-body">
+          <div class="innov-body-inner">
+            <div>
+              <div class="innov-col-label">What it does</div>
+              <p class="innov-para">Binaural recordings — made with two microphones placed in a dummy head's ears — create a 3D sound experience that's specifically designed for headphone playback. The HD 490 PRO's wide soundstage and the K5 Pro's transparent DAC make this experience extraordinarily immersive. Combined with Waves NX's head-tracking (using your webcam), the soundstage stays fixed in space as you move your head — exactly like real life.</p>
+              <p class="innov-para"><strong>Where to find binaural recordings:</strong> Qobuz has a binaural category. YouTube has hundreds of ASMR and binaural content. BBC Radio 3 has binaural broadcasts. Search "binaural" + any music genre.</p>
+              <div class="note cyan"><strong>Innovation:</strong> Route binaural content through Waves NX (₹5,000 standalone) with head-tracking enabled. The effect is so realistic that most people remove the headphones to check if someone is in the room.</div>
+            </div>
+            <div>
+              <div class="innov-col-label">Setup Steps</div>
+              <ol class="ext-steps">
+                <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Install Waves NX</strong> and enable webcam head-tracking. The software tracks your head position via camera and adjusts the HRTF in real time.</div></li>
+                <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Insert Waves NX</strong> as the last plugin in your DAW chain or use its standalone mode with the K5 Pro as output.</div></li>
+                <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Play binaural content</strong> and slowly turn your head. The sound source stays "in front of you" — the most convincing headphone 3D effect achievable without specialised hardware.</div></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- I2 -->
+      <div class="innov-item">
+        <div class="innov-header" onclick="toggleInnov(this)">
+          <div class="innov-index">I — 02</div>
+          <div class="innov-head-info">
+            <div class="innov-head-title">Personalized HRTF Calibration</div>
+            <div class="innov-head-sub">Sonarworks SoundID · Personal profile · HD 490 PRO target curve</div>
+          </div>
+          <div class="innov-toggle">+</div>
+        </div>
+        <div class="innov-body">
+          <div class="innov-body-inner">
+            <div>
+              <div class="innov-col-label">What it does</div>
+              <p class="innov-para"><strong>Sonarworks SoundID Reference</strong> is professional headphone calibration software that measures your specific pair of HD 490 PRO headphones with a calibration microphone and creates a correction profile unique to your unit — compensating for individual driver variation (every headphone pair sounds slightly different).</p>
+              <p class="innov-para">The result: a completely flat, reference-neutral sound profile — not a generic EQ curve but one derived from your actual headphones. This is what professional mastering studios use.</p>
+              <div class="mono-block">
+                <div class="mono-label">Sonarworks SoundID Reference workflow</div>
+                <code>1. Download SoundID Reference (free trial)
+2. Select "Sennheiser HD 490 PRO" profile
+3. OR measure your specific unit (requires mic)
+4. Enable correction in System Audio / DAW
+5. K5 Pro ESS receives corrected signal</code>
+              </div>
+            </div>
+            <div>
+              <div class="innov-col-label">Cost & Sources</div>
+              <div class="gear-line"><span class="gear-name">SoundID Reference (software)</span><span class="gear-price">₹7,500/yr</span></div>
+              <div class="gear-line"><span class="gear-name">Dayton EMM-6 calibration mic</span><span class="gear-price">₹3,500</span></div>
+              <div class="gear-line"><span class="gear-name">HD 490 PRO measurement kit</span><span class="gear-price">Included</span></div>
+              <div class="note violet"><strong>Pro insight:</strong> Sonarworks has a specific HD 490 PRO measurement profile. Even without your own measurement mic, applying the generic profile dramatically improves mixing accuracy.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- I3 -->
+      <div class="innov-item">
+        <div class="innov-header" onclick="toggleInnov(this)">
+          <div class="innov-index">I — 03</div>
+          <div class="innov-head-info">
+            <div class="innov-head-title">The "Second Output" Trick — Simultaneous Monitors + Headphones</div>
+            <div class="innov-head-sub">K5 Pro RCA out → monitors · Headphone out → HD 490 PRO · Instant AB switching</div>
+          </div>
+          <div class="innov-toggle">+</div>
+        </div>
+        <div class="innov-body">
+          <div class="innov-body-inner">
+            <div>
+              <div class="innov-col-label">What it does</div>
+              <p class="innov-para">The K5 Pro ESS outputs audio simultaneously from its headphone output AND its RCA line output. This means both the HD 490 PRO and your studio monitors are driven at the same time — from the same source, at the same quality level.</p>
+              <p class="innov-para">For mixing, this is invaluable: hear a section on monitors (room perspective), then immediately switch to headphones by simply unplugging the headphone cable — no software or switch boxes needed for basic use. More advanced: add a Nobsound MC100 speaker switch to properly mute monitors when headphones are in use.</p>
+              <div class="note amber"><strong>Improvisation:</strong> Use this for "check listening" — mix primarily on monitors, but every 10 minutes plug in headphones to check details (reverb tails, stereo width, low-end clarity) that the room masks. This is the standard professional workflow.</div>
+            </div>
+            <div>
+              <div class="innov-col-label">Signal Path</div>
+              <div class="mono-block">
+                <div class="mono-label">Simultaneous output routing</div>
+                <code>K5 Pro ESS
+  ├── Headphone Out (6.35mm)
+  │     └── HD 490 PRO Plus
+  └── Line Out (RCA)
+        └── [Nobsound switch]
+              └── Studio Monitors
+                    (Adam T5V / Yamaha HS5)</code>
+              </div>
+              <div class="gear-line"><span class="gear-name">Nobsound Little Bear MC100</span><span class="gear-price">₹3,500</span></div>
+              <div class="gear-line"><span class="gear-name">RCA to TRS cable (2m)</span><span class="gear-price">₹800</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- I4 -->
+      <div class="innov-item">
+        <div class="innov-header" onclick="toggleInnov(this)">
+          <div class="innov-index">I — 04</div>
+          <div class="innov-head-info">
+            <div class="innov-head-title">DSD512 Native Playback — Hearing the Absolute Maximum</div>
+            <div class="innov-head-sub">SACD ISO rips · foobar2000 + ASIO · K5 Pro native DSD512 decoding</div>
+          </div>
+          <div class="innov-toggle">+</div>
+        </div>
+        <div class="innov-body">
+          <div class="innov-body-inner">
+            <div>
+              <div class="innov-col-label">What it does</div>
+              <p class="innov-para">The K5 Pro ESS supports native DSD512 — this is 512× the base DSD rate (22.4MHz sampling). Almost no consumer equipment supports this. Setting up native DSD512 playback is the absolute maximum your chain can decode, and the HD 490 PRO's 5–36kHz range is capable of resolving the differences.</p>
+              <p class="innov-para">DSD files sound different to PCM in an almost indescribable way — a quality of "flow" and tonal naturalness that high-bit PCM doesn't quite achieve. Whether this is "better" is subjective, but hearing it through this chain is extraordinary.</p>
+            </div>
+            <div>
+              <div class="innov-col-label">Setup Chain</div>
+              <ol class="ext-steps">
+                <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Install foobar2000 + SACD plugin + ASIO output plugin</strong> on Windows. All free.</div></li>
+                <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Install FiiO's USB ASIO driver</strong> from FiiO's website. This enables native DSD (not DoP) output to the K5 Pro ESS at DSD512.</div></li>
+                <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>In foobar2000:</strong> Preferences → Playback → Output → ASIO → FiiO ASIO driver. SACD plugin: set output mode to "DSD" (not PCM). Play a .dsf or .dff file. The K5 Pro ESS front display shows the DSD rate.</div></li>
+              </ol>
+              <div class="mono-block">
+                <div class="mono-label">foobar2000 DSD512 path</div>
+                <code>SACD ISO / .dsf file
+→ SACD Plugin (native DSD)
+→ ASIO output (FiiO driver)
+→ K5 Pro ESS (DSD512 native decode)
+→ HD 490 PRO Plus
+→ Your ears (22.4 MHz sampling rate)</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- I5 -->
+      <div class="innov-item">
+        <div class="innov-header" onclick="toggleInnov(this)">
+          <div class="innov-index">I — 05</div>
+          <div class="innov-head-info">
+            <div class="innov-head-title">The KA13 as a Portable Measurement Device</div>
+            <div class="innov-head-sub">REW · Sweep generation · Acoustic measurement on the go</div>
+          </div>
+          <div class="innov-toggle">+</div>
+        </div>
+        <div class="innov-body">
+          <div class="innov-body-inner">
+            <div>
+              <div class="innov-col-label">Unexpected Use Case</div>
+              <p class="innov-para">The KA13's high-quality DAC outputs are precise enough to use as a measurement signal generator. When connected to a laptop with REW (Room EQ Wizard), it sends calibrated sine sweeps through any connected speakers or headphones — and a USB microphone captures the response.</p>
+              <p class="innov-para">This is a portable acoustic measurement rig you can take anywhere — measure speakers at a friend's studio, check a room's response before buying monitors, or verify a headphone's frequency response on site. The KA13's low THD+N (&lt;0.00012%) means your measurement signal is essentially perfect.</p>
+              <div class="note cyan"><strong>Innovation:</strong> Combined with a UMIK-1 USB microphone (₹7,500), your phone + KA13 + UMIK-1 becomes a professional acoustic measurement kit that fits in a jacket pocket.</div>
+            </div>
+            <div>
+              <div class="innov-col-label">Equipment Needed</div>
+              <div class="gear-line"><span class="gear-name">FiiO KA13 (you have it)</span><span class="gear-price">₹0 extra</span></div>
+              <div class="gear-line"><span class="gear-name">Laptop with REW (free)</span><span class="gear-price">₹0</span></div>
+              <div class="gear-line"><span class="gear-name">miniDSP UMIK-1 USB mic</span><span class="gear-price">₹7,500</span></div>
+              <div class="gear-line"><span class="gear-name">USB-C hub (if needed)</span><span class="gear-price">₹1,500</span></div>
+              <div class="note amber"><strong>Total added cost:</strong> ₹9,000 turns your existing KA13 into a professional acoustic test kit. Commercial alternatives cost ₹50,000+.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- I6 -->
+      <div class="innov-item">
+        <div class="innov-header" onclick="toggleInnov(this)">
+          <div class="innov-index">I — 06</div>
+          <div class="innov-head-info">
+            <div class="innov-head-title">Convolution Reverb — Listen in Famous Rooms</div>
+            <div class="innov-head-sub">Impulse responses · Carnegie Hall · Abbey Road · Real acoustic spaces</div>
+          </div>
+          <div class="innov-toggle">+</div>
+        </div>
+        <div class="innov-body">
+          <div class="innov-body-inner">
+            <div>
+              <div class="innov-col-label">What it does</div>
+              <p class="innov-para">Convolution reverb plugins use "impulse responses" — recordings of actual rooms (Abbey Road Studio 2, Carnegie Hall, Hagia Sophia) — to place any audio inside those spaces in real time. Running this through the HD 490 PRO's reference-grade transducers creates a remarkably convincing illusion of acoustic space.</p>
+              <p class="innov-para"><strong>Free impulse responses:</strong> OpenAIR (University of Edinburgh) has 100+ real-world spaces as free IRs. Sampled by professional engineers in actual locations.</p>
+            </div>
+            <div>
+              <div class="innov-col-label">Setup</div>
+              <ol class="ext-steps">
+                <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Download a free convolution reverb plugin:</strong> Convolution Reverb (free in Logic Pro), OrilRiver (free VST), or Reaper's built-in ReaVerb.</div></li>
+                <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Download an IR pack</strong> from OpenAIR or Fokke van Saane's IR library. Load a famous room (e.g., "Tyndall Bruce Monument" or "R1 Nuclear Reactor").</div></li>
+                <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Route your audio through the plugin</strong> (in your DAW or with a VST host like Cantabile). Output to K5 Pro ESS → HD 490 PRO. Hear your music in Carnegie Hall.</div></li>
+              </ol>
+              <div class="gear-line"><span class="gear-name">OpenAIR IR library</span><span class="gear-price">Free</span></div>
+              <div class="gear-line"><span class="gear-name">OrilRiver Convolution Reverb</span><span class="gear-price">Free</span></div>
+              <div class="gear-line"><span class="gear-name">Altiverb 8 (professional)</span><span class="gear-price">₹35,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- I7 -->
+      <div class="innov-item">
+        <div class="innov-header" onclick="toggleInnov(this)">
+          <div class="innov-index">I — 07</div>
+          <div class="innov-head-info">
+            <div class="innov-head-title">EQ Matching — Make Any Source Sound Like Another</div>
+            <div class="innov-head-sub">EqualizerAPO · Tone matching · Headphone profile swap</div>
+          </div>
+          <div class="innov-toggle">+</div>
+        </div>
+        <div class="innov-body">
+          <div class="innov-body-inner">
+            <div>
+              <div class="innov-col-label">What it does</div>
+              <p class="innov-para">Using parametric EQ (EqualizerAPO + Peace), you can apply any frequency response profile to the HD 490 PRO — making it sound like virtually any other reference headphone: the Sennheiser HD 800S, Audeze LCD-4, Sony MDR-Z1R, or AKG K712. AutoEQ has profiles for 2,000+ headphones.</p>
+              <p class="innov-para">This lets you audition the "sound signature" of ₹2,00,000 headphones on your ₹31,000 HD 490 PRO — before committing to a purchase. The HD 490 PRO's neutral starting point makes it an ideal canvas for EQ targets.</p>
+            </div>
+            <div>
+              <div class="innov-col-label">How to do it</div>
+              <ol class="ext-steps">
+                <li class="ext-step"><div class="ext-step-num">1</div><div class="ext-step-text"><strong>Visit AutoEQ.app</strong> and search for any headphone you want to "simulate." Download the Peace EQ preset.</div></li>
+                <li class="ext-step"><div class="ext-step-num">2</div><div class="ext-step-text"><strong>Load in Peace EQ</strong> (EqualizerAPO's GUI). The preset applies the target headphone's frequency curve to your HD 490 PRO's output.</div></li>
+                <li class="ext-step"><div class="ext-step-num">3</div><div class="ext-step-text"><strong>Compare profiles</strong> by switching presets mid-song. You're essentially A/B testing headphones without owning them.</div></li>
+              </ol>
+              <div class="note violet"><strong>Creative use:</strong> Create your own "dream headphone" by combining elements — the bass of an LCD-2, the mids of an HD 800S, the treble extension of an Utopia. Parametric EQ makes this possible on your existing HD 490 PRO.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- I8 -->
+      <div class="innov-item">
+        <div class="innov-header" onclick="toggleInnov(this)">
+          <div class="innov-index">I — 08</div>
+          <div class="innov-head-info">
+            <div class="innov-head-title">AI-Powered Upscaling — Enhance Low-Quality Audio</div>
+            <div class="innov-head-sub">AudioSR · AI upsampling · Spotify → Hi-Res equivalent</div>
+          </div>
+          <div class="innov-toggle">+</div>
+        </div>
+        <div class="innov-body">
+          <div class="innov-body-inner">
+            <div>
+              <div class="innov-col-label">Emerging Technology</div>
+              <p class="innov-para"><strong>AI audio upsampling</strong> is a rapidly growing field. Tools like AudioSR (research demo, 2024), iZotope RX's "Music Rebalance," and Accusonus ERA use machine learning to reconstruct high-frequency information lost in MP3/AAC compression — then output a 24-bit/48kHz file that genuinely sounds better than the original 320kbps MP3.</p>
+              <p class="innov-para">Your chain — with its resolution capability — is one of the few that can actually resolve the difference between AI-upscaled and original files. On earbuds, the difference is imperceptible. On the HD 490 PRO through the K5 Pro ESS, it's meaningful.</p>
+              <div class="note rose"><strong>Current state (2025):</strong> AI upscaling is still imperfect — it sometimes introduces artefacts. Best used on older MP3 rips you can't replace with streaming. Not a substitute for lossless sources.</div>
+            </div>
+            <div>
+              <div class="innov-col-label">Tools to Try</div>
+              <div class="gear-line"><span class="gear-name">AudioSR (research demo)</span><span class="gear-price">Free (GitHub)</span></div>
+              <div class="gear-line"><span class="gear-name">iZotope RX 10 Standard</span><span class="gear-price">₹22,000</span></div>
+              <div class="gear-line"><span class="gear-name">Focusrite Hitmaker Expansion</span><span class="gear-price">Free with interface</span></div>
+              <div class="gear-line"><span class="gear-name">Adobe Podcast Enhance (voice)</span><span class="gear-price">Free (web)</span></div>
+              <p class="innov-para" style="margin-top: 1rem;">Run the upscaled file through your chain. A/B against the original. The HD 490 PRO's resolution will make any differences — improvements or artefacts — immediately audible.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /innov-list -->
+  </div><!-- /innov-section -->
+</div><!-- /wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-mark">VIKRAM STUDIO</div>
+  <div class="footer-sub">Chain Extensions · Variants · Innovations · Complete Architecture</div>
+</footer>
+
+<script>
+// Innov toggle
+function toggleInnov(header) {
+  const item = header.parentElement;
+  item.classList.toggle('open');
+}
+
+// Scroll reveal
+const rvEls = document.querySelectorAll('.rv');
+const rvObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('on'), i * 60);
+      rvObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+rvEls.forEach(el => rvObs.observe(el));
+</script>
+</body>
+</html>
