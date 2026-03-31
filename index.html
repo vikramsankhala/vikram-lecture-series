@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vikram Lecture Series</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0a0a0a; color: #fff; }
+    header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 60px 20px; text-align: center; }
+    header h1 { font-size: 3em; font-weight: 700; color: #e94560; margin-bottom: 10px; }
+    header p { font-size: 1.2em; color: #a8b2d8; margin-top: 10px; }
+    nav { background: #111; padding: 15px 0; text-align: center; }
+    nav a { color: #ccd6f6; text-decoration: none; margin: 0 20px; font-size: 1em; transition: color 0.3s; }
+    nav a:hover { color: #e94560; }
+    .hero { background: linear-gradient(180deg, #16213e, #0a0a0a); padding: 80px 20px; text-align: center; }
+    .hero h2 { font-size: 2em; color: #ccd6f6; margin-bottom: 20px; }
+    .hero p { font-size: 1.1em; color: #8892b0; max-width: 700px; margin: 0 auto 30px; line-height: 1.8; }
+    .btn { display: inline-block; background: #e94560; color: #fff; padding: 14px 36px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 1em; transition: background 0.3s; }
+    .btn:hover { background: #c73652; }
+    .lectures { padding: 60px 20px; max-width: 1100px; margin: 0 auto; }
+    .lectures h2 { text-align: center; font-size: 2em; color: #ccd6f6; margin-bottom: 40px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .card { background: #16213e; border-radius: 12px; padding: 30px; border: 1px solid #1f3a6e; transition: transform 0.3s, box-shadow 0.3s; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(233,69,96,0.2); }
+    .card h3 { color: #e94560; font-size: 1.3em; margin-bottom: 12px; }
+    .card p { color: #8892b0; line-height: 1.7; }
+    .card .tag { display: inline-block; background: #0f3460; color: #64ffda; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin-top: 12px; }
+    .about { background: #16213e; padding: 60px 20px; text-align: center; }
+    .about h2 { font-size: 2em; color: #ccd6f6; margin-bottom: 20px; }
+    .about p { color: #8892b0; max-width: 700px; margin: 0 auto; line-height: 1.8; font-size: 1.05em; }
+    footer { background: #0a0a0a; color: #8892b0; text-align: center; padding: 30px 20px; font-size: 0.9em; border-top: 1px solid #1f3a6e; }
+    footer a { color: #e94560; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Vikram Lecture Series</h1>
+    <p>Knowledge. Innovation. Excellence.</p>
+  </header>
+  <nav>
+    <a href="#lectures">Lectures</a>
+    <a href="#about">About</a>
+    <a href="https://github.com/vikramsankhala/vikram-lecture-series" target="_blank">GitHub</a>
+  </nav>
+  <section class="hero">
+    <h2>Empowering Through Education</h2>
+    <p>A curated collection of lecture materials, documentation, and resources covering AI, technology, and business innovation. Explore in-depth content designed to elevate your understanding and expertise.</p>
+    <a href="#lectures" class="btn">Explore Lectures</a>
+  </section>
+  <section class="lectures" id="lectures">
+    <h2>Lecture Series</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Christian / CDD</h3>
+        <p>Comprehensive documentation and materials covering Contract-Driven Development methodologies, tools, and real-world case studies.</p>
+        <span class="tag">Documentation</span>
+      </div>
+      <div class="card">
+        <h3>Eashwar Ji</h3>
+        <p>Advanced lecture materials on AI Risk & Finance, featuring the Command Center framework and strategic insights for modern enterprises.</p>
+        <span class="tag">AI & Finance</span>
+      </div>
+      <div class="card">
+        <h3>Headphones Project</h3>
+        <p>Technical deep-dive into audio technology, product development cycles, and live project documentation for a complete headphones solution.</p>
+        <span class="tag">Technology</span>
+      </div>
+    </div>
+  </section>
+  <section class="about" id="about">
+    <h2>About This Series</h2>
+    <p>The Vikram Lecture Series brings together curated knowledge from multiple domains — from contract-driven development to AI-powered finance. Each lecture module is crafted to deliver maximum value through structured documentation, real-world examples, and actionable insights.</p>
+  </section>
+  <footer>
+    <p>Built with passion by <a href="https://github.com/vikramsankhala" target="_blank">Vikram Sankhala</a> &mdash; Vikram Lecture Series &copy; 2026</p>
+  </footer>
+</body>
+</html>
