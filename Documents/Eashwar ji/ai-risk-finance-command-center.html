@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Risk & Finance Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0a0a0a; --white: #ffffff; --gray-100: #f5f5f5; --gray-200: #e8e8e8; --gray-400: #999;
+    --accent-red: #e8001d; --accent-green: #00c94e; --accent-blue: #0047ff;
+    --font-display: 'Bebas Neue', sans-serif; --font-serif: 'DM Serif Display', serif; --font-mono: 'Space Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-mono); background: var(--white); color: var(--black); overflow-x: hidden; }
+
+  /* TICKER */
+  .ticker-wrap { background: var(--black); color: var(--white); font-size: 11px; letter-spacing: 0.12em; overflow: hidden; white-space: nowrap; padding: 6px 0; border-bottom: 2px solid var(--accent-red); }
+  .ticker-track { display: inline-block; animation: ticker 32s linear infinite; }
+  .ticker-track span { margin: 0 40px; }
+  .up { color: var(--accent-green); } .down { color: var(--accent-red); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* NAV */
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 48px; border-bottom: 3px solid var(--black); position: sticky; top: 0; background: var(--white); z-index: 100; gap: 12px; }
+  .nav-logo { font-family: var(--font-display); font-size: 22px; letter-spacing: 0.08em; flex-shrink: 0; }
+  .nav-logo span { color: var(--accent-red); }
+  .nav-links { display: flex; gap: 20px; list-style: none; flex-wrap: wrap; }
+  .nav-links a { font-size: 10px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--black); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--accent-red); }
+  .nav-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; background: var(--black); color: var(--white); padding: 6px 14px; border: none; cursor: pointer; text-transform: uppercase; flex-shrink: 0; }
+
+  /* HERO */
+  .hero { padding: 80px 48px 60px; border-bottom: 3px solid var(--black); position: relative; overflow: hidden; }
+  .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-red); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 2px; background: var(--accent-red); }
+  .hero-title { font-family: var(--font-display); font-size: clamp(64px, 9vw, 130px); line-height: 0.92; letter-spacing: 0.02em; text-transform: uppercase; max-width: 900px; }
+  .hero-title .italic-line { font-family: var(--font-serif); font-style: italic; font-size: clamp(48px, 6.5vw, 92px); letter-spacing: 0; text-transform: none; color: var(--gray-400); }
+  .hero-meta { margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 2px solid var(--gray-200); padding-top: 32px; }
+  .hero-meta-item { padding-right: 32px; border-right: 2px solid var(--gray-200); margin-right: 32px; }
+  .hero-meta-item:last-child { border-right: none; }
+  .hero-meta-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 6px; }
+  .hero-meta-value { font-size: 13px; font-weight: 700; color: var(--black); }
+  .hero-bg-num { position: absolute; right: -20px; top: 40px; font-family: var(--font-display); font-size: 300px; line-height: 1; color: var(--gray-100); z-index: 0; pointer-events: none; user-select: none; }
+  .hero > * { position: relative; z-index: 1; }
+
+  /* KPI STRIP */
+  .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 3px solid var(--black); }
+  .kpi-card { padding: 36px 40px; border-right: 2px solid var(--black); transition: background 0.2s; }
+  .kpi-card:last-child { border-right: none; }
+  .kpi-card:hover { background: var(--black); }
+  .kpi-card:hover .kpi-label, .kpi-card:hover .kpi-value, .kpi-card:hover .kpi-change { color: var(--white) !important; }
+  .kpi-label { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 12px; transition: color 0.2s; }
+  .kpi-value { font-family: var(--font-display); font-size: 52px; line-height: 1; letter-spacing: 0.02em; color: var(--black); transition: color 0.2s; }
+  .kpi-change { margin-top: 8px; font-size: 11px; font-weight: 700; transition: color 0.2s; }
+  .kpi-change.up { color: var(--accent-green); } .kpi-change.down { color: var(--accent-red); }
+
+  /* LIVE APPS */
+  .live-apps-header { padding: 36px 48px 28px; border-bottom: 3px solid var(--black); background: var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
+  .live-apps-header-title { font-family: var(--font-display); font-size: 36px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .live-apps-header-sub { font-size: 11px; color: var(--gray-400); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .live-apps-section { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 6px solid var(--black); }
+  .live-app-card { padding: 56px 48px; display: flex; flex-direction: column; justify-content: space-between; min-height: 300px; text-decoration: none; color: inherit; transition: background 0.25s; }
+  .live-app-card.dark { background: var(--black); color: var(--white); border-right: 3px solid var(--black); }
+  .live-app-card.light { background: var(--white); color: var(--black); }
+  .live-app-card.dark:hover { background: #181818; } .live-app-card.light:hover { background: var(--gray-100); }
+  .live-app-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 14px; margin-bottom: 24px; }
+  .live-app-card.dark .live-app-badge { background: var(--accent-red); color: var(--white); }
+  .live-app-card.light .live-app-badge { background: var(--black); color: var(--white); }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--white); animation: pulse 1.5s ease-in-out infinite; flex-shrink: 0; }
+  @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.5; transform:scale(.75); } }
+  .live-app-name { font-family: var(--font-display); font-size: clamp(30px, 4vw, 54px); letter-spacing: 0.04em; text-transform: uppercase; line-height: 0.92; margin-bottom: 14px; }
+  .live-app-card.dark .live-app-name { color: var(--white); } .live-app-card.light .live-app-name { color: var(--black); }
+  .live-app-desc { font-size: 11px; line-height: 1.8; max-width: 380px; }
+  .live-app-card.dark .live-app-desc { color: rgba(255,255,255,.5); } .live-app-card.light .live-app-desc { color: #666; }
+  .live-app-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 32px; padding-top: 20px; gap: 16px; }
+  .live-app-card.dark .live-app-bottom { border-top: 1px solid rgba(255,255,255,.12); } .live-app-card.light .live-app-bottom { border-top: 1px solid var(--gray-200); }
+  .live-app-url { font-size: 10px; letter-spacing: 0.08em; word-break: break-all; }
+  .live-app-card.dark .live-app-url { color: rgba(255,255,255,.3); } .live-app-card.light .live-app-url { color: var(--gray-400); }
+  .live-app-cta { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 12px 22px; flex-shrink: 0; transition: all 0.2s; text-decoration: none; }
+  .live-app-card.dark .live-app-cta { background: var(--white); color: var(--black); }
+  .live-app-card.dark .live-app-cta:hover { background: var(--accent-red); color: var(--white); }
+  .live-app-card.light .live-app-cta { background: var(--black); color: var(--white); }
+  .live-app-card.light .live-app-cta:hover { background: var(--accent-blue); color: var(--white); }
+  .live-arrow { font-size: 16px; transition: transform 0.2s; } .live-app-cta:hover .live-arrow { transform: translateX(4px); }
+
+  /* SECTION HEADER */
+  .section-header { padding: 64px 48px 40px; border-bottom: 2px solid var(--gray-200); display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .section-number { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(--gray-400); text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-family: var(--font-display); font-size: clamp(40px, 5vw, 72px); letter-spacing: 0.04em; text-transform: uppercase; line-height: 0.9; }
+  .section-desc { max-width: 400px; font-size: 12px; line-height: 1.8; color: var(--gray-400); text-align: right; }
+
+  /* OVERVIEW */
+  .overview-split { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 3px solid var(--black); }
+  .overview-left { padding: 60px 48px; border-right: 2px solid var(--black); }
+  .overview-right { padding: 60px 48px; background: var(--black); color: var(--white); }
+  .overview-right .overview-body { color: rgba(255,255,255,.65); }
+  .overview-title { font-family: var(--font-serif); font-size: 28px; font-style: italic; margin-bottom: 20px; }
+  .overview-body { font-size: 12px; line-height: 1.9; color: #555; margin-bottom: 24px; }
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .pill { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border: 2px solid var(--black); color: var(--black); }
+  .overview-right .pill { border-color: rgba(255,255,255,.3); color: var(--white); }
+
+  /* MODULES */
+  .modules-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 3px solid var(--black); }
+  .module-card { padding: 44px 36px; border-right: 2px solid var(--black); border-bottom: 2px solid var(--black); transition: background 0.2s; }
+  .module-card:nth-child(3n) { border-right: none; }
+  .module-card:nth-last-child(-n+3) { border-bottom: none; }
+  .module-card:hover { background: var(--gray-100); }
+  .module-number { font-family: var(--font-display); font-size: 56px; line-height: 1; color: var(--gray-200); margin-bottom: 14px; }
+  .module-name { font-family: var(--font-display); font-size: 24px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; border-top: 3px solid var(--black); padding-top: 14px; }
+  .module-desc { font-size: 11px; line-height: 1.8; color: #666; }
+
+  /* FEATURES */
+  .features-section { border-bottom: 3px solid var(--black); }
+  .feature-row { display: grid; grid-template-columns: 300px 1fr; border-bottom: 2px solid var(--black); min-height: 180px; }
+  .feature-row:last-child { border-bottom: none; }
+  .feature-label-col { padding: 44px 36px; border-right: 2px solid var(--black); display: flex; flex-direction: column; justify-content: space-between; background: var(--gray-100); }
+  .feature-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-red); }
+  .feature-name { font-family: var(--font-display); font-size: 30px; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1; }
+  .feature-content-col { padding: 44px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 36px; align-content: start; }
+  .feature-item-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 5px; border-left: 3px solid var(--accent-blue); padding-left: 10px; }
+  .feature-item-body { font-size: 11px; line-height: 1.7; color: #666; }
+
+  /* ASSISTANT */
+  .assistant-section { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 3px solid var(--black); }
+  .assistant-left { padding: 72px 48px; border-right: 2px solid var(--black); }
+  .assistant-right { padding: 72px 48px; background: var(--black); color: var(--white); }
+  .assistant-title { font-family: var(--font-display); font-size: clamp(44px, 5vw, 64px); letter-spacing: 0.04em; text-transform: uppercase; line-height: 0.9; margin-bottom: 28px; }
+  .assistant-title .accent { color: var(--accent-blue); }
+  .assistant-body { font-size: 12px; line-height: 1.9; color: #555; margin-bottom: 20px; }
+  .query-list { list-style: none; }
+  .query-list li { font-size: 11px; line-height: 1.7; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.7); display: flex; gap: 10px; }
+  .query-list li::before { content: '→'; color: var(--accent-blue); flex-shrink: 0; font-weight: 700; }
+  .query-list li:first-child { border-top: 1px solid rgba(255,255,255,.08); }
+  .chat-demo { margin-top: 28px; border: 2px solid rgba(255,255,255,.12); padding: 22px; }
+  .chat-demo .q { font-size: 11px; color: rgba(255,255,255,.4); margin-bottom: 10px; font-style: italic; }
+  .chat-demo .a { font-size: 12px; color: var(--white); line-height: 1.7; }
+  .cursor { display: inline-block; width: 2px; height: 12px; background: var(--accent-blue); margin-left: 2px; animation: blink 1s step-end infinite; vertical-align: middle; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* METRICS */
+  .metrics-bar { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--black); border-bottom: 3px solid var(--black); }
+  .metric-cell { padding: 40px 28px; border-right: 1px solid rgba(255,255,255,.08); text-align: center; }
+  .metric-cell:last-child { border-right: none; }
+  .metric-num { font-family: var(--font-display); font-size: 44px; letter-spacing: 0.04em; color: var(--white); line-height: 1; }
+  .metric-num .unit { font-size: 20px; color: var(--accent-green); }
+  .metric-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-top: 8px; }
+
+  /* ROADMAP */
+  .roadmap-section { padding: 72px 48px; border-bottom: 3px solid var(--black); }
+  .roadmap-section-title { font-family: var(--font-display); font-size: 60px; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 48px; }
+  .roadmap-steps { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .roadmap-step { padding: 0 24px 0 0; position: relative; }
+  .roadmap-step::after { content: ''; position: absolute; right: 0; top: 20px; width: 1px; height: 60%; background: var(--gray-200); }
+  .roadmap-step:last-child::after { display: none; }
+  .step-num { font-family: var(--font-display); font-size: 72px; line-height: 1; color: var(--gray-200); margin-bottom: 8px; }
+  .step-body { font-size: 11px; line-height: 1.8; color: #555; border-top: 3px solid var(--black); padding-top: 12px; }
+
+  /* INVESTOR */
+  .investor-section { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 3px solid var(--black); }
+  .investor-left { padding: 72px 48px; border-right: 2px solid var(--black); }
+  .investor-right { padding: 72px 48px; }
+  .investor-title { font-family: var(--font-display); font-size: clamp(44px, 5.5vw, 72px); letter-spacing: 0.04em; text-transform: uppercase; line-height: 0.9; margin-bottom: 32px; }
+  .stat-stack { list-style: none; }
+  .stat-row { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--gray-200); }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-key { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-400); }
+  .stat-val { font-family: var(--font-display); font-size: 26px; letter-spacing: 0.04em; color: var(--black); }
+  .stat-val.green { color: var(--accent-green); }
+  .term-block { background: var(--gray-100); padding: 32px; }
+  .term-title { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 20px; }
+  .term-item { font-size: 11px; line-height: 1.8; color: #555; padding: 10px 0; border-bottom: 1px solid var(--gray-200); }
+  .term-item:last-child { border-bottom: none; }
+  .term-item strong { color: var(--black); font-weight: 700; display: block; margin-bottom: 2px; }
+
+  /* ═══════════════ LECTURE SERIES ═══════════════ */
+  .lecture-series { border-bottom: 6px solid var(--black); }
+
+  .lecture-hero {
+    padding: 72px 48px 52px; background: var(--black); color: var(--white);
+    border-bottom: 4px solid var(--accent-red);
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 48px;
+  }
+  .lecture-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-red); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+  .lecture-eyebrow::before { content: ''; display: block; width: 24px; height: 2px; background: var(--accent-red); }
+  .lecture-hero-title { font-family: var(--font-display); font-size: clamp(52px, 7vw, 92px); letter-spacing: 0.04em; text-transform: uppercase; line-height: 0.9; color: var(--white); }
+  .lecture-hero-title em { font-family: var(--font-serif); font-style: italic; color: rgba(255,255,255,.36); font-size: 0.72em; display: block; letter-spacing: 0; margin-top: 4px; }
+  .lecture-hero-stats { text-align: right; }
+  .lh-stat { margin-bottom: 20px; } .lh-stat:last-child { margin-bottom: 0; }
+  .lh-num { font-family: var(--font-display); font-size: 44px; letter-spacing: 0.04em; color: var(--white); line-height: 1; }
+  .lh-label { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-top: 4px; }
+
+  /* track bar */
+  .track-bar { display: flex; background: var(--white); border-bottom: 2px solid var(--black); overflow-x: auto; }
+  .track-btn { flex-shrink: 0; padding: 18px 28px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; border: none; border-right: 2px solid var(--black); background: transparent; color: var(--gray-400); cursor: pointer; transition: background .15s, color .15s; white-space: nowrap; }
+  .track-btn:last-child { border-right: none; }
+  .track-btn.active { background: var(--black); color: var(--white); }
+  .track-btn:hover:not(.active) { background: var(--gray-100); color: var(--black); }
+
+  /* lecture grid */
+  .lecture-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 3px solid var(--black); }
+  .lcard { border-right: 2px solid var(--black); border-bottom: 2px solid var(--black); display: flex; flex-direction: column; transition: background .2s; }
+  .lcard:nth-child(3n) { border-right: none; }
+  .lcard:hover { background: var(--gray-100); }
+  .lcard-top { padding: 32px 32px 20px; flex: 1; }
+  .lcard-num { font-family: var(--font-display); font-size: 52px; line-height: 1; color: var(--gray-200); margin-bottom: 12px; transition: color .2s; }
+  .lcard:hover .lcard-num { color: var(--gray-400); }
+  .ltag { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 4px 10px; margin-bottom: 12px; }
+  .t-fraud { background: #ffe8ea; color: #b00016; } .t-vcfo { background: #e8eeff; color: #0030bb; }
+  .t-ai { background: #e8fff2; color: #007a30; } .t-invest { background: #fff8e8; color: #8a5200; }
+  .t-arch { background: #f2e8ff; color: #6000a0; } .t-risk { background: #fff0e8; color: #a04000; }
+  .lcard-title { font-family: var(--font-display); font-size: 22px; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.1; margin-bottom: 10px; color: var(--black); }
+  .lcard-desc { font-size: 11px; line-height: 1.75; color: #666; }
+  .lcard-bottom { padding: 14px 32px; border-top: 2px solid var(--black); display: flex; align-items: center; justify-content: space-between; background: var(--white); transition: background .2s; }
+  .lcard:hover .lcard-bottom { background: var(--gray-200); }
+  .lduration { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-400); }
+  .llevel { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .lv-intro { color: var(--accent-green); } .lv-inter { color: var(--accent-blue); } .lv-adv { color: var(--accent-red); }
+
+  /* featured */
+  .lecture-featured { display: grid; grid-template-columns: 1fr 1fr; background: var(--black); }
+  .lf-left { padding: 60px 48px; border-right: 2px solid rgba(255,255,255,.1); }
+  .lf-right { padding: 60px 48px; }
+  .lf-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-red); color: var(--white); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 6px 14px; margin-bottom: 28px; }
+  .lf-title { font-family: var(--font-display); font-size: clamp(30px, 3.5vw, 50px); letter-spacing: 0.04em; text-transform: uppercase; color: var(--white); line-height: 0.95; margin-bottom: 22px; }
+  .lf-desc { font-size: 12px; line-height: 1.9; color: rgba(255,255,255,.55); margin-bottom: 32px; }
+  .lf-outline-title { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 14px; }
+  .lf-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.07); align-items: flex-start; }
+  .lf-item:last-child { border-bottom: none; }
+  .lf-marker { font-family: var(--font-display); font-size: 18px; color: var(--accent-red); flex-shrink: 0; line-height: 1; margin-top: 2px; }
+  .lf-text { font-size: 11px; line-height: 1.7; color: rgba(255,255,255,.65); }
+  .lf-text strong { display: block; color: var(--white); font-weight: 700; margin-bottom: 2px; }
+  .lf-btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 26px; background: var(--white); color: var(--black); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: background .2s, color .2s; margin-right: 12px; margin-bottom: 12px; }
+  .lf-btn:hover { background: var(--accent-red); color: var(--white); }
+
+  /* CONTACT */
+  .contact-section { padding: 80px 48px; display: flex; align-items: center; justify-content: space-between; background: var(--black); color: var(--white); gap: 40px; }
+  .contact-title { font-family: var(--font-display); font-size: clamp(48px, 6.5vw, 96px); letter-spacing: 0.04em; text-transform: uppercase; line-height: 0.9; flex: 1; }
+  .contact-title span { color: var(--accent-red); }
+  .contact-details { flex-shrink: 0; text-align: right; }
+  .contact-name { font-family: var(--font-serif); font-size: 20px; font-style: italic; margin-bottom: 14px; }
+  .contact-line { font-size: 12px; color: rgba(255,255,255,.55); margin-bottom: 6px; }
+  .contact-line a { color: var(--accent-blue); text-decoration: none; }
+  .cta-btn { margin-top: 16px; display: inline-block; padding: 13px 26px; border: 2px solid var(--white); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white); text-decoration: none; transition: background .2s, color .2s; margin-right: 8px; }
+  .cta-btn:hover { background: var(--white); color: var(--black); }
+
+  /* FOOTER */
+  footer { padding: 24px 48px; border-top: 2px solid rgba(255,255,255,.08); background: var(--black); display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: rgba(255,255,255,.28); letter-spacing: 0.1em; text-transform: uppercase; }
+  .footer-logo { font-family: var(--font-display); font-size: 18px; color: var(--white); letter-spacing: 0.1em; }
+
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--white); } ::-webkit-scrollbar-thumb { background: var(--black); }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-wrap"><div class="ticker-track">
+  <span>REVENUE <span class="up">₹4.8M ▲+6.4%</span></span>
+  <span>CASH RUNWAY <span class="up">13.2 MONTHS</span></span>
+  <span>FORECAST ACCURACY <span class="up">92%</span></span>
+  <span>UPSIDE FACTOR <span class="up">+2.1</span></span>
+  <span>FRAUD LOSS PREVENTED <span class="up">LIVE ●</span></span>
+  <span>LECTURE SERIES <span class="up">12 LECTURES · NOW OPEN</span></span>
+  <span>EBITDA MARGIN <span class="up">TRACKING</span></span>
+  <span>STREAM STATUS <span class="up">CONNECTED ●</span></span>
+  <span>REVENUE <span class="up">₹4.8M ▲+6.4%</span></span>
+  <span>CASH RUNWAY <span class="up">13.2 MONTHS</span></span>
+  <span>FORECAST ACCURACY <span class="up">92%</span></span>
+  <span>UPSIDE FACTOR <span class="up">+2.1</span></span>
+  <span>FRAUD LOSS PREVENTED <span class="up">LIVE ●</span></span>
+  <span>LECTURE SERIES <span class="up">12 LECTURES · NOW OPEN</span></span>
+  <span>EBITDA MARGIN <span class="up">TRACKING</span></span>
+  <span>STREAM STATUS <span class="up">CONNECTED ●</span></span>
+</div></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AI<span>R&F</span>OS</div>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#modules">Modules</a></li>
+    <li><a href="#fraud">Forensics</a></li>
+    <li><a href="#vcfo">vCFO</a></li>
+    <li><a href="#assistant">Assistant</a></li>
+    <li><a href="#investor">Investor</a></li>
+    <li><a href="#live-apps" style="color:var(--accent-red)">● Live Apps</a></li>
+    <li><a href="#lectures" style="color:var(--accent-blue)">▶ Lectures</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-badge">v0.1 POC</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-num">01</div>
+  <div class="hero-eyebrow">AI Risk &amp; Finance Command Center</div>
+  <h1 class="hero-title">
+    Unified<br/>
+    <span class="italic-line">Fraud Forensics</span><br/>
+    &amp; vCFO Intel
+  </h1>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="hero-meta-label">Platform</div><div class="hero-meta-value">AI Risk &amp; Finance OS</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Version</div><div class="hero-meta-value">0.1 POC — Active</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Author</div><div class="hero-meta-value">Vikram Singh Sankhala · Solinexta</div></div>
+  </div>
+</section>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi-card"><div class="kpi-label">Monthly Revenue</div><div class="kpi-value">4.8M</div><div class="kpi-change up">▲ +6.4% MoM</div></div>
+  <div class="kpi-card"><div class="kpi-label">Cash Runway</div><div class="kpi-value">13.2<span style="font-size:22px;letter-spacing:0"> mo</span></div><div class="kpi-change up">▲ Stable</div></div>
+  <div class="kpi-card"><div class="kpi-label">Forecast Accuracy</div><div class="kpi-value">92<span style="font-size:26px">%</span></div><div class="kpi-change up">▲ High Confidence</div></div>
+  <div class="kpi-card"><div class="kpi-label">Upside Factor</div><div class="kpi-value">+2.1</div><div class="kpi-change up">▲ Upside</div></div>
+</div>
+
+<!-- LIVE APPS -->
+<section id="live-apps">
+  <div class="live-apps-header">
+    <div>
+      <div class="live-apps-header-title">Live Prototypes</div>
+      <div style="font-size:11px;color:var(--gray-400);margin-top:6px;">Both applications are deployed — click to launch</div>
+    </div>
+    <div class="live-apps-header-sub">2 Apps · Deployed · Open Access</div>
+  </div>
+  <div class="live-apps-section">
+    <a class="live-app-card dark" href="https://ffs-frontend.netlify.app/dashboard" target="_blank" rel="noopener">
+      <div>
+        <div class="live-app-badge"><span class="live-dot"></span> Live Now</div>
+        <div class="live-app-name">Fraud Detection<br/>Forensic Systems</div>
+        <div class="live-app-desc">Real-time transaction scoring, case management, entity views, streaming controls, and live loss-prevention metrics. The operational core of the platform.</div>
+      </div>
+      <div class="live-app-bottom">
+        <div class="live-app-url">ffs-frontend.netlify.app/dashboard</div>
+        <span class="live-app-cta">Launch FFS <span class="live-arrow">→</span></span>
+      </div>
+    </a>
+    <a class="live-app-card light" href="https://vcfo-poc.netlify.app" target="_blank" rel="noopener">
+      <div>
+        <div class="live-app-badge"><span class="live-dot" style="background:var(--black)"></span> Live Now</div>
+        <div class="live-app-name">Virtual CFO<br/>OS Dashboard</div>
+        <div class="live-app-desc">ERP-integrated KPI dashboards, P&amp;L views, scenario planning, cash runway modelling, and AI CFO assistant for driver-based financial insights.</div>
+      </div>
+      <div class="live-app-bottom">
+        <div class="live-app-url">vcfo-poc.netlify.app</div>
+        <span class="live-app-cta">Launch vCFO <span class="live-arrow">→</span></span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-header fade-in">
+    <div><div class="section-number">Section 01</div><div class="section-title">Executive<br/>Overview</div></div>
+    <div class="section-desc">An integrated AI-native platform combining real-time fraud detection with CFO-grade financial intelligence into a single command center for risk, revenue, and cash decisions.</div>
+  </div>
+  <div class="overview-split">
+    <div class="overview-left">
+      <div class="overview-title">From the FFS Prototype</div>
+      <div class="overview-body">The Fraud Detection Forensic Systems prototype brings streaming transaction analysis, case workflows, entity views, and loss-prevention metrics. Every flagged transaction links directly to cases and finance books — eliminating the data gap between risk and revenue.</div>
+      <div class="pill-list"><span class="pill">Streaming Analysis</span><span class="pill">Case Workflows</span><span class="pill">Entity Views</span><span class="pill">Loss Metrics</span></div>
+    </div>
+    <div class="overview-right">
+      <div class="overview-title" style="color:var(--white)">From the vCFO OS Prototype</div>
+      <div class="overview-body">ERP integration, normalized KPI dashboards, scenario planning, and an AI CFO assistant for driver-based insights. Revenue, margin, and runway become live, queryable data — not static spreadsheets.</div>
+      <div class="pill-list"><span class="pill">ERP Integration</span><span class="pill">KPI Dashboards</span><span class="pill">Scenario Planning</span><span class="pill">AI CFO Assistant</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section id="modules">
+  <div class="section-header fade-in">
+    <div><div class="section-number">Section 02</div><div class="section-title">Navigation<br/>&amp; Modules</div></div>
+    <div class="section-desc">A unified left-side navigation with role-based access for Risk, Finance, and Leadership. One data model, one platform.</div>
+  </div>
+  <div class="modules-grid">
+    <div class="module-card"><div class="module-number">01</div><div class="module-name">Dashboard</div><div class="module-desc">Operational status, KPI pulse, streaming controls, and real-time fraud + finance overlay cards.</div></div>
+    <div class="module-card"><div class="module-number">02</div><div class="module-name">Transactions</div><div class="module-desc">Live transaction table with risk levels, merchant data, geography, and ERP posting status.</div></div>
+    <div class="module-card"><div class="module-number">03</div><div class="module-name">Cases</div><div class="module-desc">Open/closed case list, analyst assignment, SLA countdown, audit log, and AI suggestions.</div></div>
+    <div class="module-card"><div class="module-number">04</div><div class="module-name">Entities</div><div class="module-desc">Unified profiles for customers, merchants, and counterparties with connections graph and risk scores.</div></div>
+    <div class="module-card"><div class="module-number">05</div><div class="module-name">Finance KPIs</div><div class="module-desc">Consolidated P&amp;L, balance sheet, and cash flow with forecast overlays and time-series analytics.</div></div>
+    <div class="module-card"><div class="module-number">06</div><div class="module-name">Scenarios</div><div class="module-desc">Growth, cost, and capital scenarios with fraud levers as inputs — see KPI impact in real time.</div></div>
+    <div class="module-card"><div class="module-number">07</div><div class="module-name">AI Assistant</div><div class="module-desc">Dual-persona assistant for Fraud Analysts and CFOs querying the same underlying data fabric.</div></div>
+    <div class="module-card"><div class="module-number">08</div><div class="module-name">Investor Pitch</div><div class="module-desc">Exportable pitch flow with live metrics, narrative positioning, and fundraising-ready outputs.</div></div>
+    <div class="module-card"><div class="module-number">09</div><div class="module-name">Term Sheet</div><div class="module-desc">Commercial model, deployment scope, SLAs, and success-based savings share definitions.</div></div>
+  </div>
+</section>
+
+<!-- FRAUD -->
+<section id="fraud">
+  <div class="section-header fade-in">
+    <div><div class="section-number">Section 03</div><div class="section-title">Fraud Forensics<br/>Layer</div></div>
+    <div class="section-desc">Real-time detection, case management, entity intelligence, and loss prevention mapped to financial outcomes — extended from the FFS prototype.</div>
+  </div>
+  <div class="features-section">
+    <div class="feature-row">
+      <div class="feature-label-col"><div class="feature-tag">Module 01</div><div class="feature-name">Transactions</div></div>
+      <div class="feature-content-col">
+        <div><div class="feature-item-title">Real-Time Table</div><div class="feature-item-body">Transaction ID, Amount, Merchant, Risk Level, Timestamp, Decision, and Case ID for any escalated items.</div></div>
+        <div><div class="feature-item-title">Smart Filters</div><div class="feature-item-body">Filter by risk band, merchant, geography, channel, and model version — combined with ERP posting status.</div></div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-label-col"><div class="feature-tag">Module 02</div><div class="feature-name">Cases</div></div>
+      <div class="feature-content-col">
+        <div><div class="feature-item-title">Case Lifecycle</div><div class="feature-item-body">Open/closed status, assigned analyst, SLA countdown, and full audit log with AI assistant suggestions.</div></div>
+        <div><div class="feature-item-title">Deep Links</div><div class="feature-item-body">Each case links to underlying transactions, entity profiles, and financial exposure records.</div></div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-label-col"><div class="feature-tag">Module 03</div><div class="feature-name">Entities</div></div>
+      <div class="feature-content-col">
+        <div><div class="feature-item-title">Unified Profile</div><div class="feature-item-body">Entity-level risk score, historical fraud incidents, financial exposure, and shared instrument graph.</div></div>
+        <div><div class="feature-item-title">Connection Graph</div><div class="feature-item-body">Shared devices, payment instruments, and addresses mapped to surface hidden fraud rings.</div></div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-label-col"><div class="feature-tag">Module 04</div><div class="feature-name">Loss Prevention</div></div>
+      <div class="feature-content-col">
+        <div><div class="feature-item-title">Savings Modelling</div><div class="feature-item-body">Potential loss prevented vs. actual fraud losses, attributed to rules, ML models, and analysts.</div></div>
+        <div><div class="feature-item-title">Finance Mapping</div><div class="feature-item-body">Fraud savings mapped directly into EBITDA and cash runway — a derived metric unique to this platform.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- vCFO -->
+<section id="vcfo">
+  <div class="section-header fade-in">
+    <div><div class="section-number">Section 04</div><div class="section-title">vCFO Finance<br/>Layer</div></div>
+    <div class="section-desc">ERP ingestion, normalized KPIs, and scenario planning — extended from the vCFO OS prototype — bringing CFO-grade visibility to every team.</div>
+  </div>
+  <div class="features-section">
+    <div class="feature-row">
+      <div class="feature-label-col"><div class="feature-tag">Module 05</div><div class="feature-name">ERP Integration</div></div>
+      <div class="feature-content-col">
+        <div><div class="feature-item-title">SAP S/4HANA Ingestion</div><div class="feature-item-body">Ingest and normalize finance data from SAP and other ERP sources into CFO-grade KPI models.</div></div>
+        <div><div class="feature-item-title">Audit Trail</div><div class="feature-item-body">Maintain an auditable chain from KPIs back to source ERP records for finance close and compliance.</div></div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-label-col"><div class="feature-tag">Module 06</div><div class="feature-name">Finance Signals</div></div>
+      <div class="feature-content-col">
+        <div><div class="feature-item-title">KPI Tiles</div><div class="feature-item-body">Revenue, EBITDA margin, free cash flow, net debt / EBITDA — all normalized and live.</div></div>
+        <div><div class="feature-item-title">Forecast Overlays</div><div class="feature-item-body">Time-series analytics with actuals vs. forecast, updated on each ERP sync cycle.</div></div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-label-col"><div class="feature-tag">Module 07</div><div class="feature-name">Scenario Planning</div></div>
+      <div class="feature-content-col">
+        <div><div class="feature-item-title">Growth &amp; Cost Scenarios</div><div class="feature-item-body">Model growth, cost, and capital scenarios with KPI outcomes — including fraud threshold levers.</div></div>
+        <div><div class="feature-item-title">Risk-Adjusted Returns</div><div class="feature-item-body">Output views on revenue, margin, cash runway, and risk-adjusted returns across scenario dimensions.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASSISTANT -->
+<section id="assistant" class="assistant-section">
+  <div class="assistant-left">
+    <div class="assistant-title">Dual<br/><span class="accent">AI</span><br/>Assistant</div>
+    <div class="assistant-body">A single AI assistant with two personas — Fraud Analyst and CFO — querying the same underlying data fabric. Every answer links back to transactions, cases, entities, and ERP records with full explainability and traceability.</div>
+    <div class="assistant-body">Safe-guardrails make outputs suitable for investor updates and Board reporting. Variance explanations highlight which drivers — volume, pricing, fraud rate, costs — change each KPI.</div>
+  </div>
+  <div class="assistant-right">
+    <ul class="query-list">
+      <li>"Show me recent high-risk transactions over ₹10,000 and estimate their impact on monthly revenue if we block them."</li>
+      <li>"Explain variance in last month's EBITDA vs. forecast, factoring in fraud loss and chargebacks."</li>
+      <li>"Under a conservative growth scenario, how many months of cash runway do we gain if we cut fraud losses by 30%?"</li>
+      <li>"What is the impact of current fraud patterns on cash runway and EBITDA margin?"</li>
+      <li>"If we tighten fraud thresholds, what is the trade-off between reduced fraud losses and conversion drop?"</li>
+    </ul>
+    <div class="chat-demo">
+      <div class="q">CFO Assistant — Sample Response</div>
+      <div class="a">Cutting fraud losses by 30% under the conservative scenario adds approximately 1.4 months of cash runway and improves EBITDA margin by ~0.8pp. Threshold tightening carries an estimated 2.1% conversion risk on high-value merchant flows.<span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<div class="metrics-bar">
+  <div class="metric-cell"><div class="metric-num">4.8<span class="unit">M</span></div><div class="metric-lbl">Monthly Revenue</div></div>
+  <div class="metric-cell"><div class="metric-num">13.2<span class="unit">mo</span></div><div class="metric-lbl">Cash Runway</div></div>
+  <div class="metric-cell"><div class="metric-num">92<span class="unit">%</span></div><div class="metric-lbl">Forecast Accuracy</div></div>
+  <div class="metric-cell"><div class="metric-num">+2.1</div><div class="metric-lbl">Upside Factor</div></div>
+  <div class="metric-cell"><div class="metric-num">Live<span class="unit">●</span></div><div class="metric-lbl">Fraud Prevention</div></div>
+</div>
+
+<!-- INVESTOR -->
+<section id="investor" class="investor-section">
+  <div class="investor-left">
+    <div class="investor-title">Investor<br/>Narrative</div>
+    <div style="font-size:12px;line-height:1.9;color:#555;margin-bottom:28px;">Category: AI-native Finance &amp; Risk OS. CFOs and risk teams currently operate in separate tools, with fragmented data and slow decision cycles. This platform unifies operational risk and financial outcomes in a single data fabric.</div>
+    <ul class="stat-stack">
+      <li class="stat-row"><span class="stat-key">Monthly Revenue</span><span class="stat-val green">4.8M</span></li>
+      <li class="stat-row"><span class="stat-key">MoM Growth</span><span class="stat-val green">+6.4%</span></li>
+      <li class="stat-row"><span class="stat-key">Cash Runway</span><span class="stat-val">13.2 mo</span></li>
+      <li class="stat-row"><span class="stat-key">Forecast Accuracy</span><span class="stat-val">92%</span></li>
+      <li class="stat-row"><span class="stat-key">Upside Factor</span><span class="stat-val green">+2.1</span></li>
+      <li class="stat-row"><span class="stat-key">Fraud Loss Prevented</span><span class="stat-val green">Live</span></li>
+    </ul>
+  </div>
+  <div class="investor-right">
+    <div class="term-block">
+      <div class="term-title">Term Sheet Highlights</div>
+      <div class="term-item"><strong>Commercial Model</strong>Platform fee + success-based savings share on fraud prevention and working capital improvements.</div>
+      <div class="term-item"><strong>Deployment Scope</strong>ERP integration, transaction feeds, AI assistant, KPI dashboards, and fraud case tooling.</div>
+      <div class="term-item"><strong>SLAs</strong>Data freshness, model update cadence, support for finance close cycles and peak transaction periods.</div>
+      <div class="term-item"><strong>Roadmap</strong>Consolidated React SPA → shared data model → extended AI assistant → scenario modelling → investor PDF exports.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<div class="roadmap-section">
+  <div class="roadmap-section-title">Implementation Roadmap</div>
+  <div class="roadmap-steps">
+    <div class="roadmap-step"><div class="step-num">01</div><div class="step-body">Consolidate FFS and vCFO dashboards into a single React/SPA shell with shared navigation and auth.</div></div>
+    <div class="roadmap-step"><div class="step-num">02</div><div class="step-body">Standardize the data model so fraud events and finance entries share keys — customer, merchant, GL mapping.</div></div>
+    <div class="roadmap-step"><div class="step-num">03</div><div class="step-body">Extend the AI assistant to support both fraud and CFO queries with shared context windows.</div></div>
+    <div class="roadmap-step"><div class="step-num">04</div><div class="step-body">Add scenario modelling that toggles fraud levers and observes downstream KPI impact in real time.</div></div>
+    <div class="roadmap-step"><div class="step-num">05</div><div class="step-body">Harden investor pitch and term sheet flows as exportable PDFs for fundraising and enterprise sales.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ LECTURE SERIES ═══════════════════ -->
+<section id="lectures" class="lecture-series">
+
+  <div class="lecture-hero">
+    <div>
+      <div class="lecture-eyebrow">Knowledge Programme · Solinexta Technologies</div>
+      <h2 class="lecture-hero-title">
+        AI Risk &amp; Finance<br/>
+        <em>Lecture Series</em>
+      </h2>
+    </div>
+    <div class="lecture-hero-stats">
+      <div class="lh-stat"><div class="lh-num">12</div><div class="lh-label">Lectures</div></div>
+      <div class="lh-stat"><div class="lh-num">6</div><div class="lh-label">Tracks</div></div>
+      <div class="lh-stat"><div class="lh-num">18h</div><div class="lh-label">Total Content</div></div>
+    </div>
+  </div>
+
+  <div class="track-bar">
+    <button class="track-btn active" onclick="filterTrack('all',this)">All Lectures</button>
+    <button class="track-btn" onclick="filterTrack('fraud',this)">Fraud Forensics</button>
+    <button class="track-btn" onclick="filterTrack('vcfo',this)">vCFO Intelligence</button>
+    <button class="track-btn" onclick="filterTrack('ai',this)">AI &amp; Automation</button>
+    <button class="track-btn" onclick="filterTrack('risk',this)">Risk–Finance Fusion</button>
+    <button class="track-btn" onclick="filterTrack('arch',this)">Platform Architecture</button>
+    <button class="track-btn" onclick="filterTrack('invest',this)">Investor &amp; GTM</button>
+  </div>
+
+  <div class="lecture-grid" id="lectureGrid">
+
+    <div class="lcard" data-track="fraud">
+      <div class="lcard-top">
+        <div class="lcard-num">L01</div>
+        <div class="ltag t-fraud">Fraud Forensics</div>
+        <div class="lcard-title">Real-Time Transaction Scoring</div>
+        <div class="lcard-desc">How streaming transaction analysis works end-to-end — from Binance or open banking ingestion through ML scoring pipelines to real-time risk classification and decision output.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 90 min</span><span class="llevel lv-intro">Introductory</span></div>
+    </div>
+
+    <div class="lcard" data-track="fraud">
+      <div class="lcard-top">
+        <div class="lcard-num">L02</div>
+        <div class="ltag t-fraud">Fraud Forensics</div>
+        <div class="lcard-title">Case Management &amp; Investigation Workflows</div>
+        <div class="lcard-desc">Building an investigation lifecycle: case creation, analyst assignment, SLA management, audit logging, and how AI suggestions integrate into human decision-making without displacing analyst judgement.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 75 min</span><span class="llevel lv-inter">Intermediate</span></div>
+    </div>
+
+    <div class="lcard" data-track="fraud">
+      <div class="lcard-top">
+        <div class="lcard-num">L03</div>
+        <div class="ltag t-fraud">Fraud Forensics</div>
+        <div class="lcard-title">Entity Intelligence &amp; Graph Analysis</div>
+        <div class="lcard-desc">Constructing entity profiles for customers, merchants, and counterparties. Shared device and payment instrument graphs that surface hidden fraud rings linear analysis misses entirely.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 100 min</span><span class="llevel lv-adv">Advanced</span></div>
+    </div>
+
+    <div class="lcard" data-track="vcfo">
+      <div class="lcard-top">
+        <div class="lcard-num">L04</div>
+        <div class="ltag t-vcfo">vCFO Intelligence</div>
+        <div class="lcard-title">ERP Integration &amp; KPI Normalisation</div>
+        <div class="lcard-desc">Ingesting SAP S/4HANA and other ERP sources into a normalized CFO-grade KPI model. Data contracts, GL mapping, audit trails, and keeping KPIs reconcilable back to source records.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 90 min</span><span class="llevel lv-inter">Intermediate</span></div>
+    </div>
+
+    <div class="lcard" data-track="vcfo">
+      <div class="lcard-top">
+        <div class="lcard-num">L05</div>
+        <div class="ltag t-vcfo">vCFO Intelligence</div>
+        <div class="lcard-title">Cash Runway &amp; Scenario Planning</div>
+        <div class="lcard-desc">Driver-based scenario models across growth, cost, and capital dimensions. How to incorporate fraud threshold levers as scenario inputs and translate them into runway and margin outcomes.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 85 min</span><span class="llevel lv-adv">Advanced</span></div>
+    </div>
+
+    <div class="lcard" data-track="ai">
+      <div class="lcard-top">
+        <div class="lcard-num">L06</div>
+        <div class="ltag t-ai">AI &amp; Automation</div>
+        <div class="lcard-title">Designing a Dual-Persona AI Assistant</div>
+        <div class="lcard-desc">Architecture of a single AI assistant supporting Fraud Analyst and CFO personas over a shared data fabric — with explainability guardrails and Board-ready output safety built in from day one.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 110 min</span><span class="llevel lv-adv">Advanced</span></div>
+    </div>
+
+    <div class="lcard" data-track="ai">
+      <div class="lcard-top">
+        <div class="lcard-num">L07</div>
+        <div class="ltag t-ai">AI &amp; Automation</div>
+        <div class="lcard-title">Explainability &amp; Traceability in Finance AI</div>
+        <div class="lcard-desc">Why "black box" is unacceptable in regulated finance. Techniques for linking every AI answer back to source transactions, ERP records, and model features with audit-ready output structures.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 80 min</span><span class="llevel lv-inter">Intermediate</span></div>
+    </div>
+
+    <div class="lcard" data-track="risk">
+      <div class="lcard-top">
+        <div class="lcard-num">L08</div>
+        <div class="ltag t-risk">Risk–Finance Fusion</div>
+        <div class="lcard-title">Mapping Fraud Loss to EBITDA &amp; Runway</div>
+        <div class="lcard-desc">The derived metric at the core of this platform: how fraud prevention savings translate into EBITDA improvement and cash runway extension. Quantitative framework and implementation approach.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 70 min</span><span class="llevel lv-inter">Intermediate</span></div>
+    </div>
+
+    <div class="lcard" data-track="risk">
+      <div class="lcard-top">
+        <div class="lcard-num">L09</div>
+        <div class="ltag t-risk">Risk–Finance Fusion</div>
+        <div class="lcard-title">Threshold Trade-offs: Fraud vs. Conversion</div>
+        <div class="lcard-desc">Quantifying the conversion cost of fraud threshold tightening. Building a model for CFOs and risk teams to jointly optimise fraud loss versus revenue impact across merchant segments.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 95 min</span><span class="llevel lv-adv">Advanced</span></div>
+    </div>
+
+    <div class="lcard" data-track="arch">
+      <div class="lcard-top">
+        <div class="lcard-num">L10</div>
+        <div class="ltag t-arch">Platform Architecture</div>
+        <div class="lcard-title">Unified Data Model Design</div>
+        <div class="lcard-desc">How to share keys — customer, merchant, GL mapping — across fraud events and finance entries. Schema design, API contracts, and the migration path from two siloed systems to one unified fabric.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 120 min</span><span class="llevel lv-adv">Advanced</span></div>
+    </div>
+
+    <div class="lcard" data-track="invest">
+      <div class="lcard-top">
+        <div class="lcard-num">L11</div>
+        <div class="ltag t-invest">Investor &amp; GTM</div>
+        <div class="lcard-title">Pitching AI Risk &amp; Finance OS to Investors</div>
+        <div class="lcard-desc">Category creation vs. category entry. Positioning an AI-native Finance &amp; Risk OS, framing the siloed-tools problem, and presenting live metrics from FFS and vCFO as proof of traction.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 75 min</span><span class="llevel lv-intro">Introductory</span></div>
+    </div>
+
+    <div class="lcard" data-track="invest">
+      <div class="lcard-top">
+        <div class="lcard-num">L12</div>
+        <div class="ltag t-invest">Investor &amp; GTM</div>
+        <div class="lcard-title">Commercial Models &amp; Term Sheet Design</div>
+        <div class="lcard-desc">Success-based pricing for fraud savings and working capital improvement. Platform fees, SLAs for data freshness, model cadence, and enterprise sales motions for fintech and payment processor buyers.</div>
+      </div>
+      <div class="lcard-bottom"><span class="lduration">⏱ 80 min</span><span class="llevel lv-inter">Intermediate</span></div>
+    </div>
+
+  </div><!-- /lecture-grid -->
+
+  <!-- FEATURED -->
+  <div class="lecture-featured">
+    <div class="lf-left">
+      <div class="lf-badge">★ Featured Deep Dive</div>
+      <div class="lf-title">L09 — Threshold Trade-offs:<br/>Fraud vs. Conversion</div>
+      <div class="lf-desc">The most strategically complex lecture in the series. Learn how to quantify the revenue cost of fraud threshold tightening and build a joint optimisation model grounded in real data from the FFS dashboard and vCFO scenario planner.</div>
+      <a class="lf-btn" href="https://ffs-frontend.netlify.app/dashboard" target="_blank" rel="noopener">Open FFS Dashboard →</a>
+      <a class="lf-btn" href="https://vcfo-poc.netlify.app" target="_blank" rel="noopener">Open vCFO OS →</a>
+    </div>
+    <div class="lf-right">
+      <div class="lf-outline-title">Lecture Outline · 5 Modules · 95 Minutes</div>
+      <div class="lf-item"><div class="lf-marker">01</div><div class="lf-text"><strong>Framing the Trade-off</strong>Why blocking fraud is never free — the conversion cost framework and how it differs across merchant verticals and transaction corridors.</div></div>
+      <div class="lf-item"><div class="lf-marker">02</div><div class="lf-text"><strong>Quantitative Model</strong>Building a threshold sensitivity model: marginal fraud loss prevented vs. marginal revenue lost at each threshold band.</div></div>
+      <div class="lf-item"><div class="lf-marker">03</div><div class="lf-text"><strong>Live Data Walkthrough</strong>Using the FFS transaction table and vCFO scenario planner together to run a live optimisation in real time.</div></div>
+      <div class="lf-item"><div class="lf-marker">04</div><div class="lf-text"><strong>Decision Framework</strong>A repeatable framework for CFO–Risk joint threshold reviews, with output suitable for Board reporting.</div></div>
+      <div class="lf-item"><div class="lf-marker">05</div><div class="lf-text"><strong>Case Study</strong>Worked example: a payment processor at ₹4.8M monthly revenue tightening thresholds by 15% — full P&amp;L and runway impact calculated.</div></div>
+    </div>
+  </div>
+
+</section>
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="contact-title">Get In<br/><span>Touch</span></div>
+  <div class="contact-details">
+    <div class="contact-name">Vikram Singh Sankhala</div>
+    <div class="contact-line">Solinexta Technologies</div>
+    <div class="contact-line"><a href="mailto:solinexta@gmail.com">solinexta@gmail.com</a></div>
+    <div class="contact-line">WhatsApp: <a href="https://wa.me/919819543261">+91 9819543261</a></div>
+    <div style="margin-top:20px;">
+      <a class="cta-btn" href="https://ffs-frontend.netlify.app/dashboard" target="_blank" rel="noopener">FFS Dashboard →</a>
+      <a class="cta-btn" href="https://vcfo-poc.netlify.app" target="_blank" rel="noopener">vCFO OS →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">AIR&FOS</div>
+  <div>© 2025 Solinexta Technologies · Vikram Singh Sankhala</div>
+  <div>v0.1 POC · All Rights Reserved</div>
+</footer>
+
+<script>
+  // Fade-in on scroll
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+  // Lecture track filter
+  function filterTrack(track, btn) {
+    document.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cards = document.querySelectorAll('.lcard');
+    cards.forEach(card => {
+      card.style.display = (track === 'all' || card.dataset.track === track) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
